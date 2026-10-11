@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aksum – Eritreische Gewürze & Kultur</title>
+  <meta name="description" content="Eritreische Gewürze wie Berbere und Shiro sowie traditionelle Kulturgegenstände – bequem online bestellen und mit PayPal bezahlen.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=Noto+Sans+Ethiopic:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo">
+        <span class="logo__mark" aria-hidden="true">✦</span>
+        <span>Aksum <span class="logo__ge">ኣኽሱም</span></span>
+      </a>
+      <nav class="nav" aria-label="Hauptmenü">
+        <a href="#shop" data-i18n="nav.shop">Shop</a>
+        <a href="#about" data-i18n="nav.about">Über uns</a>
+        <a href="#contact" data-i18n="nav.contact">Kontakt</a>
+      </nav>
+      <div class="header__actions">
+        <div class="lang-switch" role="group" aria-label="Sprache / ቋንቋ">
+          <button data-lang="de" aria-pressed="true">DE</button>
+          <button data-lang="ti" aria-pressed="false">ትግ</button>
+        </div>
+        <button class="cart-button" data-open-cart aria-label="Warenkorb">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-button__count" id="cart-count" hidden>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero__inner">
+        <p class="hero__kicker" data-i18n="hero.kicker">Aus Eritrea zu dir nach Hause</p>
+        <h1 class="hero__title" data-i18n="hero.title">Gewürze & Kultur aus Eritrea</h1>
+        <p class="hero__text" data-i18n="hero.text"></p>
+        <a href="#shop" class="btn" data-i18n="hero.cta">Zum Shop</a>
+      </div>
+      <div class="tilet" aria-hidden="true"></div>
+    </section>
+
+    <section class="section" id="shop">
+      <div class="container">
+        <div class="section__head">
+          <h2 data-i18n="shop.title">Unsere Produkte</h2>
+          <div class="filters" role="group">
+            <button data-filter="all" aria-pressed="true" data-i18n="filter.all">Alle</button>
+            <button data-filter="spices" aria-pressed="false" data-i18n="filter.spices">Gewürze</button>
+            <button data-filter="culture" aria-pressed="false" data-i18n="filter.culture">Kultur</button>
+          </div>
+        </div>
+        <div class="product-grid" id="product-grid"></div>
+      </div>
+    </section>
+
+    <section class="section section--alt" id="about">
+      <div class="container about">
+        <h2 data-i18n="about.title">Über Aksum</h2>
+        <p data-i18n="about.text1"></p>
+        <p data-i18n="about.text2"></p>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container contact">
+        <h2 data-i18n="contact.title">Kontakt</h2>
+        <p data-i18n="contact.text"></p>
+        <ul class="contact__list">
+          <li>✉ <a id="contact-email" href="#"></a></li>
+          <li>☎ <a id="contact-phone" href="#"></a></li>
+          <li>◎ <a id="contact-instagram" href="#" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="tilet" aria-hidden="true"></div>
+    <div class="container footer__inner">
+      <p>© <span id="year"></span> Aksum · <span id="shipping-info"></span></p>
+      <nav aria-label="Rechtliches">
+        <a href="impressum.html" data-i18n="footer.imprint">Impressum</a>
+        <a href="datenschutz.html" data-i18n="footer.privacy">Datenschutz</a>
+        <a href="agb.html" data-i18n="footer.terms">AGB & Widerruf</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Warenkorb (fährt von rechts herein) -->
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="cart" id="cart" aria-hidden="true" aria-labelledby="cart-title">
+    <div class="cart__head">
+      <h2 id="cart-title" data-i18n="cart.title">Dein Warenkorb</h2>
+      <button class="cart__close" id="cart-close" aria-label="Schließen">×</button>
+    </div>
+    <p class="cart__empty" id="cart-empty" data-i18n="cart.empty">Dein Warenkorb ist leer.</p>
+    <ul class="cart__items" id="cart-items"></ul>
+    <div class="cart__summary" id="cart-summary" hidden>
+      <dl>
+        <div><dt data-i18n="cart.subtotal">Zwischensumme</dt><dd id="sum-subtotal"></dd></div>
+        <div><dt data-i18n="cart.shipping">Versand</dt><dd id="sum-shipping"></dd></div>
+        <div class="cart__total"><dt data-i18n="cart.total">Gesamt</dt><dd id="sum-total"></dd></div>
+      </dl>
+      <p class="cart__hint" id="free-hint" hidden></p>
+      <p class="cart__pay" data-i18n="cart.payWith">Sicher bezahlen mit PayPal:</p>
+      <div id="paypal-buttons"></div>
+      <p class="cart__legal" data-i18n-html="cart.legal"></p>
+    </div>
+  </aside>
+
+  <!-- Danke-Fenster nach erfolgreicher Zahlung -->
+  <dialog class="thanks" id="thanks">
+    <h2 data-i18n="thanks.title">Vielen Dank für deine Bestellung!</h2>
+    <p><span data-i18n="thanks.text"></span> <strong id="order-id"></strong></p>
+    <button class="btn" id="thanks-close" data-i18n="thanks.close">Weiter einkaufen</button>
+  </dialog>
+
+  <script src="js/config.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
