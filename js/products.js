@@ -6,11 +6,13 @@
  *  darunter einfügen und die Werte ändern.
  *
  *  id        – eindeutiger Kurzname ohne Leerzeichen (z. B. "berbere-250")
- *  category  – "spices" (Gewürze) oder "culture" (Kultur)
+ *  category  – "spices" (Gewürze), "flour" (Mehl) oder "culture" (Kultur)
  *  price     – Preis in Euro, mit PUNKT statt Komma (z. B. 8.90)
  *  image     – Pfad zu einem Foto, z. B. "images/berbere.jpg"
  *              (leer lassen "" = es wird ein Platzhalter angezeigt)
  *  name / weight / description – jeweils auf Deutsch (de) und Tigrinya (ti)
+ *  variants  – statt "price" und "weight": mehrere Größen zur Auswahl,
+ *              jede mit eigener id, Größe und eigenem Preis (siehe Teff-Mehl)
  *
  *  HINWEIS: Das sind BEISPIELPRODUKTE. Bitte durch deine echten
  *  Produkte, Preise und Fotos ersetzen.
@@ -88,6 +90,36 @@ const PRODUCTS = [
     description: {
       de: "Natürlicher Weihrauch – gehört zu jeder Kaffeezeremonie und zu festlichen Anlässen.",
       ti: "ተፈጥሮኣዊ ዕጣን – ንስርዓተ ቡንን በዓላትን።",
+    },
+  },
+
+  // ---------------- MEHL ----------------
+  {
+    id: "teff",
+    category: "flour",
+    image: "",
+    name: { de: "Teff-Mehl", ti: "ሓርጭ ጣፍ" },
+    variants: [
+      { id: "500g", weight: { de: "500 g", ti: "500 ግራም" }, price: 5.90 },
+      { id: "1kg", weight: { de: "1 kg", ti: "1 ኪሎ" }, price: 9.90 },
+    ],
+    description: {
+      de: "Fein gemahlenes Mehl aus Teff, dem Urgetreide Ostafrikas – die Grundlage für echtes Injera.",
+      ti: "ካብ ጣፍ ዝተጠሓነ ጽሩይ ሓርጭ – መሰረት ናይ ሓቀኛ ጣይታ (እንጀራ)።",
+    },
+  },
+  {
+    id: "mashella",
+    category: "flour",
+    image: "",
+    name: { de: "Maschella-Mehl (Sorghum)", ti: "ሓርጭ መሽላ" },
+    variants: [
+      { id: "500g", weight: { de: "500 g", ti: "500 ግራም" }, price: 3.90 },
+      { id: "1kg", weight: { de: "1 kg", ti: "1 ኪሎ" }, price: 6.90 },
+    ],
+    description: {
+      de: "Mehl aus Maschella (Sorghum-Hirse) – für Injera, gemischt mit Teff, und für Ga'at (Brei).",
+      ti: "ካብ መሽላ ዝተጠሓነ ሓርጭ – ንጣይታ ምስ ጣፍ ተሓዊሱ፡ ከምኡ'ውን ንዓጊት።",
     },
   },
 

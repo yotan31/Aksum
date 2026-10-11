@@ -10,6 +10,7 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 | `js/products.js` | **Deine Produkte** (Name, Preis, Beschreibung, Foto) |
 | `js/config.js` | **Einstellungen**: PayPal-ID, Versandkosten, Kontaktdaten |
 | `js/i18n.js` | Alle Texte der Seite auf Deutsch und Tigrinya |
+| `js/faq.js` | **Häufige Fragen** (FAQ) auf Deutsch und Tigrinya |
 | `images/` | Hier kommen deine Produktfotos hinein |
 | `impressum.html`, `datenschutz.html`, `agb.html` | Rechtstexte (**müssen noch ausgefüllt werden!**) |
 | `index.html`, `css/`, `js/app.js` | Aufbau, Design und Technik (normalerweise nicht ändern) |
@@ -43,6 +44,7 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 
 ## Produkte ändern
 `js/products.js` öffnen. Auf GitHub geht das mit dem Stift-Symbol direkt im Browser. Dann einen Produkt-Block kopieren und die Werte anpassen.
+Produkte mit mehreren Größen (z. B. 500 g / 1 kg) haben statt `price` eine Liste `variants`. Schau dir als Beispiel das Teff-Mehl an.
 Für ein Foto lädst du das Bild in den Ordner `images/` hoch und trägst den Pfad ein, z. B. `image: "images/berbere.jpg"`.
 
 ## Wichtig vor dem Start (Deutschland)

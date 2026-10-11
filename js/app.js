@@ -50,9 +50,24 @@
   let filter = "all";
   let cart = load(CART_KEY, {}); // { produktId: anzahl }
 
+  let chosen = {}; // gewählte Größe pro Produkt, z. B. { teff: "1kg" }
+
+  // Größen eines Produkts. Produkte ohne "variants" haben genau eine.
+  function variantsOf(product) {
+    return product.variants || [{ id: "", weight: product.weight, price: product.price }];
+  }
+
+  // Im Warenkorb steht "produkt" oder "produkt:größe" als Schlüssel.
+  function lookup(key) {
+    const [productId, variantId = ""] = key.split(":");
+    const product = PRODUCTS.find((p) => p.id === productId);
+    const variant = product && variantsOf(product).find((v) => v.id === variantId);
+    return variant ? { product, variant } : null;
+  }
+
   // Produkte entfernen, die es inzwischen nicht mehr gibt
-  Object.keys(cart).forEach((id) => {
-    if (!PRODUCTS.some((p) => p.id === id) || !(cart[id] > 0)) delete cart[id];
+  Object.keys(cart).forEach((key) => {
+    if (!lookup(key) || !(cart[key] > 0)) delete cart[key];
   });
 
   function t(key, vars) {
@@ -68,15 +83,12 @@
   // ---------- Warenkorb-Berechnung ----------
 
   function cartLines() {
-    return Object.keys(cart).map((id) => ({
-      product: PRODUCTS.find((p) => p.id === id),
-      qty: cart[id],
-    }));
+    return Object.keys(cart).map((key) => ({ key, ...lookup(key), qty: cart[key] }));
   }
 
   function totals() {
     const itemTotal = cartLines().reduce(
-      (sum, line) => sum + toCents(line.product.price) * line.qty,
+      (sum, line) => sum + toCents(line.variant.price) * line.qty,
       0
     );
     const freeFrom = toCents(SHOP_CONFIG.freeShippingFrom);
@@ -125,6 +137,23 @@
     </div>`;
   }
 
+  function selectedVariant(product) {
+    const all = variantsOf(product);
+    return all.find((v) => v.id === chosen[product.id]) || all[0];
+  }
+
+  function variantPicker(product) {
+    const all = variantsOf(product);
+    if (all.length < 2) return `<p class="product__weight">${esc(all[0].weight[lang])}</p>`;
+    const current = selectedVariant(product);
+    return `<div class="variants" role="group">${all
+      .map(
+        (v) => `<button data-variant="${esc(v.id)}" data-product="${esc(product.id)}"
+          aria-pressed="${v === current}">${esc(v.weight[lang])}</button>`
+      )
+      .join("")}</div>`;
+  }
+
   function renderProducts() {
     const grid = document.getElementById("product-grid");
     const visible = PRODUCTS.filter((p) => filter === "all" || p.category === filter);
@@ -136,10 +165,10 @@
         <div class="product__body">
           <p class="product__category">${esc(t("filter." + p.category))}</p>
           <h3 class="product__name">${esc(p.name[lang])}</h3>
-          <p class="product__weight">${esc(p.weight[lang])}</p>
+          ${variantPicker(p)}
           <p class="product__desc">${esc(p.description[lang])}</p>
           <div class="product__footer">
-            <span class="product__price">${formatCents(toCents(p.price))}</span>
+            <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
             <button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>
           </div>
         </div>
@@ -165,18 +194,18 @@
 
     list.innerHTML = lines
       .map(
-        ({ product, qty }) => `
+        ({ key, product, variant, qty }) => `
       <li class="cart-item">
         <div class="cart-item__info">
           <strong>${esc(product.name[lang])}</strong>
-          <span>${esc(product.weight[lang])} · ${formatCents(toCents(product.price))}</span>
+          <span>${esc(variant.weight[lang])} · ${formatCents(toCents(variant.price))}</span>
         </div>
         <div class="qty">
-          <button data-qty="${esc(product.id)}" data-delta="-1" aria-label="−">−</button>
+          <button data-qty="${esc(key)}" data-delta="-1" aria-label="−">−</button>
           <span>${qty}</span>
-          <button data-qty="${esc(product.id)}" data-delta="1" aria-label="+">+</button>
+          <button data-qty="${esc(key)}" data-delta="1" aria-label="+">+</button>
         </div>
-        <button class="cart-item__remove" data-remove="${esc(product.id)}">${esc(t("cart.remove"))}</button>
+        <button class="cart-item__remove" data-remove="${esc(key)}">${esc(t("cart.remove"))}</button>
       </li>`
       )
       .join("");
@@ -259,10 +288,10 @@
                     shipping: { currency_code: currency, value: centsToValue(sums.shipping) },
                   },
                 },
-                items: cartLines().map(({ product, qty }) => ({
-                  name: (product.name.de + " (" + product.weight.de + ")").slice(0, 127),
-                  sku: product.id,
-                  unit_amount: { currency_code: currency, value: centsToValue(toCents(product.price)) },
+                items: cartLines().map(({ key, product, variant, qty }) => ({
+                  name: (product.name.de + " (" + variant.weight.de + ")").slice(0, 127),
+                  sku: key,
+                  unit_amount: { currency_code: currency, value: centsToValue(toCents(variant.price)) },
                   quantity: String(qty),
                   category: "PHYSICAL_GOODS",
                 })),
@@ -298,8 +327,10 @@
     if (!el) return;
 
     if (el.dataset.add) {
-      const id = el.dataset.add;
-      setQty(id, (cart[id] || 0) + 1);
+      const product = PRODUCTS.find((p) => p.id === el.dataset.add);
+      const variant = selectedVariant(product);
+      const key = variant.id ? product.id + ":" + variant.id : product.id;
+      setQty(key, (cart[key] || 0) + 1);
       el.textContent = t("product.added");
       el.disabled = true;
       setTimeout(() => {
@@ -311,6 +342,9 @@
       setQty(id, (cart[id] || 0) + Number(el.dataset.delta));
     } else if (el.dataset.remove) {
       setQty(el.dataset.remove, 0);
+    } else if (el.dataset.variant !== undefined && el.dataset.product) {
+      chosen[el.dataset.product] = el.dataset.variant;
+      renderProducts();
     } else if (el.dataset.filter) {
       filter = el.dataset.filter;
       renderProducts();
