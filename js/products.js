@@ -26,7 +26,7 @@ const PRODUCTS = [
     id: "berbere-250",
     category: "spices",
     price: 8.90,
-    image: "",
+    image: "images/berbere.jpg",
     name: { de: "Berbere", ti: "በርበረ" },
     weight: { de: "250 g", ti: "250 ግራም" },
     description: {
