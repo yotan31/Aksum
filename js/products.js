@@ -38,7 +38,7 @@ const PRODUCTS = [
     id: "shiro-500",
     category: "spices",
     price: 7.50,
-    image: "",
+    image: "images/shiro.jpg",
     name: { de: "Shiro-Pulver", ti: "ሽሮ" },
     weight: { de: "500 g", ti: "500 ግራም" },
     description: {
@@ -50,7 +50,7 @@ const PRODUCTS = [
     id: "mitmita-100",
     category: "spices",
     price: 6.90,
-    image: "",
+    image: "images/mitmita.jpg",
     name: { de: "Mitmita", ti: "ሚጥሚጣ" },
     weight: { de: "100 g", ti: "100 ግራም" },
     description: {
@@ -62,7 +62,7 @@ const PRODUCTS = [
     id: "korerima-50",
     category: "spices",
     price: 5.90,
-    image: "",
+    image: "images/korerima.jpg",
     name: { de: "Korerima (Äthiopischer Kardamom)", ti: "ኮረሪማ" },
     weight: { de: "50 g", ti: "50 ግራም" },
     description: {
@@ -74,7 +74,7 @@ const PRODUCTS = [
     id: "coffee-500",
     category: "spices",
     price: 12.90,
-    image: "",
+    image: "images/rohkaffee.jpg",
     name: { de: "Rohkaffee für die Kaffeezeremonie", ti: "ጥረ ቡን" },
     weight: { de: "500 g", ti: "500 ግራም" },
     description: {
@@ -86,7 +86,7 @@ const PRODUCTS = [
     id: "etan-100",
     category: "spices",
     price: 4.90,
-    image: "",
+    image: "images/weihrauch.jpg",
     name: { de: "Weihrauch (Etan)", ti: "ዕጣን" },
     weight: { de: "100 g", ti: "100 ግራም" },
     description: {
@@ -99,7 +99,7 @@ const PRODUCTS = [
   {
     id: "teff",
     category: "flour",
-    image: "",
+    image: "images/teff.jpg",
     name: { de: "Teff-Mehl", ti: "ሓርጭ ጣፍ" },
     glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
     variants: [
@@ -114,7 +114,7 @@ const PRODUCTS = [
   {
     id: "mashella",
     category: "flour",
-    image: "",
+    image: "images/maschella.jpg",
     name: { de: "Maschella-Mehl (Sorghum)", ti: "ሓርጭ መሽላ" },
     glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
     variants: [
