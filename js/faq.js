@@ -94,15 +94,15 @@ const FAQ = [
       {
         q: { de: "Was ist Teff?", ti: "ጣፍ እንታይ እዩ?" },
         a: {
-          de: "Teff ist ein uraltes Getreide aus Eritrea und Äthiopien mit sehr kleinen Körnern. Aus Teff-Mehl backt man das traditionelle Injera. Teff enthält von Natur aus kein Gluten – bei Unverträglichkeit beachte bitte trotzdem die Hinweise auf der Packung, da Spuren möglich sind.",
-          ti: "ጣፍ ካብ ኤርትራን ኢትዮጵያን ዝመጽእ ጥንታዊ እኽሊ እዩ። ካብ ሓርጭ ጣፍ ጣይታ ይስራሕ። ብተፈጥሮ ግሉተን የብሉን – ግን በጃኻ ኣብ ፓኮ ዘሎ ሓበሬታ ርአ።",
+          de: "Teff ist ein uraltes Getreide aus Eritrea und Äthiopien mit sehr kleinen Körnern. Aus Teff-Mehl backt man das traditionelle Injera. Unser Teff-Mehl ist glutenfrei und damit auch bei Zöliakie geeignet.",
+          ti: "ጣፍ ካብ ኤርትራን ኢትዮጵያን ዝመጽእ ጥንታዊ እኽሊ እዩ። ካብ ሓርጭ ጣፍ ጣይታ ይስራሕ። ሓርጭ ጣፍና ግሉተን የብሉን።",
         },
       },
       {
         q: { de: "Was ist Maschella?", ti: "መሽላ እንታይ እዩ?" },
         a: {
-          de: "Maschella ist Sorghum, eine Hirse-Art, die in Eritrea viel angebaut wird. Das Mehl wird oft mit Teff gemischt, um Injera zu backen, und ist die Grundlage für Ga'at, einen festen Brei.",
-          ti: "መሽላ ኣብ ኤርትራ ብብዝሒ ዝዝራእ እኽሊ እዩ። ሓርጩ ምስ ጣፍ ተሓዊሱ ንጣይታ ይኸውን፡ ከምኡ'ውን ንዓጊት።",
+          de: "Maschella ist Sorghum, eine Hirse-Art, die in Eritrea viel angebaut wird. Das Mehl wird oft mit Teff gemischt, um Injera zu backen, und ist die Grundlage für Ga'at, einen festen Brei. Auch unser Maschella-Mehl ist glutenfrei.",
+          ti: "መሽላ ኣብ ኤርትራ ብብዝሒ ዝዝራእ እኽሊ እዩ። ሓርጩ ምስ ጣፍ ተሓዊሱ ንጣይታ ይኸውን፡ ከምኡ'ውን ንዓጊት። ሓርጭ መሽላና'ውን ግሉተን የብሉን።",
         },
       },
       {
