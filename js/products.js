@@ -25,7 +25,7 @@ const PRODUCTS = [
   {
     id: "berbere-250",
     category: "spices",
-    price: 8.90,
+    price: 6.90,
     image: "images/berbere.jpg",
     name: { de: "Berbere", en: "Berbere", ti: "በርበረ" },
     weight: { de: "250 g", en: "250 g", ti: "250 ግራም" },
@@ -38,7 +38,7 @@ const PRODUCTS = [
   {
     id: "shiro-500",
     category: "spices",
-    price: 7.50,
+    price: 8.90,
     image: "images/shiro.jpg",
     name: { de: "Shiro-Pulver", en: "Shiro powder", ti: "ሽሮ" },
     weight: { de: "500 g", en: "500 g", ti: "500 ግራም" },
@@ -51,7 +51,7 @@ const PRODUCTS = [
   {
     id: "mitmita-100",
     category: "spices",
-    price: 6.90,
+    price: 3.90,
     image: "images/mitmita.jpg",
     name: { de: "Mitmita", en: "Mitmita", ti: "ሚጥሚጣ" },
     weight: { de: "100 g", en: "100 g", ti: "100 ግራም" },
@@ -64,7 +64,7 @@ const PRODUCTS = [
   {
     id: "korerima-50",
     category: "spices",
-    price: 5.90,
+    price: 2.90,
     image: "images/korerima.jpg",
     name: { de: "Korerima (Äthiopischer Kardamom)", en: "Korerima (Ethiopian cardamom)", ti: "ኮረሪማ" },
     weight: { de: "50 g", en: "50 g", ti: "50 ግራም" },
@@ -77,7 +77,7 @@ const PRODUCTS = [
   {
     id: "coffee-500",
     category: "spices",
-    price: 12.90,
+    price: 7.90,
     image: "images/rohkaffee.jpg",
     name: { de: "Rohkaffee für die Kaffeezeremonie", en: "Green coffee for the coffee ceremony", ti: "ጥረ ቡን" },
     weight: { de: "500 g", en: "500 g", ti: "500 ግራም" },
@@ -109,8 +109,8 @@ const PRODUCTS = [
     name: { de: "Teff-Mehl", en: "Teff flour", ti: "ሓርጭ ጣፍ" },
     glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
     variants: [
-      { id: "500g", weight: { de: "500 g", en: "500 g", ti: "500 ግራም" }, price: 5.90 },
-      { id: "1kg", weight: { de: "1 kg", en: "1 kg", ti: "1 ኪሎ" }, price: 9.90 },
+      { id: "500g", weight: { de: "500 g", en: "500 g", ti: "500 ግራም" }, price: 3.50 },
+      { id: "1kg", weight: { de: "1 kg", en: "1 kg", ti: "1 ኪሎ" }, price: 5.90 },
     ],
     description: {
       de: "Fein gemahlenes Mehl aus Teff, dem Urgetreide Ostafrikas – die Grundlage für echtes Injera.",
@@ -125,8 +125,8 @@ const PRODUCTS = [
     name: { de: "Maschella-Mehl (Sorghum)", en: "Mashella flour (sorghum)", ti: "ሓርጭ መሽላ" },
     glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
     variants: [
-      { id: "500g", weight: { de: "500 g", en: "500 g", ti: "500 ግራም" }, price: 3.90 },
-      { id: "1kg", weight: { de: "1 kg", en: "1 kg", ti: "1 ኪሎ" }, price: 6.90 },
+      { id: "500g", weight: { de: "500 g", en: "500 g", ti: "500 ግራም" }, price: 1.90 },
+      { id: "1kg", weight: { de: "1 kg", en: "1 kg", ti: "1 ኪሎ" }, price: 2.90 },
     ],
     description: {
       de: "Mehl aus Maschella (Sorghum-Hirse) – für Injera, gemischt mit Teff, und für Ga'at (Brei).",
@@ -139,7 +139,7 @@ const PRODUCTS = [
   {
     id: "jebena",
     category: "culture",
-    price: 29.90,
+    price: 22.90,
     image: "",
     name: { de: "Jebena (Kaffeekanne aus Ton)", en: "Jebena (clay coffee pot)", ti: "ጀበና" },
     weight: { de: "handgemacht", en: "handmade", ti: "ብኢድ ዝተሰርሐ" },
@@ -152,7 +152,7 @@ const PRODUCTS = [
   {
     id: "finjal-set",
     category: "culture",
-    price: 24.90,
+    price: 15.90,
     image: "",
     name: { de: "Finjal-Set (6 Tassen)", en: "Finjal set (6 cups)", ti: "ፊንጃል (6)" },
     weight: { de: "6 Stück", en: "6 pieces", ti: "6 ፍረ" },
@@ -165,7 +165,7 @@ const PRODUCTS = [
   {
     id: "mesob",
     category: "culture",
-    price: 59.00,
+    price: 79.00,
     image: "",
     name: { de: "Mesob (geflochtener Korbtisch)", en: "Mesob (woven basket table)", ti: "መሶብ" },
     weight: { de: "ca. 50 cm", en: "approx. 50 cm", ti: "ኣስታት 50 ሳ.ሜ." },
@@ -178,7 +178,7 @@ const PRODUCTS = [
   {
     id: "netela",
     category: "culture",
-    price: 34.90,
+    price: 37.90,
     image: "",
     name: { de: "Netsela (Baumwolltuch)", en: "Netsela (cotton shawl)", ti: "ነጸላ" },
     weight: { de: "ca. 200 × 100 cm", en: "approx. 200 × 100 cm", ti: "ኣስታት 200 × 100 ሳ.ሜ." },
@@ -204,7 +204,7 @@ const PRODUCTS = [
   {
     id: "rekebot",
     category: "culture",
-    price: 39.90,
+    price: 54.90,
     image: "",
     name: { de: "Rekebot (Kaffeetablett)", en: "Rekebot (coffee tray)", ti: "ረከቦት" },
     weight: { de: "Holz", en: "wood", ti: "ዕንጨይቲ" },
