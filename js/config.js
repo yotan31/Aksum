@@ -25,8 +25,13 @@ const SHOP_CONFIG = {
   // Lieferzeit (erscheint bei jedem Produkt und im Warenkorb)
   deliveryTime: { de: "2–5 Werktage", en: "2–5 working days", ti: "2–5 መዓልታት ስራሕ" },
 
-  // Adresse der E-Mail-Funktion für den Widerrufsbutton (Cloudflare Worker).
-  // Leer lassen, solange sie nicht eingerichtet ist.
+  // Supabase (Datenbank). Beide Werte findest du in Supabase unter
+  // Project Settings → API. Der "anon"-Schlüssel ist öffentlich und darf hier stehen.
+  // Leer lassen = Shop läuft wie bisher ohne Datenbank.
+  supabaseUrl: "",
+  supabaseAnonKey: "",
+
+  // Nur falls die Widerrufs-Funktion woanders liegt. Leer = Supabase-Funktion "widerruf".
   withdrawalEndpoint: "",
 
   // Deine PayPal Client-ID (Anleitung in README.md, Schritt 3).

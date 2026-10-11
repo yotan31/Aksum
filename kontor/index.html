@@ -1,0 +1,2290 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#261a12">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../images/logo-kranz.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kontor">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Aksum Kontor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: Kopfleiste mit Reitern, darunter je Reiter eine Arbeitsfläche; Zahlen zuerst, Details darunter. */
+:root {
+  --bg: #faf5ec; --surface: #ffffff; --surface-2: #f3ebdd; --ink: #2a1d14; --ink-soft: #6b5a4c; --ink-muted: #8d7c6c;
+  --line: #e6d9c6; --accent: #a8361b; --accent-ink: #ffffff;
+  --good: #1f6b45; --good-bg: #e3f1e8; --warn: #8a5a00; --warn-bg: #fbefd6; --bad: #a8361b; --bad-bg: #f8e4de;
+  --s1: #b5742a; --s2: #2f6ea8; --grid: #ece2d3;
+  --font-head: "Fraunces", Georgia, serif; --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 12px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #17120e; --surface: #211a14; --surface-2: #2a221a; --ink: #f2e9dc; --ink-soft: #c2b2a0; --ink-muted: #9a8a79;
+  --line: #3a2f25; --accent: #e07a55; --accent-ink: #1a110b;
+  --good: #6cc496; --good-bg: #1d3227; --warn: #e6b866; --warn-bg: #3a2e17; --bad: #f08a6c; --bad-bg: #3d211a;
+  --s1: #b98035; --s2: #4f8fcf; --grid: #2e251d; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #17120e; --surface: #211a14; --surface-2: #2a221a; --ink: #f2e9dc; --ink-soft: #c2b2a0; --ink-muted: #9a8a79;
+  --line: #3a2f25; --accent: #e07a55; --accent-ink: #1a110b;
+  --good: #6cc496; --good-bg: #1d3227; --warn: #e6b866; --warn-bg: #3a2e17; --bad: #f08a6c; --bad-bg: #3d211a;
+  --s1: #b98035; --s2: #4f8fcf; --grid: #2e251d; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.2; margin: 0; text-wrap: balance; }
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1.05rem; }
+.num, td.r, .kpi__value { font-variant-numeric: tabular-nums; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--s1); outline-offset: 2px; }
+
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top__inner { max-width: 1180px; margin: 0 auto; padding: 12px 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand h1 { font-size: 1.35rem; }
+.brand span { color: var(--ink-muted); font-size: 0.85rem; }
+.status { margin-left: auto; font-size: 0.8rem; color: var(--ink-muted); display: flex; align-items: center; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-muted); }
+.dot.on { background: var(--good); }
+.dot.off { background: var(--bad); }
+.tabs { width: 100%; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tabs button { border: 0; background: transparent; padding: 10px 12px; border-bottom: 3px solid transparent; cursor: pointer; color: var(--ink-soft); font-weight: 500; white-space: nowrap; }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+.tabs .badge { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 4px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); font-size: 0.72rem; line-height: 18px; text-align: center; }
+
+main { max-width: 1180px; margin: 0 auto; padding: 20px 16px 48px; }
+section[role="tabpanel"] { display: grid; gap: 20px; }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 14px; min-width: 0; align-content: start; }
+.panel__head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; justify-content: space-between; }
+.hint { color: var(--ink-soft); font-size: 0.88rem; margin: 0; }
+.muted { color: var(--ink-muted); }
+
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 2px; min-width: 0; }
+.kpi__label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-muted); font-weight: 600; }
+.kpi__value { font-size: 1.55rem; font-weight: 600; }
+.kpi__sub { font-size: 0.82rem; color: var(--ink-soft); }
+.kpi--pos .kpi__value { color: var(--good); }
+.kpi--neg .kpi__value { color: var(--bad); }
+
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: transparent; padding: 6px 12px; white-space: nowrap; cursor: pointer; font-size: 0.85rem; color: var(--ink-soft); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; font-size: 0.76rem; font-weight: 600; white-space: nowrap; }
+.chip--good { background: var(--good-bg); color: var(--good); }
+.chip--warn { background: var(--warn-bg); color: var(--warn); }
+.chip--bad { background: var(--bad-bg); color: var(--bad); }
+.chip--plain { background: var(--surface-2); color: var(--ink-soft); }
+
+.notice { padding: 10px 14px; border-radius: 10px; background: var(--warn-bg); color: var(--warn); font-size: 0.9rem; }
+.notice--ok { background: var(--good-bg); color: var(--good); }
+.notice--bad { background: var(--bad-bg); color: var(--bad); }
+
+.tablewrap { overflow-x: auto; margin: 0 -4px; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th { text-align: left; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-muted); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th.r, td.r { text-align: right; white-space: nowrap; }
+td.pos { color: var(--good); font-weight: 600; }
+td.neg { color: var(--bad); font-weight: 600; }
+tfoot td { font-weight: 600; border-top: 2px solid var(--line); }
+.empty { padding: 18px; text-align: center; color: var(--ink-muted); border: 1px dashed var(--line); border-radius: 10px; }
+
+form.inline { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; align-items: end; }
+label.f { display: grid; gap: 4px; font-size: 0.8rem; color: var(--ink-soft); font-weight: 500; min-width: 0; }
+input, select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); min-width: 0; }
+textarea { resize: vertical; min-height: 38px; }
+.btn { border: 0; border-radius: 8px; padding: 9px 14px; background: var(--accent); color: var(--accent-ink); font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn--ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+.link { border: 0; background: none; padding: 2px 4px; color: var(--ink-muted); cursor: pointer; font-size: 0.8rem; text-decoration: underline; }
+.link.confirm { color: var(--bad); font-weight: 600; }
+
+.drop { border: 2px dashed var(--line); border-radius: var(--r); padding: 22px; text-align: center; display: grid; gap: 8px; justify-items: center; background: var(--surface); cursor: pointer; }
+.drop.over { border-color: var(--s1); background: var(--surface-2); }
+.drop input { display: none; }
+.drop strong { font-size: 1rem; }
+details.howto { font-size: 0.88rem; color: var(--ink-soft); }
+details.howto summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+details.howto ol { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; }
+
+.bars { display: grid; gap: 8px; }
+.bar { display: grid; grid-template-columns: minmax(90px, 160px) 1fr auto; gap: 10px; align-items: center; font-size: 0.88rem; }
+.bar__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar__track { height: 10px; background: var(--grid); border-radius: 5px; overflow: hidden; }
+.bar__fill { display: block; height: 100%; background: var(--s1); border-radius: 0 5px 5px 0; min-width: 2px; }
+.bar__val { color: var(--ink-soft); white-space: nowrap; }
+
+.chart { position: relative; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart text { fill: var(--ink-muted); font: 11px var(--font-body); }
+.legend { display: flex; gap: 16px; font-size: 0.82rem; color: var(--ink-soft); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: var(--bg); font-size: 0.8rem; padding: 6px 9px; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -110%); }
+
+.todo { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.todo:last-child { border-bottom: 0; }
+.todo input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--good); }
+.todo__title { font-weight: 600; }
+.todo.done .todo__title { text-decoration: line-through; color: var(--ink-muted); font-weight: 500; }
+.todo__meta { font-size: 0.8rem; color: var(--ink-muted); display: flex; flex-wrap: wrap; gap: 4px 10px; margin-top: 2px; }
+.todo__detail { font-size: 0.88rem; color: var(--ink-soft); margin-top: 4px; }
+
+/* Belege */
+.btnrow { display: flex; flex-wrap: wrap; gap: 10px; }
+label.btn { display: inline-flex; align-items: center; gap: 8px; }
+.thumb { width: 52px; height: 52px; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); display: block; background: var(--surface-2); }
+.thumb--pdf { display: grid; place-items: center; font-size: 0.72rem; font-weight: 700; color: var(--ink-soft); text-decoration: none; }
+tr.storno td { color: var(--ink-muted); }
+tr.storno td.amt { text-decoration: line-through; }
+dialog { border: 1px solid var(--line); border-radius: 14px; padding: 0; background: var(--surface); color: var(--ink); width: min(980px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); }
+dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
+.dlg { display: grid; grid-template-rows: auto 1fr auto; max-height: calc(100dvh - 26px); }
+.dlg__head, .dlg__foot { padding: 14px 18px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+.dlg__foot { border-bottom: 0; border-top: 1px solid var(--line); justify-content: flex-end; }
+.dlg__body { overflow: auto; padding: 18px; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); grid-auto-rows: max-content; gap: 18px; min-height: 0; }
+.dlg__img { position: sticky; top: 0; align-self: start; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface-2); }
+.dlg__img img { width: 100%; max-height: 70vh; object-fit: contain; display: block; }
+.dlg__img .pdfnote { padding: 40px 16px; text-align: center; color: var(--ink-soft); }
+.dlg__form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-content: start; min-width: 0; }
+.dlg__form > * { min-width: 0; }
+.fgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kindsel { display: flex; gap: 8px; flex-wrap: wrap; }
+.kindsel label { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; font-weight: 500; }
+.kindsel input { width: auto; accent-color: var(--accent); }
+.edtable input, .edtable select { padding: 6px 8px; }
+.edtable td { padding: 4px; border-bottom: 0; }
+.edtable th { padding: 4px; }
+.reading { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 10px; background: var(--surface-2); color: var(--ink-soft); font-size: 0.9rem; }
+.spin { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--accent); }
+@media (prefers-reduced-motion: no-preference) { .spin { animation: spin 0.8s linear infinite; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.checkline { display: flex; gap: 8px; align-items: flex-start; font-size: 0.88rem; color: var(--ink-soft); }
+.checkline input { width: auto; margin-top: 3px; accent-color: var(--good); }
+.legalbox { font-size: 0.88rem; color: var(--ink-soft); }
+.legalbox ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+@media (max-width: 760px) {
+  .dlg__body { grid-template-columns: minmax(0, 1fr); padding: 14px; }
+  .dlg__img { min-width: 0; }
+  .dlg__img { position: static; }
+  .dlg__img img { max-height: 38vh; }
+}
+
+/* Heute */
+.today { display: grid; gap: 8px; }
+.today__item { display: grid; grid-template-columns: 4px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px 10px 0; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); cursor: pointer; text-align: left; width: 100%; font: inherit; color: inherit; }
+.today__item::before { content: ""; align-self: stretch; border-radius: 4px 0 0 4px; background: var(--ink-muted); }
+.today__item.bad::before { background: var(--bad); }
+.today__item.warn::before { background: var(--s1); }
+.today__item.good::before { background: var(--good); }
+.today__item b { font-weight: 600; }
+.today__item small { display: block; color: var(--ink-soft); font-size: 0.82rem; }
+.today__go { color: var(--ink-muted); font-size: 1.1rem; padding-right: 4px; }
+.allgood { padding: 12px 14px; border-radius: 10px; background: var(--good-bg); color: var(--good); font-weight: 500; }
+/* Bestellungen */
+.ord-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; align-items: center; }
+.ord-actions input { width: 150px; padding: 6px 8px; min-height: 0; }
+.btn--sm { padding: 6px 10px; font-size: 0.82rem; min-height: 0 !important; }
+.pick { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; }
+.pick label { display: flex; gap: 8px; align-items: center; font-size: 0.92rem; }
+.pick input { width: 18px; height: 18px; min-height: 0; accent-color: var(--good); }
+/* Ampel */
+.ku-row { display: grid; gap: 6px; }
+.ku-row + .ku-row { margin-top: 12px; }
+.ku-top { display: flex; justify-content: space-between; gap: 10px; font-size: 0.9rem; }
+.ku-track { height: 12px; border-radius: 6px; background: var(--grid); overflow: hidden; }
+.ku-fill { display: block; height: 100%; border-radius: 0 6px 6px 0; background: var(--good); }
+.ku-fill.warn { background: var(--s1); }
+.ku-fill.bad { background: var(--bad); }
+/* Fristen & Abschluss */
+.dl { display: grid; grid-template-columns: 92px 1fr auto; gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+.dl:last-child { border-bottom: 0; }
+.dl time { font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.dl.over time { color: var(--bad); font-weight: 600; }
+.dl.soon time { color: var(--warn); font-weight: 600; }
+.dl small { display: block; color: var(--ink-muted); font-size: 0.8rem; }
+.cl { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+.cl:last-of-type { border-bottom: 0; }
+.cl input { width: 20px; height: 20px; min-height: 0; margin-top: 1px; accent-color: var(--good); }
+.cl small { display: block; color: var(--ink-muted); font-size: 0.8rem; }
+.euer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+/* Navigation unten + Kamera-Knopf (nur Handy) */
+.bottomnav, .fab { display: none; }
+
+@media (max-width: 640px) {
+  body { font-size: 15px; }
+  .top__inner { padding: 10px 16px 10px; gap: 4px 12px; }
+  .brand h1 { font-size: 1.15rem; }
+  .brand span { display: none; }
+  .status { margin-left: auto; width: auto; font-size: 0.74rem; }
+  .tabs { display: none; }
+  main { padding: 14px 16px calc(96px + env(safe-area-inset-bottom, 0px)); }
+  section[role="tabpanel"] { gap: 14px; }
+  .panel { padding: 14px; gap: 12px; }
+  h2 { font-size: 1.1rem; }
+
+  .bottomnav { display: grid; grid-template-columns: repeat(6, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    background: var(--surface); border-top: 1px solid var(--line); padding: 4px 2px calc(4px + env(safe-area-inset-bottom, 0px)); }
+  .bottomnav button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; padding: 6px 0 4px; color: var(--ink-muted); font-size: 0.66rem; font-weight: 600; cursor: pointer; position: relative; min-width: 0; }
+  .bottomnav button svg { width: 22px; height: 22px; }
+  .bottomnav button[aria-current="page"] { color: var(--accent); }
+  .bottomnav .badge { position: absolute; top: 2px; left: 55%; min-width: 16px; padding: 0 4px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-size: 0.62rem; line-height: 16px; }
+
+  .fab { display: grid; place-items: center; position: fixed; right: 16px; bottom: calc(76px + env(safe-area-inset-bottom, 0px)); z-index: 21;
+    width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 18px rgba(40, 20, 8, 0.28); cursor: pointer; }
+  .fab svg { width: 26px; height: 26px; }
+
+  .row { align-items: stretch; }
+  .row > h2 { width: 100%; }
+  .seg { width: 100%; overflow-x: auto; }
+  .seg button { flex: 1 0 auto; padding: 8px 10px; font-size: 0.82rem; }
+  #rc-year { flex: 0 0 auto; }
+  .btnrow > * { flex: 1 1 auto; justify-content: center; text-align: center; }
+
+  .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .kpi { padding: 12px; }
+  .kpi__label { font-size: 0.68rem; }
+  .kpi__value { font-size: 1.2rem; }
+  .kpi__sub { font-size: 0.74rem; }
+  .kpis > .kpi:first-child:nth-last-child(odd) { grid-column: 1 / -1; }
+
+  input, select, textarea { font-size: 16px; min-height: 44px; }
+  .btn { min-height: 44px; }
+  form.inline { grid-template-columns: 1fr 1fr; }
+  form.inline > label.f:has(input:not([type=number]):not([type=date])), form.inline > .btn, form.inline > label.f:has(select) { grid-column: 1 / -1; }
+  #todo-form > label.f { grid-column: 1 / -1; }
+  #todo-form > label.f:has(#td-due), #todo-form > label.f:has(#td-prio) { grid-column: auto; }
+
+  /* Tabellen als Karten */
+  .tablewrap { overflow: visible; margin: 0; }
+  table.cards, table.cards tbody, table.cards tfoot { display: block; }
+  table.cards thead { display: none; }
+  table.cards tr { display: grid; grid-template-columns: 1fr; gap: 2px; padding: 10px 12px; margin-bottom: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+  table.cards tfoot tr { background: var(--surface-2); }
+  table.cards td { display: block; padding: 3px 0; border: 0; text-align: right; white-space: normal; min-width: 0; overflow-wrap: anywhere; }
+  table.cards td::after { content: ""; display: block; clear: both; }
+  table.cards td::before { content: attr(data-label); float: left; margin-right: 12px; color: var(--ink-muted); font-size: 0.74rem; line-height: 1.9; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; text-align: left; }
+  table.cards td[data-label=""]::before { content: none; }
+  table.cards td:first-child { display: block; text-align: left; font-size: 1rem; padding-bottom: 6px; margin-bottom: 4px; border-bottom: 1px solid var(--line); }
+  table.cards td:first-child::before { content: none; }
+  table.cards td:empty { display: none; }
+  table.cards tr > * { min-width: 0; }
+  #stock tr.idle { display: none; }
+  #stock .tablewrap::after { content: "Produkte ohne Einkauf und Verkauf sind ausgeblendet."; display: block; font-size: 0.8rem; color: var(--ink-muted); padding-top: 4px; }
+  table.cards td.r:last-child:has(button)::before { content: none; }
+  /* Belege: Foto links neben den Angaben */
+  #receipts table.cards tr { grid-template-columns: 64px 1fr; column-gap: 12px; }
+  #receipts table.cards td { grid-column: 2; }
+  #receipts table.cards td:first-child { grid-column: 1; grid-row: 1 / span 8; border: 0; padding: 0; margin: 0; }
+  #receipts .thumb { width: 64px; height: 64px; }
+
+  /* Beleg-Prüfung als Vollbild */
+  dialog#rc-dialog { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }
+  #rc-dialog .dlg { height: 100dvh; max-height: 100dvh; }
+  #rc-dialog .dlg__head { padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px; }
+  #rc-dialog .dlg__foot { padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  #rc-dialog .dlg__foot .btn { flex: 1; }
+  .edtable thead { display: none; }
+  .edtable, .edtable tbody { display: block; }
+  .edtable tr { display: grid; gap: 6px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .edtable td { padding: 0; }
+  .edtable td input, .edtable td select { width: 100% !important; text-align: left !important; }
+  #rf-lines tr { grid-template-columns: 1fr 64px 92px 28px; }
+  #rf-lines tr td:first-child { grid-column: 1 / -1; }
+  #rf-vat tr { grid-template-columns: 72px 1fr 1fr 1fr 28px; }
+  .kindsel label { flex: 1 1 100%; min-height: 44px; }
+  .ord-actions { justify-content: flex-start; }
+  .ord-actions input { flex: 1 1 140px; min-height: 40px; }
+  .dl { grid-template-columns: 80px 1fr auto; }
+}
+
+@media (max-width: 560px) {
+  .kpi__value { font-size: 1.2rem; }
+  .bar { grid-template-columns: minmax(70px, 110px) 1fr auto; }
+  .status { margin-left: 0; width: 100%; }
+  .seg button { padding: 6px 9px; font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: no-preference) { .bar__fill { transition: width 0.3s; } }
+</style>
+
+<header class="top">
+  <div class="top__inner">
+    <div class="brand"><h1>Aksum Kontor</h1><span>Interne Übersicht</span></div>
+    <div class="status" id="status"><span class="dot" id="status-dot"></span><span id="status-text">Verbinde mit dem Speicher …</span></div>
+    <nav class="tabs" role="tablist" aria-label="Bereiche">
+      <button role="tab" id="t-uebersicht" aria-controls="uebersicht" aria-selected="true" data-tab="uebersicht">Übersicht</button>
+      <button role="tab" id="t-bestellungen" aria-controls="bestellungen" aria-selected="false" data-tab="bestellungen">Bestellungen</button>
+      <button role="tab" id="t-kosten" aria-controls="kosten" aria-selected="false" data-tab="kosten">Finanzen</button>
+      <button role="tab" id="t-einkauf" aria-controls="einkauf" aria-selected="false" data-tab="einkauf">Einkauf &amp; Bestand</button>
+      <button role="tab" id="t-belege" aria-controls="belege" aria-selected="false" data-tab="belege">Belege</button>
+      <button role="tab" id="t-todos" aria-controls="todos" aria-selected="false" data-tab="todos">Todos <span class="badge" id="todo-badge" hidden>0</span></button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ÜBERSICHT -->
+  <section role="tabpanel" id="uebersicht" aria-labelledby="t-uebersicht">
+    <div class="row">
+      <h2>Wie läuft der Shop?</h2>
+      <div class="seg" role="group" aria-label="Zeitraum" id="period">
+        <button data-period="month" aria-pressed="false">Dieser Monat</button>
+        <button data-period="3m" aria-pressed="false">3 Monate</button>
+        <button data-period="year" aria-pressed="true">Dieses Jahr</button>
+        <button data-period="all" aria-pressed="false">Gesamt</button>
+      </div>
+    </div>
+    <div class="panel today-panel">
+      <div class="panel__head"><h3>Heute zu tun</h3><span class="hint" id="today-date"></span></div>
+      <div id="today"></div>
+    </div>
+    <div id="setup-notes" class="grid2" hidden></div>
+    <div class="kpis" id="kpis"></div>
+    <div class="panel">
+      <div class="panel__head">
+        <h3>Umsatz und Profit pro Monat</h3>
+        <div class="legend"><span><i style="background:var(--s1)"></i>Umsatz</span><span><i style="background:var(--s2)"></i>Profit nach Versand</span></div>
+      </div>
+      <div class="chart" id="chart"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel__head">
+          <h3>Woher kommen die Bestellungen?</h3>
+          <div class="seg" role="group" aria-label="Gruppierung" id="geo-mode">
+            <button data-geo="city" aria-pressed="true">Städte</button>
+            <button data-geo="zip" aria-pressed="false">PLZ-Gebiet</button>
+            <button data-geo="country" aria-pressed="false">Länder</button>
+          </div>
+        </div>
+        <div id="geo"></div>
+      </div>
+      <div class="panel">
+        <div class="panel__head"><h3>Was wird bestellt?</h3><span class="hint">nach Stückzahl</span></div>
+        <div id="top-products"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BESTELLUNGEN -->
+  <section role="tabpanel" id="bestellungen" aria-labelledby="t-bestellungen" hidden>
+    <div class="grid2">
+      <div class="panel">
+        <h2>PayPal-Export hochladen</h2>
+        <label class="drop" id="drop">
+          <input type="file" id="csv" accept=".csv,text/csv">
+          <strong>CSV-Datei hierher ziehen oder antippen</strong>
+          <span class="hint">Bestellungen, die schon da sind, werden aktualisiert, nicht doppelt angelegt.</span>
+        </label>
+        <div id="import-result" hidden></div>
+        <details class="howto">
+          <summary>So bekommst du die Datei von PayPal</summary>
+          <ol>
+            <li>Bei PayPal einloggen und auf <b>Aktivitäten</b> gehen.</li>
+            <li>Oben auf <b>Berichte</b> bzw. <b>Kontoauszüge &amp; Berichte → Aktivitätenbericht</b>.</li>
+            <li>Transaktionsart <b>Alle Transaktionen</b>, Zeitraum wählen, Format <b>CSV</b>.</li>
+            <li>Bericht erstellen, herunterladen und die Datei hier hochladen.</li>
+          </ol>
+        </details>
+      </div>
+      <div class="panel">
+        <h2>Deine Kosten pro Paket</h2>
+        <p class="hint">Damit berechne ich den Profit nach Versand. Trage ein, was dich ein Paket wirklich kostet.</p>
+        <form class="inline" id="settings-form">
+          <label class="f">Versand pro Paket (€)<input id="set-shipping" type="number" step="0.01" min="0" inputmode="decimal" placeholder="z. B. 4,79"></label>
+          <label class="f">Verpackung pro Paket (€)<input id="set-packaging" type="number" step="0.01" min="0" inputmode="decimal" placeholder="z. B. 0,80"></label>
+          <button class="btn" type="submit">Speichern</button>
+        </form>
+        <div id="settings-msg" class="hint" hidden></div>
+      </div>
+    </div>
+    <div class="panel" id="picklist-panel" hidden>
+      <div class="panel__head"><h2>Packliste</h2><span class="hint">alle Bestellungen mit Status „Neu“ zusammen</span></div>
+      <div id="picklist"></div>
+    </div>
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Bestellungen</h2>
+        <div class="seg" role="group" aria-label="Filter" id="order-filter">
+          <button data-of="open" aria-pressed="true">Offen</button>
+          <button data-of="shipped" aria-pressed="false">Versendet</button>
+          <button data-of="all" aria-pressed="false">Alle</button>
+        </div>
+      </div>
+      <span class="hint" id="orders-count"></span>
+      <div id="orders"></div>
+    </div>
+  </section>
+
+  <!-- KOSTEN -->
+  <section role="tabpanel" id="kosten" aria-labelledby="t-kosten" hidden>
+    <div class="panel">
+      <div class="panel__head"><h2>Kleinunternehmer-Grenze</h2><span class="hint" id="ku-status"></span></div>
+      <div id="ku"></div>
+    </div>
+    <div class="kpis" id="cost-kpis"></div>
+    <div class="panel">
+      <h2 id="cost-form-title">Neue Kosten eintragen</h2>
+      <form class="inline" id="cost-form">
+        <label class="f">Bezeichnung<input id="c-name" required placeholder="z. B. IONOS Domain + E-Mail"></label>
+        <label class="f">Kategorie
+          <select id="c-cat">
+            <option>Software &amp; Tools</option><option>Domain &amp; Hosting</option><option>Behörden &amp; Recht</option>
+            <option>Marketing</option><option>Versandmaterial</option><option>Gebühren</option><option>Sonstiges</option>
+          </select></label>
+        <label class="f">Betrag (€)<input id="c-amount" type="number" step="0.01" min="0" inputmode="decimal" required></label>
+        <label class="f">Rhythmus
+          <select id="c-interval"><option value="monthly">monatlich</option><option value="yearly">jährlich</option><option value="once">einmalig</option></select></label>
+        <label class="f">Ab / am<input id="c-date" type="date" required></label>
+        <label class="f">Notiz<input id="c-note" placeholder="optional"></label>
+        <button class="btn" type="submit" id="c-submit">Hinzufügen</button>
+        <button class="btn btn--ghost" type="button" id="c-cancel" hidden>Abbrechen</button>
+      </form>
+    </div>
+    <div class="panel">
+      <h2>Alle Kosten</h2>
+      <div id="costs"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel__head"><h2>Fristen</h2><span class="hint">die nächsten Termine</span></div>
+        <div id="deadlines"></div>
+        <form class="inline" id="dl-form">
+          <label class="f" style="grid-column: span 2">Eigener Termin<input id="dl-title" required placeholder="z. B. Termin Steuerberater"></label>
+          <label class="f">Datum<input id="dl-date" type="date" required></label>
+          <button class="btn btn--ghost" type="submit">Hinzufügen</button>
+        </form>
+      </div>
+      <div class="panel">
+        <div class="panel__head"><h2>Monatsabschluss</h2><select id="cl-month" aria-label="Monat" style="width:auto"></select></div>
+        <div id="closing"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><h2>Einnahmen-Überschuss-Rechnung (EÜR)</h2>
+        <div class="btnrow"><select id="euer-year" aria-label="Jahr" style="width:auto"></select><button class="btn btn--ghost" type="button" id="euer-export">Als Tabelle herunterladen</button></div></div>
+      <p class="hint">Alle Einnahmen und Ausgaben des Jahres, brutto, für die Steuererklärung oder den Steuerberater. PayPal-Gebühren sind automatisch als Ausgabe enthalten.</p>
+      <div id="euer-msg" hidden></div>
+      <div id="euer"></div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel__head"><h2>Verpackungsmengen</h2><span class="hint">für Duales System &amp; LUCID</span></div>
+        <div id="packaging"></div>
+      </div>
+      <div class="panel">
+        <h2>Deine Firmendaten</h2>
+        <p class="hint">Erscheinen auf deinen Rechnungen. Die Gewichte brauchst du für die Verpackungsmeldung.</p>
+        <form class="inline" id="biz-form">
+          <label class="f" style="grid-column: 1 / -1">Name / Firma<input id="biz-name" placeholder="z. B. Aksum – Vorname Nachname"></label>
+          <label class="f" style="grid-column: 1 / -1">Anschrift<textarea id="biz-address" rows="2" placeholder="Straße Nr.&#10;PLZ Ort"></textarea></label>
+          <label class="f">E-Mail<input id="biz-email" type="email" placeholder="info@aksum-shop.de"></label>
+          <label class="f">Steuernummer<input id="biz-taxno" placeholder="optional"></label>
+          <label class="f">Pappe/Papier pro Paket (g)<input id="biz-paper" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 180"></label>
+          <label class="f">Kunststoff pro Paket (g)<input id="biz-plastic" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 10"></label>
+          <label class="checkline" style="grid-column: 1 / -1"><input type="checkbox" id="biz-ku"> Ich bin Kleinunternehmer nach § 19 UStG (keine Umsatzsteuer auf Rechnungen)</label>
+          <button class="btn" type="submit">Speichern</button>
+        </form>
+        <div id="biz-msg" class="hint" hidden></div>
+      </div>
+    </div>
+    <div class="panel" id="access-panel" hidden>
+      <div class="panel__head"><h2>Zugang zum Kontor</h2><span class="hint">nur diese E-Mail-Adressen sehen deine Daten</span></div>
+      <div id="access-list"></div>
+      <form class="inline" id="access-form">
+        <label class="f" style="grid-column: span 2">E-Mail-Adresse freischalten<input id="access-email" type="email" required placeholder="name@beispiel.de"></label>
+        <button class="btn btn--ghost" type="submit">Freischalten</button>
+      </form>
+      <p class="hint">Die Person registriert sich danach auf der Anmeldeseite mit genau dieser Adresse.</p>
+      <div id="access-msg" hidden></div>
+    </div>
+  </section>
+
+  <!-- EINKAUF -->
+  <section role="tabpanel" id="einkauf" aria-labelledby="t-einkauf" hidden>
+    <div class="panel">
+      <h2>Wareneinkauf eintragen</h2>
+      <p class="hint">Trag jeden Einkauf hier ein oder schick ihn mir im Chat, dann trage ich ihn ein. Daraus berechne ich deinen Einkaufspreis pro Stück und den Bestand.</p>
+      <form class="inline" id="buy-form">
+        <label class="f">Datum<input id="b-date" type="date" required></label>
+        <label class="f">Produkt<select id="b-sku" required></select></label>
+        <label class="f">Anzahl (Packungen/Stück)<input id="b-qty" type="number" step="1" min="1" inputmode="numeric" required></label>
+        <label class="f">Gesamtpreis inkl. Lieferung (€)<input id="b-total" type="number" step="0.01" min="0" inputmode="decimal" required></label>
+        <label class="f">Lieferant<input id="b-supplier" placeholder="optional"></label>
+        <label class="f">Charge / Los-Nr.<input id="b-lot" placeholder="bei Lebensmitteln"></label>
+        <label class="f">MHD<input id="b-mhd" type="date"></label>
+        <label class="f">Notiz<input id="b-note" placeholder="optional"></label>
+        <button class="btn" type="submit">Eintragen</button>
+      </form>
+      <div class="hint" id="b-unit"></div>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><h2>Bestand &amp; Marge pro Produkt</h2><span class="hint">Marge = Verkaufspreis − Einkauf pro Stück, ohne Versand und Gebühren</span></div>
+      <div id="stock"></div>
+    </div>
+    <div class="panel">
+      <h2>Einkaufsprotokoll</h2>
+      <div id="purchases"></div>
+    </div>
+  </section>
+
+  <!-- BELEGE -->
+  <section role="tabpanel" id="belege" aria-labelledby="t-belege" hidden>
+    <div class="panel">
+      <div class="panel__head"><h2>Beleg erfassen</h2><span class="hint" id="ai-state"></span></div>
+      <p class="hint">Fotografiere einen Kassenzettel oder eine Rechnung. Ich lese Datum, Händler, Beträge und MwSt aus und ordne den Beleg zu. Du siehst eine Vorschau und bestätigst, erst dann wird gespeichert.</p>
+      <div class="btnrow">
+        <label class="btn" for="rc-camera">Foto aufnehmen</label>
+        <input type="file" id="rc-camera" accept="image/*" capture="environment" hidden>
+        <label class="btn btn--ghost" for="rc-file">Datei wählen (Foto oder PDF)</label>
+        <input type="file" id="rc-file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" hidden>
+      </div>
+      <div id="rc-msg" hidden></div>
+    </div>
+    <div class="row">
+      <h2>Belegarchiv</h2>
+      <div class="btnrow">
+        <select id="rc-year" aria-label="Jahr" style="width:auto"></select>
+        <button class="btn btn--ghost" id="rc-export" type="button">Jahresarchiv für Finanzamt herunterladen</button>
+      </div>
+    </div>
+    <div id="rc-export-msg" hidden></div>
+    <div class="kpis" id="rc-kpis"></div>
+    <div class="panel"><div id="receipts"></div></div>
+    <details class="panel legalbox">
+      <summary><b>Was du fürs Finanzamt wissen solltest</b></summary>
+      <ul>
+        <li>Jeder bestätigte Beleg bekommt eine fortlaufende Nummer (z. B. B-2026-0001). Das Originalfoto wird unverändert gespeichert, zusammen mit einem digitalen Fingerabdruck (SHA-256), der jede spätere Änderung erkennbar macht.</li>
+        <li>Bestätigte Belege lassen sich nicht bearbeiten oder löschen, nur mit Begründung stornieren. Der Beleg bleibt dabei im Archiv sichtbar.</li>
+        <li>Belege musst du <b>8 Jahre</b> aufbewahren, gerechnet ab Ende des Jahres, in dem der Beleg entstanden ist.</li>
+        <li>Ein Foto gilt als Scan. Den Papierbeleg darfst du nur vernichten, wenn du eine Verfahrensdokumentation hast und ein Backup existiert. Die Jahresarchiv-Datei enthält eine Vorlage dafür. Bis das mit einem Steuerberater geklärt ist: Papierbelege zusätzlich in einem Ordner aufheben.</li>
+        <li>Rechnungen, die du als PDF oder E-Rechnung bekommst, lädst du als Originaldatei hoch, nicht als Foto vom Ausdruck.</li>
+        <li>Lade das Jahresarchiv mindestens einmal im Jahr herunter und speichere es zusätzlich an einem zweiten Ort.</li>
+      </ul>
+      <p class="hint" style="margin-top:8px">Das ist eine Arbeitshilfe, keine Steuerberatung. Lass dein Vorgehen einmal von einem Steuerberater prüfen.</p>
+    </details>
+  </section>
+
+  <!-- TODOS -->
+  <section role="tabpanel" id="todos" aria-labelledby="t-todos" hidden>
+    <div class="row">
+      <h2>Todos aus deinen E-Mails</h2>
+      <span class="hint" id="todo-sync"></span>
+    </div>
+    <div class="panel">
+      <form class="inline" id="todo-form">
+        <label class="f" style="grid-column: span 2">Neues Todo<input id="td-title" required placeholder="z. B. Gewerbe beim Amt anmelden"></label>
+        <label class="f">Fällig am<input id="td-due" type="date"></label>
+        <label class="f">Wichtigkeit<select id="td-prio"><option value="normal">normal</option><option value="high">wichtig</option><option value="low">später</option></select></label>
+        <button class="btn" type="submit">Hinzufügen</button>
+      </form>
+    </div>
+    <div class="grid2">
+      <div class="panel"><div class="panel__head"><h3>Offen</h3><span class="hint" id="todo-open-count"></span></div><div id="todo-open"></div></div>
+      <div class="panel"><div class="panel__head"><h3>Erledigt</h3><span class="hint" id="todo-done-count"></span></div><div id="todo-done"></div></div>
+    </div>
+  </section>
+</main>
+
+<nav class="bottomnav" aria-label="Bereiche"><button type="button" data-nav="uebersicht"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg>Übersicht</button><button type="button" data-nav="bestellungen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Bestellung</button><button type="button" data-nav="kosten"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg>Finanzen</button><button type="button" data-nav="einkauf"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg>Einkauf</button><button type="button" data-nav="belege"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h14v20l-3-2-2 2-2-2-2 2-2-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>Belege</button><button type="button" data-nav="todos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/></svg>Todos<span class="badge" id="todo-badge-m" hidden>0</span></button></nav>
+<label class="fab" for="rc-camera" aria-label="Beleg fotografieren"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></svg></label>
+
+<!-- Beleg prüfen und bestätigen -->
+<dialog id="rc-dialog" aria-labelledby="rc-dlg-title">
+  <form class="dlg" id="rc-form" method="dialog" novalidate>
+    <div class="dlg__head"><h2 id="rc-dlg-title">Beleg prüfen</h2><span class="hint" id="rc-dlg-file"></span></div>
+    <div class="dlg__body">
+      <div class="dlg__img" id="rc-preview"></div>
+      <div class="dlg__form">
+        <div class="reading" id="rc-reading" hidden><span class="spin" aria-hidden="true"></span><span id="rc-reading-text">Ich lese den Beleg …</span><button type="button" class="link" id="rc-stop">Abbrechen, selbst ausfüllen</button></div>
+        <div id="rc-ai-note" hidden></div>
+        <div class="fgrid">
+          <label class="f">Belegdatum<input type="date" id="rf-date" required></label>
+          <label class="f">Händler / Lieferant<input id="rf-vendor" required></label>
+          <label class="f">Belegnr. des Händlers<input id="rf-rno" placeholder="optional"></label>
+          <label class="f">Bezahlt per
+            <select id="rf-pay"><option value="karte">Karte</option><option value="bar">bar</option><option value="paypal">PayPal</option><option value="ueberweisung">Überweisung</option><option value="unbekannt">unbekannt</option></select></label>
+        </div>
+        <div>
+          <span class="kpi__label">Was ist das?</span>
+          <div class="kindsel" style="margin-top:6px">
+            <label><input type="radio" name="rf-kind" value="ware" checked> Wareneinkauf (zum Weiterverkauf)</label>
+            <label><input type="radio" name="rf-kind" value="kosten"> Betriebskosten</label>
+          </div>
+        </div>
+        <label class="f" id="rf-cat-wrap" hidden>Kategorie
+          <select id="rf-cat"><option>Versandmaterial</option><option>Software &amp; Tools</option><option>Domain &amp; Hosting</option><option>Behörden &amp; Recht</option><option>Marketing</option><option>Gebühren</option><option>Sonstiges</option></select></label>
+        <div id="rf-lines-wrap">
+          <span class="kpi__label">Positionen und Zuordnung zum Shop</span>
+          <div class="tablewrap"><table class="edtable"><thead><tr><th>Text auf dem Beleg</th><th>Shop-Produkt</th><th class="r">Anzahl</th><th class="r">Brutto €</th><th></th></tr></thead><tbody id="rf-lines"></tbody></table></div>
+          <button type="button" class="link" id="rf-add-line">+ Position</button>
+        </div>
+        <div>
+          <span class="kpi__label">Mehrwertsteuer laut Beleg</span>
+          <div class="tablewrap"><table class="edtable"><thead><tr><th>Satz</th><th class="r">Netto €</th><th class="r">MwSt €</th><th class="r">Brutto €</th><th></th></tr></thead><tbody id="rf-vat"></tbody></table></div>
+          <button type="button" class="link" id="rf-add-vat">+ Steuersatz</button>
+        </div>
+        <div class="fgrid">
+          <label class="f">Gesamtbetrag brutto (€)<input type="number" step="0.01" min="0" inputmode="decimal" id="rf-gross" required></label>
+          <label class="f" style="grid-column: span 2">Beschreibung<input id="rf-desc" placeholder="z. B. Gewürze für Lager"></label>
+        </div>
+        <div id="rf-warn" hidden></div>
+        <label class="checkline"><input type="checkbox" id="rf-ok"> Ich habe die Angaben mit dem Beleg verglichen. Nach dem Bestätigen kann der Beleg nicht mehr geändert, nur noch storniert werden.</label>
+        <div id="rf-err" hidden></div>
+      </div>
+    </div>
+    <div class="dlg__foot">
+      <button type="button" class="btn btn--ghost" id="rc-cancel">Verwerfen</button>
+      <button type="submit" class="btn" id="rc-save">Bestätigen &amp; speichern</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Rechnung: Empfänger (nur über 250 € nötig) -->
+<dialog id="inv-dialog" aria-labelledby="inv-title" style="width:min(480px, calc(100vw - 24px))">
+  <form class="dlg" id="inv-form" method="dialog">
+    <div class="dlg__head"><h2 id="inv-title">Rechnung erstellen</h2></div>
+    <div style="padding:18px;display:grid;gap:10px">
+      <p class="hint" id="inv-info"></p>
+      <label class="f">Name des Kunden<input id="inv-name"></label>
+      <label class="f">Anschrift des Kunden<textarea id="inv-address" rows="3"></textarea></label>
+    </div>
+    <div class="dlg__foot"><button type="button" class="btn btn--ghost" id="inv-cancel">Abbrechen</button><button type="submit" class="btn">Rechnung erstellen</button></div>
+  </form>
+</dialog>
+
+<!-- Charge / MHD nachtragen -->
+<dialog id="lot-dialog" aria-labelledby="lot-title" style="width:min(420px, calc(100vw - 24px))">
+  <form class="dlg" id="lot-form" method="dialog">
+    <div class="dlg__head"><h2 id="lot-title">Charge &amp; MHD</h2></div>
+    <div style="padding:18px;display:grid;gap:10px">
+      <p class="hint" id="lot-info"></p>
+      <label class="f">Charge / Los-Nr.<input id="lot-no"></label>
+      <label class="f">Mindesthaltbarkeitsdatum<input id="lot-mhd" type="date"></label>
+    </div>
+    <div class="dlg__foot"><button type="button" class="btn btn--ghost" id="lot-cancel">Abbrechen</button><button type="submit" class="btn">Speichern</button></div>
+  </form>
+</dialog>
+
+<!-- Beleg stornieren -->
+<dialog id="rc-storno" aria-labelledby="rc-storno-title" style="width:min(480px, calc(100vw - 24px))">
+  <form class="dlg" id="rc-storno-form" method="dialog">
+    <div class="dlg__head"><h2 id="rc-storno-title">Beleg stornieren</h2></div>
+    <div style="padding:18px;display:grid;gap:10px">
+      <p class="hint" id="rc-storno-info"></p>
+      <label class="f">Grund (wird mit dem Beleg gespeichert)<input id="rc-storno-reason" required placeholder="z. B. doppelt erfasst, Ware zurückgegeben"></label>
+    </div>
+    <div class="dlg__foot"><button type="button" class="btn btn--ghost" id="rc-storno-cancel">Abbrechen</button><button type="submit" class="btn">Stornieren</button></div>
+  </form>
+</dialog>
+
+<script src="../js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="receipt-parser.js"></script>
+<script src="kontor-supabase.js"></script>
+<script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Produkte aus dem Shop (Artikelnummer = sku bei PayPal) ----------
+  const PRODUCTS = [
+    { sku: "berbere-250", name: "Berbere 250 g", price: 6.90, vat: 7, food: true },
+    { sku: "shiro-500", name: "Shiro 500 g", price: 8.90, vat: 7, food: true },
+    { sku: "mitmita-100", name: "Mitmita 100 g", price: 3.90, vat: 7, food: true },
+    { sku: "korerima-50", name: "Korerima 50 g", price: 2.90, vat: 7, food: true },
+    { sku: "coffee-500", name: "Rohkaffee 500 g", price: 7.90, vat: 7, food: true },
+    { sku: "etan-100", name: "Weihrauch 100 g", price: 4.90, vat: 19 },
+    { sku: "teff:500g", name: "Teff-Mehl 500 g", price: 3.50, vat: 7, food: true },
+    { sku: "teff:1kg", name: "Teff-Mehl 1 kg", price: 5.90, vat: 7, food: true },
+    { sku: "mashella:500g", name: "Maschella 500 g", price: 1.90, vat: 7, food: true },
+    { sku: "mashella:1kg", name: "Maschella 1 kg", price: 2.90, vat: 7, food: true },
+    { sku: "jebena", name: "Jebena", price: 22.90, vat: 19 },
+    { sku: "finjal-set", name: "Finjal-Set (6)", price: 15.90, vat: 19 },
+    { sku: "mesob", name: "Mesob", price: 79.00, vat: 19 },
+    { sku: "netela", name: "Netsela", price: 37.90, vat: 19 },
+    { sku: "cross", name: "Kreuz", price: 19.90, vat: 19 },
+    { sku: "rekebot", name: "Rekebot", price: 54.90, vat: 19 },
+  ];
+  const productBySku = Object.fromEntries(PRODUCTS.map((p) => [p.sku, p]));
+  window.KONTOR_PRODUCTS = PRODUCTS; // für die Texterkennung in der Web-App
+
+  // ---------- Helfer ----------
+  const $ = (id) => document.getElementById(id);
+  const eur = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" });
+  const money = (n) => eur.format(Number.isFinite(n) ? n : 0);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }; // lokale Zeit
+  const fmtDate = (iso) => (iso ? iso.slice(8, 10) + "." + iso.slice(5, 7) + "." + iso.slice(0, 4) : "–");
+  const monthKey = (iso) => iso.slice(0, 7);
+  const MONTHS = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+  const monthLabel = (key) => MONTHS[Number(key.slice(5, 7)) - 1] + " " + key.slice(2, 4);
+  const round2 = (n) => Math.round(n * 100) / 100;
+  const prefs = {
+    get(k, d) { try { const v = localStorage.getItem("kontor-" + k); return v === null ? d : v; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem("kontor-" + k, v); } catch (e) { /* egal */ } },
+  };
+
+  // ---------- Zustand ----------
+  const state = { costs: [], purchases: [], orders: [], todos: [], receipts: [], closings: [], deadlines: [], settings: {}, ready: false, db: null, assets: null, sample: null, downloads: null, writable: true };
+  let period = prefs.get("period", "year");
+  let geoMode = prefs.get("geo", "city");
+
+  // ---------- Reiter ----------
+  function showTab(name) {
+    document.querySelectorAll("[role=tab]").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === name)));
+    document.querySelectorAll("[role=tabpanel]").forEach((p) => (p.hidden = p.id !== name));
+    document.querySelectorAll("[data-nav]").forEach((b) => { if (b.dataset.nav === name) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+    prefs.set("tab", name);
+    if (name === "uebersicht") requestAnimationFrame(() => renderOverview()); // Diagramm an sichtbare Breite anpassen
+  }
+  document.querySelectorAll("[role=tab]").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
+  document.querySelectorAll("[data-nav]").forEach((b) => b.addEventListener("click", () => { showTab(b.dataset.nav); window.scrollTo(0, 0); }));
+  const startTab = (location.hash || "").slice(1);
+  showTab(["uebersicht", "bestellungen", "kosten", "einkauf", "belege", "todos"].includes(startTab) ? startTab : prefs.get("tab", "uebersicht"));
+
+  // ---------- Zeitraum ----------
+  function periodRange() {
+    const now = new Date();
+    const end = today();
+    let start;
+    if (period === "month") start = end.slice(0, 7) + "-01";
+    else if (period === "3m") { const d = new Date(now.getFullYear(), now.getMonth() - 2, 1); start = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-01"; }
+    else if (period === "year") start = end.slice(0, 4) + "-01-01";
+    else {
+      const dates = [...state.orders.map((o) => o.date), ...state.costs.map((c) => c.date), ...state.purchases.map((p) => p.date)].filter(Boolean).sort();
+      start = dates[0] || end.slice(0, 7) + "-01";
+    }
+    return { start, end };
+  }
+  const inRange = (iso, r) => iso && iso >= r.start && iso <= r.end;
+
+  // Monate (inklusive) zwischen zwei Daten
+  function monthsBetween(a, b) {
+    if (a > b) return 0;
+    return (Number(b.slice(0, 4)) - Number(a.slice(0, 4))) * 12 + (Number(b.slice(5, 7)) - Number(a.slice(5, 7))) + 1;
+  }
+  // Kosten, die in einem Zeitraum anfallen
+  function costInRange(c, r) {
+    const amt = Number(c.amount) || 0;
+    if (c.interval === "once") return inRange(c.date, r) ? amt : 0;
+    const from = c.date > r.start ? c.date : r.start;
+    const to = c.until && c.until < r.end ? c.until : r.end;
+    const months = monthsBetween(from.slice(0, 7) + "-01", to);
+    return c.interval === "yearly" ? (amt / 12) * months : amt * months;
+  }
+  const monthlyEquivalent = (c) => (c.interval === "monthly" ? Number(c.amount) || 0 : c.interval === "yearly" ? (Number(c.amount) || 0) / 12 : 0);
+  const costActiveNow = (c) => c.interval !== "once" && c.date <= today() && (!c.until || c.until >= today());
+
+  // ---------- Einkaufspreis & Profit ----------
+  function unitCosts() {
+    const acc = {};
+    state.purchases.forEach((p) => {
+      if (!p.sku) return;
+      const a = (acc[p.sku] ||= { qty: 0, total: 0 });
+      a.qty += Number(p.qty) || 0;
+      a.total += Number(p.total) || 0;
+    });
+    const out = {};
+    Object.entries(acc).forEach(([sku, a]) => { if (a.qty > 0) out[sku] = a.total / a.qty; });
+    return out;
+  }
+  function orderCalc(o, uc) {
+    const ship = Number(state.settings.shippingCost) || 0;
+    const pack = Number(state.settings.packagingCost) || 0;
+    let goods = 0, missing = false;
+    (o.items || []).forEach((it) => {
+      const c = uc[it.sku];
+      if (c === undefined) missing = true; else goods += c * (Number(it.qty) || 1);
+    });
+    if (!(o.items || []).length) missing = true;
+    const net = Number(o.net) || 0;
+    const profit = o.refunded ? -(Number(o.fee) || 0) - ship - pack : net - goods - ship - pack;
+    return { goods, ship, pack, profit, missing };
+  }
+
+  // ---------- Darstellung: Übersicht ----------
+  function kpi(label, value, sub, cls) {
+    return `<div class="kpi ${cls || ""}"><span class="kpi__label">${esc(label)}</span><span class="kpi__value">${value}</span><span class="kpi__sub">${sub || "&nbsp;"}</span></div>`;
+  }
+
+  function renderOverview() {
+    const r = periodRange();
+    const uc = unitCosts();
+    const orders = state.orders.filter((o) => inRange(o.date, r));
+    const valid = orders.filter((o) => !o.refunded);
+    const revenue = valid.reduce((s, o) => s + (Number(o.gross) || 0), 0);
+    const fees = orders.reduce((s, o) => s + (Number(o.fee) || 0), 0);
+    let profit = 0, missing = 0;
+    orders.forEach((o) => { const c = orderCalc(o, uc); profit += c.profit; if (c.missing && !o.refunded) missing++; });
+    const fixed = state.costs.reduce((s, c) => s + costInRange(c, r), 0);
+    const goodsBought = state.purchases.filter((p) => inRange(p.date, r)).reduce((s, p) => s + (Number(p.total) || 0), 0);
+    const monthlyFixed = state.costs.filter(costActiveNow).reduce((s, c) => s + monthlyEquivalent(c), 0);
+    const result = profit - fixed;
+    const avg = valid.length ? revenue / valid.length : 0;
+
+    $("kpis").innerHTML = [
+      kpi("Umsatz", money(revenue), `${valid.length} Bestellung${valid.length === 1 ? "" : "en"} · Ø ${money(avg)}`),
+      kpi("Profit nach Versand", money(profit), `nach Ware, Versand, Verpackung, PayPal (${money(fees)})`, profit > 0 ? "kpi--pos" : profit < 0 ? "kpi--neg" : ""),
+      kpi("Laufende Kosten", money(fixed), `im Zeitraum · aktuell ${money(monthlyFixed)} pro Monat`),
+      kpi("Ergebnis", money(result), result >= 0 ? "Profit minus laufende Kosten" : "noch im Minus – normal in der Startphase", result > 0 ? "kpi--pos" : result < 0 ? "kpi--neg" : ""),
+      kpi("Ware eingekauft", money(goodsBought), "Ausgaben für Wareneinkauf im Zeitraum"),
+    ].join("");
+
+    // Hinweise, was noch fehlt
+    const notes = [];
+    if (!state.settings.shippingCost) notes.push(`<div class="notice">Trag unter <b>Bestellungen</b> ein, was dich ein Paket kostet. Ohne diesen Wert ist der Profit zu hoch.</div>`);
+    if (missing) notes.push(`<div class="notice">${missing} Bestellung${missing === 1 ? "" : "en"} enthalten Produkte ohne Einkaufspreis. Trag den Einkauf unter <b>Einkauf &amp; Bestand</b> ein.</div>`);
+    $("setup-notes").innerHTML = notes.join("");
+    $("setup-notes").hidden = !notes.length;
+
+    renderChart(uc);
+    renderGeo(valid);
+    renderTopProducts(valid);
+  }
+
+  function renderChart(uc) {
+    const r = periodRange();
+    const endKey = monthKey(r.end);
+    let startKey = monthKey(r.start);
+    // mindestens 6 Monate zeigen, höchstens 18
+    const keys = [];
+    let y = Number(endKey.slice(0, 4)), m = Number(endKey.slice(5, 7));
+    while (keys.length < 18) {
+      const k = y + "-" + String(m).padStart(2, "0");
+      keys.unshift(k);
+      if (k <= startKey && keys.length >= 6) break;
+      m--; if (m === 0) { m = 12; y--; }
+    }
+    const data = keys.map((k) => {
+      const os = state.orders.filter((o) => o.date && monthKey(o.date) === k);
+      const rev = os.filter((o) => !o.refunded).reduce((s, o) => s + (Number(o.gross) || 0), 0);
+      const pr = os.reduce((s, o) => s + orderCalc(o, uc).profit, 0);
+      return { k, rev, pr, n: os.filter((o) => !o.refunded).length };
+    });
+    const hasData = data.some((d) => d.rev || d.pr);
+    if (!hasData) {
+      $("chart").innerHTML = `<div class="empty">Noch keine Bestellungen in diesem Zeitraum. Sobald du den PayPal-Export hochlädst, erscheint hier der Verlauf.</div>`;
+      return;
+    }
+    const W = Math.max(300, Math.round($("chart").clientWidth || 760)), H = W < 520 ? 200 : 240, L = 50, R = 6, T = 10, B = 26;
+    if (W < 520 && data.length > 6) data.splice(0, data.length - 6);
+    const maxV = Math.max(1, ...data.map((d) => Math.max(d.rev, d.pr)));
+    const minV = Math.min(0, ...data.map((d) => d.pr));
+    const nice = (v) => { const p = Math.pow(10, Math.floor(Math.log10(v))); return Math.ceil(v / p) * p; };
+    const top = nice(maxV), bottom = minV < 0 ? -nice(-minV) : 0;
+    const yS = (v) => T + (top - v) / (top - bottom) * (H - T - B);
+    const slot = (W - L - R) / data.length;
+    const bw = Math.max(4, Math.min(22, slot / 2 - 5));
+    const ticks = [bottom, bottom + (top - bottom) / 2, top].filter((v, i, a) => a.indexOf(v) === i);
+    if (bottom < 0 && !ticks.includes(0)) ticks.push(0);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Umsatz und Profit pro Monat">`;
+    ticks.forEach((t) => {
+      svg += `<line x1="${L}" x2="${W - R}" y1="${yS(t)}" y2="${yS(t)}" stroke="var(--grid)" stroke-width="1"/>`;
+      svg += `<text x="${L - 6}" y="${yS(t) + 4}" text-anchor="end">${Math.round(t).toLocaleString("de-DE")} €</text>`;
+    });
+    svg += `<line x1="${L}" x2="${W - R}" y1="${yS(0)}" y2="${yS(0)}" stroke="var(--ink-muted)" stroke-width="1"/>`;
+    data.forEach((d, i) => {
+      const cx = L + slot * i + slot / 2;
+      const bar = (v, x, color) => {
+        const y0 = yS(0), y1 = yS(v), h = Math.abs(y1 - y0);
+        if (h < 0.5) return "";
+        const yTop = Math.min(y0, y1);
+        const rr = Math.min(4, h, bw / 2);
+        // abgerundet nur am Datenende
+        return v >= 0
+          ? `<path d="M${x},${y0} V${yTop + rr} Q${x},${yTop} ${x + rr},${yTop} H${x + bw - rr} Q${x + bw},${yTop} ${x + bw},${yTop + rr} V${y0} Z" fill="${color}"/>`
+          : `<path d="M${x},${y0} V${y1 - rr} Q${x},${y1} ${x + rr},${y1} H${x + bw - rr} Q${x + bw},${y1} ${x + bw},${y1 - rr} V${y0} Z" fill="${color}"/>`;
+      };
+      svg += bar(d.rev, cx - bw - 1, "var(--s1)") + bar(d.pr, cx + 1, "var(--s2)");
+      svg += `<text x="${cx}" y="${H - 8}" text-anchor="middle">${monthLabel(d.k)}</text>`;
+      svg += `<rect x="${cx - slot / 2}" y="${T}" width="${slot}" height="${H - T - B}" fill="transparent" data-i="${i}" class="hit"/>`;
+    });
+    svg += `</svg><div class="tip" id="tip" hidden></div>`;
+    $("chart").innerHTML = svg;
+    const tip = $("tip"), box = $("chart");
+    box.querySelectorAll(".hit").forEach((h) => {
+      const show = () => {
+        const d = data[Number(h.dataset.i)];
+        tip.innerHTML = `<b>${monthLabel(d.k)}</b> · ${d.n} Best.<br>Umsatz ${money(d.rev)}<br>Profit ${money(d.pr)}`;
+        const br = box.getBoundingClientRect(), hr = h.getBoundingClientRect();
+        tip.style.left = Math.min(Math.max(hr.left - br.left + hr.width / 2, 70), br.width - 70) + "px";
+        tip.style.top = hr.top - br.top + 30 + "px";
+        tip.hidden = false;
+        h.setAttribute("fill", "var(--grid)"); h.setAttribute("fill-opacity", "0.35");
+      };
+      const hide = () => { tip.hidden = true; h.setAttribute("fill", "transparent"); };
+      h.addEventListener("mouseenter", show); h.addEventListener("mouseleave", hide);
+      h.addEventListener("touchstart", show, { passive: true });
+    });
+  }
+
+  function barsHTML(rows, valueFmt, emptyText) {
+    if (!rows.length) return `<div class="empty">${emptyText}</div>`;
+    const max = Math.max(...rows.map((r) => r.v));
+    return `<div class="bars">${rows.map((r) => `
+      <div class="bar"><span class="bar__name" title="${esc(r.name)}">${esc(r.name)}</span>
+      <span class="bar__track"><span class="bar__fill" style="width:${(r.v / max) * 100}%"></span></span>
+      <span class="bar__val num">${valueFmt(r)}</span></div>`).join("")}</div>`;
+  }
+
+  function renderGeo(orders) {
+    document.querySelectorAll("#geo-mode button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.geo === geoMode)));
+    const groups = {};
+    orders.forEach((o) => {
+      let key;
+      if (geoMode === "country") key = o.country || "Unbekannt";
+      else if (geoMode === "zip") key = o.zip ? "PLZ " + String(o.zip).slice(0, 2) + "…" : "Unbekannt";
+      else key = o.city ? o.city : "Unbekannt";
+      const g = (groups[key] ||= { name: key, n: 0, rev: 0 });
+      g.n++; g.rev += Number(o.gross) || 0;
+    });
+    const rows = Object.values(groups).sort((a, b) => b.n - a.n || b.rev - a.rev).slice(0, 10).map((g) => ({ ...g, v: g.n }));
+    $("geo").innerHTML = barsHTML(rows, (r) => `${r.n} · ${money(r.rev)}`, "Noch keine Bestellungen im Zeitraum.");
+  }
+
+  function renderTopProducts(orders) {
+    const groups = {};
+    orders.forEach((o) => (o.items || []).forEach((it) => {
+      const key = it.sku || it.name || "Unbekannt";
+      const name = (productBySku[it.sku] && productBySku[it.sku].name) || it.name || it.sku || "Unbekannt";
+      const g = (groups[key] ||= { name, qty: 0, rev: 0 });
+      g.qty += Number(it.qty) || 1; g.rev += Number(it.amount) || 0;
+    }));
+    const rows = Object.values(groups).sort((a, b) => b.qty - a.qty).slice(0, 10).map((g) => ({ ...g, v: g.qty }));
+    $("top-products").innerHTML = barsHTML(rows, (r) => `${r.qty} Stk.${r.rev ? " · " + money(r.rev) : ""}`, "Noch keine verkauften Produkte im Zeitraum.");
+  }
+
+  // ---------- Darstellung: Bestellungen ----------
+  let orderFilter = prefs.get("of", "open");
+  const STATUS = { neu: ["Neu", "chip--warn"], gepackt: ["Gepackt", "chip--plain"], versendet: ["Versendet", "chip--good"] };
+  const ordStatus = (o) => (o.refunded ? "erstattet" : o.status || "neu");
+  const itemName = (it) => (productBySku[it.sku] && productBySku[it.sku].name) || it.name || it.sku || "Artikel";
+  function renderOrders() {
+    const uc = unitCosts();
+    document.querySelectorAll("#order-filter button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.of === orderFilter)));
+    const all = [...state.orders].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    const list = all.filter((o) => orderFilter === "all" || (orderFilter === "shipped" ? ordStatus(o) === "versendet" : ["neu", "gepackt"].includes(ordStatus(o))));
+    const nOpen = all.filter((o) => ["neu", "gepackt"].includes(ordStatus(o))).length;
+    $("orders-count").textContent = all.length ? `${nOpen} offen · ${all.length} insgesamt` : "";
+    if (!state.settings.shippingCost && document.activeElement !== $("set-shipping")) $("set-shipping").value = "";
+
+    // Packliste: alle neuen Bestellungen zusammen
+    const pick = {};
+    all.filter((o) => ordStatus(o) === "neu").forEach((o) => (o.items || []).forEach((it) => { const k = itemName(it); pick[k] = (pick[k] || 0) + (Number(it.qty) || 1); }));
+    const pk = Object.entries(pick).sort((a, b) => a[0].localeCompare(b[0]));
+    $("picklist-panel").hidden = !pk.length;
+    $("picklist").innerHTML = `<div class="pick">${pk.map(([n, q], i) => `<label><input type="checkbox" id="pk-${i}"> <b>${q}×</b> ${esc(n)}</label>`).join("")}</div>`;
+
+    if (!list.length) {
+      $("orders").innerHTML = `<div class="empty">${all.length ? (orderFilter === "open" ? "Keine offenen Bestellungen. Alles versendet!" : "Keine Bestellungen in dieser Ansicht.") : "Noch keine Bestellungen. Lade oben deinen PayPal-Export hoch."}</div>`;
+      return;
+    }
+    $("orders").innerHTML = `<div class="tablewrap"><table>
+      <thead><tr><th>Datum</th><th>Ort</th><th>Artikel</th><th class="r">Umsatz</th><th class="r">PayPal</th><th class="r">Ware</th><th class="r">Versand + Verp.</th><th class="r">Profit</th><th class="r">Status</th></tr></thead>
+      <tbody>${list.map((o) => {
+        const c = orderCalc(o, uc);
+        const st = ordStatus(o);
+        const items = (o.items || []).map((it) => `${Number(it.qty) || 1}× ${esc(itemName(it))}`).join("<br>") || `<span class="muted">keine Artikel im Export</span>`;
+        const place = [o.zip, o.city].filter(Boolean).join(" ") + (o.country && !/^(deutschland|germany|de)$/i.test(o.country) ? ` (${esc(o.country)})` : "");
+        const chip = st === "erstattet" ? '<span class="chip chip--bad">erstattet</span>' : `<span class="chip ${STATUS[st][1]}">${STATUS[st][0]}</span>`;
+        let act = "";
+        if (st === "neu") act += `<button class="btn btn--sm btn--ghost" data-pack="${esc(o.id)}">Als gepackt markieren</button>`;
+        if (st === "neu" || st === "gepackt") act += `<input placeholder="Sendungsnummer" id="trk-${esc(o.id)}" value="${esc(o.tracking || "")}" aria-label="Sendungsnummer"><button class="btn btn--sm" data-ship="${esc(o.id)}">Versendet</button>`;
+        if (st === "versendet") act += `${o.tracking ? `<span class="muted num">${esc(o.tracking)}</span>` : ""}<button class="btn btn--sm btn--ghost" data-shipmail="${esc(o.id)}">Versandmail kopieren</button>`;
+        if (st !== "erstattet") act += `<button class="btn btn--sm btn--ghost" data-invoice="${esc(o.id)}">${o.invoiceNo ? "Rechnung " + esc(o.invoiceNo) : "Rechnung erstellen"}</button>`;
+        return `<tr>
+          <td class="num">${fmtDate(o.date)}<br><span class="muted">${esc(String(o.id).slice(-8))}</span></td>
+          <td>${o.customer && o.customer.name ? `<b>${esc(o.customer.name)}</b><br>` : ""}${esc(place) || '<span class="muted">–</span>'}</td>
+          <td>${items}${c.missing && !o.refunded ? `<br><span class="chip chip--warn">Einkaufspreis fehlt</span>` : ""}</td>
+          <td class="r">${money(Number(o.gross) || 0)}</td>
+          <td class="r">−${money(Number(o.fee) || 0)}</td>
+          <td class="r">${c.goods && !o.refunded ? "−" + money(c.goods) : "–"}</td>
+          <td class="r">${c.ship + c.pack ? "−" + money(c.ship + c.pack) : "–"}</td>
+          <td class="r ${c.profit >= 0 ? "pos" : "neg"}">${money(c.profit)}</td>
+          <td class="r"><div class="ord-actions">${chip}${act}</div><div class="muted" id="ordmsg-${esc(o.id)}"></div></td></tr>`;
+      }).join("")}</tbody></table></div>`;
+  }
+  document.querySelectorAll("#order-filter button").forEach((b) => b.addEventListener("click", () => { orderFilter = b.dataset.of; prefs.set("of", orderFilter); renderOrders(); }));
+  document.addEventListener("click", async (e) => {
+    const pk = e.target.closest("[data-pack]");
+    if (pk) { pk.disabled = true; await write((db) => db.doc("orders/" + pk.dataset.pack).update({ status: "gepackt", packedAt: new Date().toISOString() })); return; }
+    const sh = e.target.closest("[data-ship]");
+    if (sh) {
+      const id = sh.dataset.ship, trk = ($("trk-" + id) || {}).value || "";
+      sh.disabled = true;
+      await write((db) => db.doc("orders/" + id).update({ status: "versendet", tracking: trk.trim(), shippedAt: new Date().toISOString() }));
+      return;
+    }
+    const sm = e.target.closest("[data-shipmail]");
+    if (sm) {
+      const o = state.orders.find((x) => x.id === sm.dataset.shipmail); if (!o) return;
+      const txt = shipMail(o);
+      try { await navigator.clipboard.writeText(txt); sm.textContent = "Kopiert ✓"; }
+      catch (err) { const m = $("ordmsg-" + o.id); if (m) m.innerHTML = `<textarea rows="8" style="width:100%;margin-top:6px">${esc(txt)}</textarea>`; }
+      setTimeout(() => { if (sm.isConnected) sm.textContent = "Versandmail kopieren"; }, 2500);
+    }
+  });
+  function shipMail(o) {
+    const items = (o.items || []).map((it) => `- ${Number(it.qty) || 1}× ${itemName(it)}`).join("\n");
+    const trk = o.tracking ? `\nSendungsnummer: ${o.tracking}\nSendung verfolgen: https://www.dhl.de/de/privatkunden/pakete-empfangen/verfolgen.html?piececode=${encodeURIComponent(o.tracking)}\n` : "\n";
+    const to = o.customer && o.customer.email ? `An: ${o.customer.email}\n` : "";
+    const hi = o.customer && o.customer.name ? `Hallo ${o.customer.name.split(" ")[0]},` : "Hallo,";
+    return `${to}Betreff: Deine Aksum-Bestellung ist unterwegs\n\n${hi}\n\ndeine Bestellung vom ${fmtDate(o.date)} ist heute verschickt worden:\n${items}\n${trk}\nViel Freude mit deinen Produkten!\nViele Grüße\n${state.settings.bizName || "Aksum"}`;
+  }
+
+  // ---------- Darstellung: Kosten ----------
+  const INTERVAL = { monthly: "monatlich", yearly: "jährlich", once: "einmalig" };
+  function renderCosts() {
+    const monthly = state.costs.filter(costActiveNow).reduce((s, c) => s + monthlyEquivalent(c), 0);
+    const once = state.costs.filter((c) => c.interval === "once").reduce((s, c) => s + (Number(c.amount) || 0), 0);
+    const yr = { start: today().slice(0, 4) + "-01-01", end: today() };
+    const thisYear = state.costs.reduce((s, c) => s + costInRange(c, yr), 0);
+    const goods = state.purchases.reduce((s, p) => s + (Number(p.total) || 0), 0);
+    $("cost-kpis").innerHTML = [
+      kpi("Laufend pro Monat", money(monthly), "monatliche + jährliche ÷ 12"),
+      kpi("Pro Jahr", money(monthly * 12), "bei gleichbleibenden Kosten"),
+      kpi("Einmalige Kosten", money(once), "seit Beginn"),
+      kpi("Kosten dieses Jahr", money(thisYear), "bis heute, ohne Ware"),
+      kpi("Ware gesamt", money(goods), "alle Einkäufe"),
+    ].join("");
+    if (!state.costs.length) {
+      $("costs").innerHTML = `<div class="empty">Noch keine Kosten eingetragen. Leg oben die erste an, z. B. deine Domain.</div>`;
+      return;
+    }
+    const list = [...state.costs].sort((a, b) => (a.interval === "once") - (b.interval === "once") || (a.category || "").localeCompare(b.category || "") || (a.name || "").localeCompare(b.name || ""));
+    $("costs").innerHTML = `<div class="tablewrap"><table>
+      <thead><tr><th>Bezeichnung</th><th>Kategorie</th><th>Rhythmus</th><th>Ab / am</th><th class="r">Betrag</th><th class="r">pro Monat</th><th></th></tr></thead>
+      <tbody>${list.map((c) => `<tr>
+        <td><b>${esc(c.name)}</b>${c.note ? `<br><span class="muted">${esc(c.note)}</span>` : ""}${c.amount === null || c.amount === undefined || c.amount === "" ? ` <span class="chip chip--warn">Betrag fehlt</span>` : ""}</td>
+        <td>${esc(c.category)}</td>
+        <td>${INTERVAL[c.interval] || esc(c.interval)}${c.until ? `<br><span class="muted">bis ${fmtDate(c.until)}</span>` : ""}</td>
+        <td class="num">${fmtDate(c.date)}</td>
+        <td class="r">${money(Number(c.amount) || 0)}</td>
+        <td class="r">${c.interval === "once" ? "–" : money(monthlyEquivalent(c))}</td>
+        <td class="r">${c.receiptId ? `<button class="link" data-goto-receipt="${esc(c.receiptNo || "")}">Beleg ${esc(c.receiptNo || "")}</button>` : `<button class="link" data-edit-cost="${esc(c.id)}">Bearbeiten</button> <button class="link" data-del="costs/${esc(c.id)}">Löschen</button>`}</td></tr>`).join("")}</tbody>
+      <tfoot><tr><td colspan="5">Laufend pro Monat (aktiv)</td><td class="r">${money(monthly)}</td><td></td></tr></tfoot></table></div>`;
+  }
+
+  // ---------- Darstellung: Einkauf ----------
+  function fillSkuSelect() {
+    const sel = $("b-sku");
+    sel.innerHTML = `<option value="" disabled selected>Produkt wählen</option>` + PRODUCTS.map((p) => `<option value="${p.sku}">${esc(p.name)}</option>`).join("") + `<option value="other">Sonstiges (kein Shop-Produkt)</option>`;
+  }
+  function renderPurchases() {
+    const uc = unitCosts();
+    const sold = {};
+    state.orders.filter((o) => !o.refunded).forEach((o) => (o.items || []).forEach((it) => { if (it.sku) sold[it.sku] = (sold[it.sku] || 0) + (Number(it.qty) || 1); }));
+    const bought = {};
+    state.purchases.forEach((p) => { if (p.sku) bought[p.sku] = (bought[p.sku] || 0) + (Number(p.qty) || 0); });
+    $("stock").innerHTML = `<div class="tablewrap"><table>
+      <thead><tr><th>Produkt</th><th class="r">Eingekauft</th><th class="r">Verkauft</th><th class="r">Bestand</th><th class="r">Nächstes MHD</th><th class="r">Einkauf/Stk.</th><th class="r">Verkaufspreis</th><th class="r">Marge/Stk.</th></tr></thead>
+      <tbody>${PRODUCTS.map((p) => {
+        const lot = lotsFor(p.sku).find((l) => l.left > 0 && l.bestBefore);
+        const mhd = !lot ? '<span class="muted">–</span>' : `<span class="chip ${mhdClass(lot.bestBefore)}">${fmtDate(lot.bestBefore)}</span>`;
+        const b = bought[p.sku] || 0, s = sold[p.sku] || 0, st = b - s, c = uc[p.sku];
+        const m = c === undefined ? null : p.price - c;
+        const stockChip = !b && !s ? '<span class="muted">–</span>' : st <= 0 ? `<span class="chip chip--bad">${st}</span>` : st <= 3 ? `<span class="chip chip--warn">${st}</span>` : `<span class="num">${st}</span>`;
+        return `<tr class="${!b && !s ? "idle" : ""}"><td>${esc(p.name)}</td><td class="r">${b || "–"}</td><td class="r">${s || "–"}</td><td class="r">${stockChip}</td><td class="r">${mhd}</td>
+          <td class="r">${c === undefined ? '<span class="muted">–</span>' : money(c)}</td><td class="r">${money(p.price)}</td>
+          <td class="r ${m === null ? "" : m >= 0 ? "pos" : "neg"}">${m === null ? '<span class="muted">–</span>' : money(m) + ` <span class="muted">(${Math.round((m / p.price) * 100)} %)</span>`}</td></tr>`;
+      }).join("")}</tbody></table></div>`;
+
+    if (!state.purchases.length) {
+      $("purchases").innerHTML = `<div class="empty">Noch keine Einkäufe. Trag oben deinen ersten Wareneinkauf ein oder schick ihn mir im Chat.</div>`;
+      return;
+    }
+    const list = [...state.purchases].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    $("purchases").innerHTML = `<div class="tablewrap"><table>
+      <thead><tr><th>Datum</th><th>Produkt</th><th>Lieferant</th><th>Charge / MHD</th><th class="r">Anzahl</th><th class="r">Gesamt</th><th class="r">pro Stück</th><th></th></tr></thead>
+      <tbody>${list.map((p) => `<tr>
+        <td class="num">${fmtDate(p.date)}</td>
+        <td>${esc((productBySku[p.sku] && productBySku[p.sku].name) || p.product || "Sonstiges")}${p.note ? `<br><span class="muted">${esc(p.note)}</span>` : ""}</td>
+        <td>${esc(p.supplier) || '<span class="muted">–</span>'}</td>
+        <td>${p.sku ? `${p.lot ? esc(p.lot) : ""}${p.lot && p.bestBefore ? "<br>" : ""}${p.bestBefore ? `<span class="chip ${mhdClass(p.bestBefore)}">MHD ${fmtDate(p.bestBefore)}</span>` : ""} <button class="link" data-lot="${esc(p.id)}">${p.lot || p.bestBefore ? "ändern" : "eintragen"}</button>` : '<span class="muted">–</span>'}</td>
+        <td class="r">${Number(p.qty) || 0}</td>
+        <td class="r">${money(Number(p.total) || 0)}</td>
+        <td class="r">${Number(p.qty) ? money((Number(p.total) || 0) / Number(p.qty)) : "–"}</td>
+        <td class="r">${p.receiptId ? `<button class="link" data-goto-receipt="${esc(p.receiptNo || "")}">Beleg ${esc(p.receiptNo || "")}</button>` : `<button class="link" data-del="purchases/${esc(p.id)}">Löschen</button>`}</td></tr>`).join("")}</tbody></table></div>`;
+  }
+
+  // ---------- Darstellung: Todos ----------
+  const PRIO = { high: 0, normal: 1, low: 2 };
+  function todoHTML(t) {
+    const overdue = !t.done && t.due && t.due < today();
+    return `<div class="todo ${t.done ? "done" : ""}">
+      <input type="checkbox" aria-label="Erledigt" data-toggle="${esc(t.id)}" ${t.done ? "checked" : ""}>
+      <div style="min-width:0">
+        <div class="todo__title">${esc(t.title)}</div>
+        ${t.detail ? `<div class="todo__detail">${esc(t.detail)}</div>` : ""}
+        <div class="todo__meta">
+          ${t.priority === "high" ? '<span class="chip chip--bad">wichtig</span>' : t.priority === "low" ? '<span class="chip chip--plain">später</span>' : ""}
+          ${t.due ? `<span class="${overdue ? "chip chip--bad" : ""}">fällig ${fmtDate(t.due)}</span>` : ""}
+          ${t.source === "mail" ? `<span>✉ ${esc(t.from || "")}${t.subject ? " · „" + esc(t.subject) + "“" : ""}${t.mailDate ? " · " + fmtDate(t.mailDate) : ""}</span>` : "<span>selbst eingetragen</span>"}
+        </div>
+      </div>
+      <button class="link" data-del="todos/${esc(t.id)}">Löschen</button></div>`;
+  }
+  function renderTodos() {
+    const open = state.todos.filter((t) => !t.done).sort((a, b) => (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1) || (a.due || "9").localeCompare(b.due || "9") || (b.createdAt || "").localeCompare(a.createdAt || ""));
+    const done = state.todos.filter((t) => t.done).sort((a, b) => (b.doneAt || "").localeCompare(a.doneAt || "")).slice(0, 30);
+    $("todo-open").innerHTML = open.length ? open.map(todoHTML).join("") : `<div class="empty">Nichts offen. Neue Aufgaben aus deinen E-Mails erscheinen hier automatisch.</div>`;
+    $("todo-done").innerHTML = done.length ? done.map(todoHTML).join("") : `<div class="empty">Noch nichts erledigt.</div>`;
+    $("todo-open-count").textContent = open.length ? open.length + " offen" : "";
+    $("todo-done-count").textContent = done.length ? "die letzten " + done.length : "";
+    $("todo-badge").textContent = open.length;
+    $("todo-badge").hidden = !open.length;
+    const bm = $("todo-badge-m"); if (bm) { bm.textContent = open.length; bm.hidden = !open.length; }
+    const sync = state.settings.lastMailCheck;
+    $("todo-sync").textContent = sync ? "E-Mails zuletzt geprüft: " + fmtDate(sync.slice(0, 10)) + " " + sync.slice(11, 16) + " Uhr" : "E-Mail-Abgleich noch nicht eingerichtet";
+  }
+
+  // Tabellen auf dem Handy als Karten: Spaltennamen an jede Zelle hängen
+  function labelTables() {
+    document.querySelectorAll("main table:not(.edtable)").forEach((t) => {
+      t.classList.add("cards");
+      const heads = [...t.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+      t.querySelectorAll("tbody tr").forEach((tr) => [...tr.children].forEach((td, i) => td.setAttribute("data-label", heads[i] || "")));
+      t.querySelectorAll("tfoot tr").forEach((tr) => [...tr.children].forEach((td) => td.setAttribute("data-label", "")));
+    });
+  }
+  new MutationObserver(() => { clearTimeout(labelTables.t); labelTables.t = setTimeout(labelTables, 0); }).observe(document.querySelector("main"), { childList: true, subtree: true });
+  let resizeT; window.addEventListener("resize", () => { clearTimeout(resizeT); resizeT = setTimeout(() => renderOverview(), 150); });
+
+  function renderAll() {
+    renderOverview(); renderToday(); renderOrders(); renderCosts(); renderFinance(); renderPurchases(); renderReceipts(); renderTodos();
+    syncShopStatus();
+    if (document.activeElement !== $("set-shipping") && state.settings.shippingCost) $("set-shipping").value = state.settings.shippingCost;
+    if (document.activeElement !== $("set-packaging") && state.settings.packagingCost) $("set-packaging").value = state.settings.packagingCost;
+  }
+
+  // ---------- Schreiben ----------
+  function setStatus(kind, text) {
+    $("status-dot").className = "dot " + (kind === "ok" ? "on" : kind === "bad" ? "off" : "");
+    $("status-text").textContent = text;
+  }
+  async function write(fn) {
+    if (!state.db) { setStatus("bad", "Speicher nicht verfügbar – Änderung nicht gespeichert"); return false; }
+    try { await fn(state.db); return true; }
+    catch (e) {
+      const code = e && e.code;
+      setStatus("bad", code === "quota_exceeded" ? "Speicher voll – bitte alte Einträge löschen" : code === "invalid_argument" ? "Keine Berechtigung zum Speichern" : "Speichern fehlgeschlagen – bitte nochmal versuchen");
+      return false;
+    }
+  }
+
+  // Löschen mit Bestätigung im zweiten Klick
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-del]");
+    if (!b) return;
+    if (!b.classList.contains("confirm")) {
+      b.classList.add("confirm"); b.textContent = "Wirklich löschen?";
+      setTimeout(() => { if (b.isConnected) { b.classList.remove("confirm"); b.textContent = "Löschen"; } }, 3500);
+      return;
+    }
+    b.disabled = true;
+    await write((db) => db.doc(b.dataset.del).delete());
+  });
+
+  // Todo abhaken
+  document.addEventListener("change", async (e) => {
+    const cb = e.target.closest("[data-toggle]");
+    if (!cb) return;
+    const done = cb.checked;
+    await write((db) => db.doc("todos/" + cb.dataset.toggle).update({ done, doneAt: done ? new Date().toISOString() : null }));
+  });
+
+  let editCostId = null;
+  function resetCostForm() {
+    editCostId = null; $("cost-form").reset(); $("c-date").value = today();
+    $("cost-form-title").textContent = "Neue Kosten eintragen"; $("c-submit").textContent = "Hinzufügen"; $("c-cancel").hidden = true;
+  }
+  $("c-cancel").addEventListener("click", resetCostForm);
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-edit-cost]"); if (!b) return;
+    const c = state.costs.find((x) => x.id === b.dataset.editCost); if (!c) return;
+    editCostId = c.id;
+    $("c-name").value = c.name || ""; $("c-cat").value = c.category || "Sonstiges"; $("c-amount").value = c.amount ?? "";
+    $("c-interval").value = c.interval || "monthly"; $("c-date").value = c.date || today(); $("c-note").value = c.note || "";
+    $("cost-form-title").textContent = "Kosten bearbeiten: " + (c.name || ""); $("c-submit").textContent = "Änderung speichern"; $("c-cancel").hidden = false;
+    $("cost-form").scrollIntoView({ behavior: "smooth", block: "center" }); $("c-amount").focus();
+  });
+  $("cost-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const doc = {
+      name: $("c-name").value.trim(), category: $("c-cat").value, amount: round2(Number($("c-amount").value)),
+      interval: $("c-interval").value, date: $("c-date").value, note: $("c-note").value.trim(),
+    };
+    if (!doc.name || !doc.date || !Number.isFinite(doc.amount)) return;
+    const id = editCostId;
+    const ok = await write((db) => id ? db.doc("costs/" + id).update({ ...doc, updatedAt: new Date().toISOString() }) : db.collection("costs").add({ ...doc, createdAt: new Date().toISOString() }));
+    if (ok) resetCostForm();
+  });
+
+  function updateUnitHint() {
+    const q = Number($("b-qty").value), t = Number($("b-total").value);
+    $("b-unit").textContent = q > 0 && t > 0 ? "Das sind " + money(t / q) + " pro Stück." : "";
+  }
+  $("b-qty").addEventListener("input", updateUnitHint);
+  $("b-total").addEventListener("input", updateUnitHint);
+  $("buy-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const sku = $("b-sku").value;
+    const doc = {
+      date: $("b-date").value, sku: sku === "other" ? "" : sku, product: sku === "other" ? "Sonstiges" : (productBySku[sku] || {}).name || "",
+      qty: Math.round(Number($("b-qty").value)), total: round2(Number($("b-total").value)),
+      supplier: $("b-supplier").value.trim(), note: $("b-note").value.trim(), createdAt: new Date().toISOString(),
+      lot: $("b-lot").value.trim(), bestBefore: $("b-mhd").value || "",
+    };
+    if (!doc.date || !sku || !(doc.qty > 0)) return;
+    if (await write((db) => db.collection("purchases").add(doc))) { e.target.reset(); $("b-date").value = today(); fillSkuSelect(); updateUnitHint(); }
+  });
+
+  $("todo-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const doc = { title: $("td-title").value.trim(), due: $("td-due").value || "", priority: $("td-prio").value, done: false, source: "manual", createdAt: new Date().toISOString() };
+    if (!doc.title) return;
+    if (await write((db) => db.collection("todos").add(doc))) e.target.reset();
+  });
+
+  $("settings-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const s = { ...state.settings, shippingCost: round2(Number($("set-shipping").value) || 0), packagingCost: round2(Number($("set-packaging").value) || 0) };
+    if (await write((db) => db.doc("settings/main").set(s))) {
+      $("settings-msg").textContent = "Gespeichert."; $("settings-msg").hidden = false;
+      setTimeout(() => ($("settings-msg").hidden = true), 2500);
+    }
+  });
+
+  document.querySelectorAll("#period button").forEach((b) => b.addEventListener("click", () => {
+    period = b.dataset.period; prefs.set("period", period);
+    document.querySelectorAll("#period button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    renderOverview();
+  }));
+  document.querySelectorAll("#period button").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.period === period)));
+  document.querySelectorAll("#geo-mode button").forEach((b) => b.addEventListener("click", () => {
+    geoMode = b.dataset.geo; prefs.set("geo", geoMode); renderOverview();
+  }));
+
+  // ---------- PayPal-CSV ----------
+  function parseCSV(text) {
+    text = text.replace(/^﻿/, "");
+    const first = text.slice(0, text.indexOf("\n") > 0 ? text.indexOf("\n") : text.length);
+    const counts = { ",": (first.match(/,/g) || []).length, ";": (first.match(/;/g) || []).length, "\t": (first.match(/\t/g) || []).length };
+    const d = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
+    const rows = []; let row = [], f = "", q = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { f += '"'; i++; } else q = false; }
+        else f += c;
+      } else if (c === '"') q = true;
+      else if (c === d) { row.push(f); f = ""; }
+      else if (c === "\n" || c === "\r") {
+        if (c === "\r" && text[i + 1] === "\n") i++;
+        row.push(f); f = "";
+        if (row.some((x) => x.trim() !== "")) rows.push(row);
+        row = [];
+      } else f += c;
+    }
+    row.push(f); if (row.some((x) => x.trim() !== "")) rows.push(row);
+    return rows;
+  }
+  function parseNum(s) {
+    if (s === undefined || s === null) return 0;
+    s = String(s).replace(/[\s€$]/g, "").replace(/ /g, "");
+    if (!s) return 0;
+    const lc = s.lastIndexOf(","), ld = s.lastIndexOf(".");
+    if (lc > -1 && ld > -1) s = lc > ld ? s.replace(/\./g, "").replace(",", ".") : s.replace(/,/g, "");
+    else if (lc > -1) s = s.replace(",", ".");
+    const n = Number(s);
+    return Number.isFinite(n) ? n : 0;
+  }
+  function parseDate(s, english) {
+    s = String(s || "").trim();
+    let m;
+    if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
+    if ((m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})/))) return `${m[3].length === 2 ? "20" + m[3] : m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+    if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/))) {
+      let a = Number(m[1]), b = Number(m[2]); const y = m[3].length === 2 ? "20" + m[3] : m[3];
+      let day, mon;
+      if (a > 12) { day = a; mon = b; } else if (b > 12) { day = b; mon = a; } else if (english) { mon = a; day = b; } else { day = a; mon = b; }
+      return `${y}-${String(mon).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    }
+    return "";
+  }
+  const ALIASES = {
+    date: ["datum", "date"], type: ["typ", "type"], status: ["status"], currency: ["währung", "waehrung", "currency"],
+    gross: ["brutto", "gross"], fee: ["gebühr", "gebuehr", "entgelt", "fee"], net: ["netto", "net"],
+    txid: ["transaktionscode", "transaction id"], ref: ["zugehöriger transaktionscode", "reference txn id"],
+    item: ["artikelbezeichnung", "item title"], sku: ["artikelnummer", "item id"], qty: ["menge", "quantity"],
+    city: ["ort", "stadt", "town/city", "city"], zip: ["plz", "zip/postal code", "postal code", "postleitzahl"], country: ["land", "country"],
+  };
+  function importPayPal(text) {
+    const rows = parseCSV(text);
+    if (rows.length < 2) throw new Error("Die Datei ist leer oder kein CSV.");
+    const head = rows[0].map((h) => h.trim().toLowerCase().replace(/^"|"$/g, ""));
+    const col = {};
+    Object.entries(ALIASES).forEach(([k, al]) => { col[k] = head.findIndex((h) => al.includes(h)); });
+    if (col.gross < 0 || col.txid < 0 || col.date < 0) throw new Error("Das sieht nicht wie ein PayPal-Aktivitätenbericht aus (Spalten „Datum“, „Brutto“ und „Transaktionscode“ fehlen).");
+    const english = head.includes("gross");
+    const get = (r, k) => (col[k] >= 0 ? (r[col[k]] || "").trim() : "");
+    const orders = {}, cart = [], refunds = [];
+    let skipped = 0;
+    rows.slice(1).forEach((r) => {
+      const type = get(r, "type").toLowerCase(), status = get(r, "status").toLowerCase();
+      const gross = parseNum(get(r, "gross"));
+      if (/warenkorb|shopping cart/.test(type)) { cart.push(r); return; }
+      if (/storniert|abgelehnt|denied|cancel|reversed/.test(status)) { skipped++; return; }
+      if (gross < 0 && /rück|rueck|erstatt|refund/.test(type)) { refunds.push(get(r, "ref")); return; }
+      if (gross > 0 && /zahlung|payment|checkout/.test(type) && !/rück|refund|bank|überweisung|transfer|umrechnung|conversion/.test(type)) {
+        const txid = get(r, "txid").replace(/[^A-Za-z0-9_-]/g, "");
+        if (!txid) { skipped++; return; }
+        const item = get(r, "item");
+        orders[txid] = {
+          txid, date: parseDate(get(r, "date"), english), currency: get(r, "currency") || "EUR",
+          gross: round2(gross), fee: round2(Math.abs(parseNum(get(r, "fee")))), net: round2(parseNum(get(r, "net")) || gross - Math.abs(parseNum(get(r, "fee")))),
+          city: get(r, "city"), zip: get(r, "zip"), country: get(r, "country"),
+          items: item || get(r, "sku") ? [{ name: item, sku: get(r, "sku"), qty: Math.max(1, Math.round(parseNum(get(r, "qty")) || 1)), amount: 0 }] : [],
+          refunded: false, importedAt: new Date().toISOString(),
+        };
+        return;
+      }
+      skipped++;
+    });
+    // Warenkorb-Zeilen der passenden Bestellung zuordnen
+    const cartBy = {};
+    cart.forEach((r) => { const ref = get(r, "ref").replace(/[^A-Za-z0-9_-]/g, ""); (cartBy[ref] ||= []).push(r); });
+    Object.entries(cartBy).forEach(([ref, list]) => {
+      const o = orders[ref]; if (!o) return;
+      o.items = list.map((r) => ({ name: get(r, "item"), sku: get(r, "sku"), qty: Math.max(1, Math.round(parseNum(get(r, "qty")) || 1)), amount: round2(Math.abs(parseNum(get(r, "gross")))) }));
+    });
+    // Artikel ohne Artikelnummer über den Namen zuordnen
+    Object.values(orders).forEach((o) => o.items.forEach((it) => {
+      if (it.sku && productBySku[it.sku]) return;
+      const n = (it.name || "").toLowerCase();
+      const hit = PRODUCTS.find((p) => n && n.startsWith(p.name.toLowerCase().split(" ")[0].replace("-mehl", "")));
+      if (!it.sku && hit && !/:/.test(hit.sku)) it.sku = hit.sku;
+    }));
+    return { orders: Object.values(orders), refunds: refunds.filter(Boolean).map((x) => x.replace(/[^A-Za-z0-9_-]/g, "")), skipped };
+  }
+
+  async function handleFile(file) {
+    const box = $("import-result");
+    box.hidden = false; box.className = "notice"; box.textContent = "Lese die Datei …";
+    try {
+      const text = await file.text();
+      const res = importPayPal(text);
+      if (!state.db) throw new Error("Der Speicher ist gerade nicht verfügbar. Bitte die Seite neu laden.");
+      const existing = new Set(state.orders.map((o) => o.id));
+      let added = 0, updated = 0, refunded = 0;
+      for (let i = 0; i < res.orders.length; i += 10) {
+        await Promise.all(res.orders.slice(i, i + 10).map(async (o) => {
+          const prev = state.orders.find((x) => x.id === o.txid);
+          if (prev && prev.refunded) o.refunded = true;
+          if (prev) ["status", "tracking", "packedAt", "shippedAt", "invoiceNo", "invoiceDate", "invoiceRecipient"].forEach((k) => { if (prev[k] !== undefined) o[k] = prev[k]; });
+          if (!o.status) o.status = "neu";
+          if (res.refunds.includes(o.txid)) o.refunded = true;
+          await state.db.doc("orders/" + o.txid).set(o);
+          existing.has(o.txid) ? updated++ : added++;
+        }));
+      }
+      for (const ref of res.refunds) {
+        if (!res.orders.some((o) => o.txid === ref) && existing.has(ref)) { await state.db.doc("orders/" + ref).update({ refunded: true }); }
+        if (existing.has(ref) || res.orders.some((o) => o.txid === ref)) refunded++;
+      }
+      box.className = "notice notice--ok";
+      box.textContent = `${added} neue Bestellung${added === 1 ? "" : "en"}, ${updated} aktualisiert${refunded ? `, ${refunded} Erstattung${refunded === 1 ? "" : "en"}` : ""}. ${res.skipped} andere Zeilen (z. B. Bankabbuchungen) übersprungen.`;
+      if (!res.orders.length) { box.className = "notice"; box.textContent = "In der Datei wurden keine eingehenden Zahlungen gefunden. Hast du „Alle Transaktionen“ gewählt?"; }
+    } catch (err) {
+      box.className = "notice notice--bad";
+      box.textContent = err && err.code ? "Speichern fehlgeschlagen. Bitte nochmal versuchen." : (err.message || "Die Datei konnte nicht gelesen werden.");
+    }
+  }
+  const drop = $("drop");
+  $("csv").addEventListener("change", (e) => { if (e.target.files[0]) handleFile(e.target.files[0]); e.target.value = ""; });
+  ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", (e) => { const f = e.dataTransfer.files[0]; if (f) handleFile(f); });
+
+  // ---------- Charge, MHD und Restbestand (zuerst ablaufende Ware zuerst) ----------
+  const addDays = (iso, n) => { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
+  const daysUntil = (iso) => Math.round((new Date(iso + "T12:00:00") - new Date(today() + "T12:00:00")) / 86400000);
+  const mhdClass = (iso) => { const d = daysUntil(iso); return d <= 30 ? "chip--bad" : d <= 90 ? "chip--warn" : "chip--plain"; };
+  function soldBySku() {
+    const sold = {};
+    state.orders.filter((o) => !o.refunded).forEach((o) => (o.items || []).forEach((it) => { if (it.sku) sold[it.sku] = (sold[it.sku] || 0) + (Number(it.qty) || 1); }));
+    return sold;
+  }
+  function lotsFor(sku, soldMap) {
+    const lots = state.purchases.filter((p) => p.sku === sku)
+      .sort((a, b) => (a.bestBefore || "9999-12-31").localeCompare(b.bestBefore || "9999-12-31") || (a.date || "").localeCompare(b.date || ""))
+      .map((p) => ({ ...p, left: Number(p.qty) || 0 }));
+    let sold = (soldMap || soldBySku())[sku] || 0;
+    for (const l of lots) { const take = Math.min(l.left, sold); l.left -= take; sold -= take; if (!sold) break; }
+    return lots;
+  }
+  let lotId = null;
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-lot]"); if (!b) return;
+    const p = state.purchases.find((x) => x.id === b.dataset.lot); if (!p) return;
+    lotId = p.id;
+    $("lot-info").textContent = `${(productBySku[p.sku] || {}).name || p.product} · ${fmtDate(p.date)} · ${p.qty} Stk.`;
+    $("lot-no").value = p.lot || ""; $("lot-mhd").value = p.bestBefore || "";
+    $("lot-dialog").showModal();
+  });
+  $("lot-cancel").addEventListener("click", () => $("lot-dialog").close());
+  $("lot-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!lotId) return;
+    const ok = await write((db) => db.doc("purchases/" + lotId).update({ lot: $("lot-no").value.trim(), bestBefore: $("lot-mhd").value || "" }));
+    if (ok) $("lot-dialog").close();
+  });
+
+  // ---------- Umsatz pro Jahr (für Ampel und Fristen) ----------
+  const revenueYear = (y) => state.orders.filter((o) => !o.refunded && String(o.date || "").startsWith(String(y))).reduce((s, o) => s + (Number(o.gross) || 0), 0);
+  const MONTHS_LONG = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+  const monthName = (key) => MONTHS_LONG[Number(key.slice(5, 7)) - 1] + " " + key.slice(0, 4);
+  const prevMonthKey = (key) => { let y = Number(key.slice(0, 4)), m = Number(key.slice(5, 7)) - 1; if (!m) { m = 12; y--; } return y + "-" + String(m).padStart(2, "0"); };
+
+  // ---------- Heute ----------
+  function renderToday() {
+    const now = new Date();
+    $("today-date").textContent = now.toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long" });
+    const items = [];
+    const neu = state.orders.filter((o) => ordStatus(o) === "neu").sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+    if (neu.length) {
+      const oldest = neu[0].date;
+      items.push({ cls: oldest && daysUntil(oldest) <= -2 ? "bad" : "warn", tab: "bestellungen", title: `${neu.length} Bestellung${neu.length === 1 ? "" : "en"} packen`, sub: `älteste vom ${fmtDate(oldest)} · Packliste unter Bestellungen` });
+    }
+    const packed = state.orders.filter((o) => ordStatus(o) === "gepackt");
+    if (packed.length) items.push({ cls: "warn", tab: "bestellungen", title: `${packed.length} gepackt, noch nicht versendet`, sub: "Sendungsnummer eintragen und auf „Versendet“ tippen" });
+    const sold = soldBySku();
+    const out = [], low = [], mhd = [];
+    PRODUCTS.forEach((p) => {
+      const lots = lotsFor(p.sku, sold);
+      if (!lots.length) return;
+      const left = lots.reduce((s, l) => s + l.left, 0);
+      if (left <= 0) out.push(p.name); else if (left <= 3) low.push(`${p.name} (${left})`);
+      lots.filter((l) => l.left > 0 && l.bestBefore && daysUntil(l.bestBefore) <= 60).forEach((l) => mhd.push({ p, l }));
+    });
+    if (out.length) items.push({ cls: "bad", tab: "einkauf", title: `Ausverkauft: ${out.join(", ")}`, sub: window.__kontorShopStatus ? "im Shop automatisch als ausverkauft markiert · nachbestellen" : "nachbestellen oder im Shop als ausverkauft markieren lassen" });
+    if (low.length) items.push({ cls: "warn", tab: "einkauf", title: `Wird knapp: ${low.join(", ")}`, sub: "Restbestand laut Einkauf und Verkauf" });
+    mhd.sort((a, b) => a.l.bestBefore.localeCompare(b.l.bestBefore)).slice(0, 4).forEach(({ p, l }) => {
+      const d = daysUntil(l.bestBefore);
+      items.push({ cls: d < 0 ? "bad" : "warn", tab: "einkauf", title: `${d < 0 ? "MHD abgelaufen" : "MHD läuft ab"}: ${p.name}${l.lot ? " · Charge " + l.lot : ""}`, sub: `${fmtDate(l.bestBefore)} · noch ${l.left} Stk.${d < 0 ? " · nicht mehr verkaufen" : " · zuerst verkaufen"}` });
+    });
+    const openTodos = state.todos.filter((t) => !t.done);
+    const urgent = openTodos.filter((t) => t.priority === "high" || (t.due && t.due <= today()));
+    if (urgent.length) items.push({ cls: "warn", tab: "todos", title: `${urgent.length} wichtige${urgent.length === 1 ? "s" : ""} oder fällige${urgent.length === 1 ? "s" : ""} Todo${urgent.length === 1 ? "" : "s"}`, sub: urgent.slice(0, 2).map((t) => t.title).join(" · ") });
+    else if (openTodos.length) items.push({ cls: "", tab: "todos", title: `${openTodos.length} offene${openTodos.length === 1 ? "s" : ""} Todo${openTodos.length === 1 ? "" : "s"}`, sub: openTodos.slice(0, 2).map((t) => t.title).join(" · ") });
+    deadlineList().filter((d) => daysUntil(d.date) <= 21).slice(0, 3).forEach((d) => {
+      const n = daysUntil(d.date);
+      items.push({ cls: n < 0 ? "bad" : n <= 7 ? "warn" : "", tab: "kosten", title: d.title, sub: n < 0 ? `seit ${-n} Tag${n === -1 ? "" : "en"} fällig` : n === 0 ? "heute fällig" : `fällig am ${fmtDate(d.date)} (in ${n} Tag${n === 1 ? "" : "en"})` });
+    });
+    const y = Number(today().slice(0, 4)), cur = revenueYear(y), prev = revenueYear(y - 1);
+    if (state.settings.smallBusiness && (cur >= 80000 || prev > 25000)) items.push({ cls: "bad", tab: "kosten", title: "Kleinunternehmer-Grenze beachten", sub: `Umsatz ${y}: ${money(cur)} · Vorjahr: ${money(prev)}` });
+    $("today").innerHTML = items.length
+      ? `<div class="today">${items.map((i) => `<button type="button" class="today__item ${i.cls}" data-goto-tab="${i.tab}"><span><b>${esc(i.title)}</b>${i.sub ? `<small>${esc(i.sub)}</small>` : ""}</span><span class="today__go" aria-hidden="true">›</span></button>`).join("")}</div>`
+      : `<div class="allgood">Alles erledigt: keine offenen Bestellungen, Warnungen oder Fristen.</div>`;
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-goto-tab]"); if (!b) return;
+    showTab(b.dataset.gotoTab); window.scrollTo(0, 0);
+  });
+
+  // ---------- Fristen ----------
+  function deadlineList() {
+    const t = today(), y = Number(t.slice(0, 4)), list = [];
+    const annual = (mmdd, title, sub) => {
+      let d = y + "-" + mmdd;
+      if (daysUntil(d) < -14) d = (y + 1) + "-" + mmdd;
+      list.push({ date: d, title: title(Number(d.slice(0, 4))), sub, auto: true });
+    };
+    annual("01-15", (yy) => `Belege-Jahresarchiv ${yy - 1} herunterladen und doppelt sichern`, "unter Belege → Jahresarchiv");
+    annual("01-31", (yy) => `Verpackungsmengen ${yy - 1} melden (Duales System & LUCID)`, "genauen Termin im Lizenzvertrag prüfen · Mengen unter Finanzen");
+    annual("07-31", (yy) => `Steuererklärungen ${yy - 1} abgeben (EÜR, Einkommensteuer, ggf. Gewerbe- und Umsatzsteuer)`, "Frist ohne Steuerberater · EÜR-Tabelle unter Finanzen");
+    // Monatsabschluss: Vormonat (falls offen) und die nächsten zwei
+    let mk = prevMonthKey(t.slice(0, 7));
+    for (let i = 0; i < 3; i++) {
+      const due = (() => { let yy = Number(mk.slice(0, 4)), mm = Number(mk.slice(5, 7)) + 1; if (mm > 12) { mm = 1; yy++; } return yy + "-" + String(mm).padStart(2, "0") + "-05"; })();
+      const cl = state.closings.find((c) => c.id === mk);
+      if (!(cl && cl.doneAt)) list.push({ date: due, title: `Monatsabschluss ${monthName(mk)}`, sub: "Checkliste unter Finanzen", auto: true });
+      let yy = Number(mk.slice(0, 4)), mm = Number(mk.slice(5, 7)) + 1; if (mm > 12) { mm = 1; yy++; } mk = yy + "-" + String(mm).padStart(2, "0");
+    }
+    if (!state.settings.smallBusiness) {
+      for (let i = 0; i < 2; i++) {
+        const d = new Date(t + "T12:00:00"); d.setMonth(d.getMonth() + i, 10);
+        const iso = d.toISOString().slice(0, 10);
+        if (daysUntil(iso) >= -5) list.push({ date: iso, title: `Umsatzsteuer-Voranmeldung ${monthName(prevMonthKey(iso.slice(0, 7)))}`, sub: "nur falls du kein Kleinunternehmer bist · Rhythmus laut Finanzamt", auto: true });
+      }
+    }
+    state.costs.filter((c) => /1\.\s*Jahr/i.test(c.note || "") && c.date).forEach((c) => {
+      const d = (Number(c.date.slice(0, 4)) + 1) + c.date.slice(4);
+      if (daysUntil(d) >= -14) list.push({ date: d, title: `${c.name}: Aktionspreis endet – Preis prüfen`, sub: "laut deiner Notiz bei den Kosten", auto: true });
+    });
+    state.deadlines.forEach((d) => list.push({ date: d.date, title: d.title, sub: "eigener Termin", id: d.id }));
+    return list.filter((d) => d.date).sort((a, b) => a.date.localeCompare(b.date));
+  }
+  function renderDeadlines() {
+    const list = deadlineList().slice(0, 8);
+    $("deadlines").innerHTML = list.length ? list.map((d) => {
+      const n = daysUntil(d.date);
+      return `<div class="dl ${n < 0 ? "over" : n <= 14 ? "soon" : ""}"><time datetime="${d.date}">${fmtDate(d.date)}</time><span>${esc(d.title)}${d.sub ? `<small>${esc(d.sub)}</small>` : ""}</span>${d.id ? `<button class="link" data-del="deadlines/${esc(d.id)}">Erledigt</button>` : "<span></span>"}</div>`;
+    }).join("") : `<div class="empty">Keine Termine.</div>`;
+  }
+  $("dl-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const doc = { title: $("dl-title").value.trim(), date: $("dl-date").value, createdAt: new Date().toISOString() };
+    if (!doc.title || !doc.date) return;
+    if (await write((db) => db.collection("deadlines").add(doc))) e.target.reset();
+  });
+
+  // ---------- Kleinunternehmer-Ampel ----------
+  function renderKU() {
+    const y = Number(today().slice(0, 4)), prev = revenueYear(y - 1), cur = revenueYear(y);
+    const row = (label, val, limit) => {
+      const pct = Math.min(100, (val / limit) * 100);
+      const cls = pct >= 90 ? "bad" : pct >= 70 ? "warn" : "";
+      return `<div class="ku-row"><div class="ku-top"><span>${label}</span><span class="num"><b>${money(val)}</b> von ${money(limit)} · ${pct.toFixed(pct < 10 ? 1 : 0)} %</span></div><div class="ku-track"><span class="ku-fill ${cls}" style="width:${Math.max(pct, 0.5)}%"></span></div></div>`;
+    };
+    let note = "";
+    if (cur > 100000) note = `<div class="notice notice--bad">Die 100.000-€-Grenze ist überschritten. Ab diesem Umsatz musst du Umsatzsteuer berechnen. Sprich sofort mit einem Steuerberater.</div>`;
+    else if (prev > 25000) note = `<div class="notice notice--bad">Im Vorjahr lag dein Umsatz über 25.000 €. Damit gilt die Kleinunternehmerregelung dieses Jahr nicht mehr.</div>`;
+    else if (cur > 25000) note = `<div class="notice">Dieses Jahr liegst du über 25.000 €. Dann gilt die Kleinunternehmerregelung <b>ab nächstem Jahr</b> nicht mehr. Plane das ein (Preise, Rechnungen, Shop-Hinweis).</div>`;
+    $("ku").innerHTML = row(`Umsatz ${y - 1} (Grenze Vorjahr)`, prev, 25000) + row(`Umsatz ${y} bisher (Grenze laufendes Jahr)`, cur, 100000) + note +
+      `<p class="hint" style="margin-top:10px">Umsatz = Einnahmen aus Bestellungen ohne Erstattungen. Andere Einnahmen deines Gewerbes zählen ebenfalls mit.</p>`;
+    $("ku-status").textContent = state.settings.smallBusiness ? "Du bist als Kleinunternehmer eingetragen" : "Laut Firmendaten kein Kleinunternehmer – nur zur Info";
+  }
+
+  // ---------- Monatsabschluss ----------
+  let clMonth = prevMonthKey(today().slice(0, 7));
+  const CL_ITEMS = [
+    ["paypal", "PayPal-Export des Monats hochgeladen", (m) => `${state.orders.filter((o) => String(o.date || "").startsWith(m)).length} Bestellungen im Kontor`],
+    ["versand", "Alle Bestellungen versendet", (m) => { const n = state.orders.filter((o) => String(o.date || "").startsWith(m) && ["neu", "gepackt"].includes(ordStatus(o))).length; return n ? `${n} noch offen` : "keine offen"; }],
+    ["belege", "Alle Belege fotografiert und gebucht", (m) => { const n = state.purchases.filter((p) => !p.receiptId && String(p.date || "").startsWith(m)).length + state.costs.filter((c) => !c.receiptId && c.interval === "once" && String(c.date || "").startsWith(m)).length; return n ? `${n} Einträge ohne Beleg` : "zu allen Einträgen gibt es einen Beleg"; }],
+    ["bank", "Kontoauszug mit Einnahmen und Ausgaben abgeglichen", () => "fehlt etwas, hier nachtragen"],
+    ["backup", "Daten gesichert", (m) => (["03", "06", "09", "12"].includes(m.slice(5, 7)) ? "Quartalsende: Belege-Archiv herunterladen" : "z. B. EÜR-Tabelle herunterladen")],
+  ];
+  function renderClosing() {
+    const months = []; let k = today().slice(0, 7);
+    for (let i = 0; i < 12; i++) { months.push(k); k = prevMonthKey(k); }
+    $("cl-month").innerHTML = months.map((m) => `<option value="${m}" ${m === clMonth ? "selected" : ""}>${monthName(m)}</option>`).join("");
+    const doc = state.closings.find((c) => c.id === clMonth) || {};
+    const checks = doc.checks || {};
+    const all = CL_ITEMS.every(([key]) => checks[key]);
+    $("closing").innerHTML = CL_ITEMS.map(([key, label, info]) => `<label class="cl"><input type="checkbox" data-cl="${key}" ${checks[key] ? "checked" : ""}><span>${esc(label)}<small>${esc(info(clMonth))}</small></span></label>`).join("") +
+      (doc.doneAt ? `<div class="allgood" style="margin-top:8px">${monthName(clMonth)} ist abgeschlossen (${fmtDate(doc.doneAt.slice(0, 10))}).</div>` : all ? "" : `<p class="hint" style="margin-top:8px">Wenn alles abgehakt ist, gilt der Monat als abgeschlossen.</p>`);
+  }
+  $("cl-month").addEventListener("change", (e) => { clMonth = e.target.value; renderClosing(); });
+  document.addEventListener("change", async (e) => {
+    const cb = e.target.closest("[data-cl]"); if (!cb) return;
+    const doc = state.closings.find((c) => c.id === clMonth) || {};
+    const checks = { ...(doc.checks || {}), [cb.dataset.cl]: cb.checked };
+    const done = CL_ITEMS.every(([key]) => checks[key]);
+    await write((db) => db.doc("closings/" + clMonth).set({ checks, doneAt: done ? (doc.doneAt || new Date().toISOString()) : null }));
+  });
+
+  // ---------- EÜR ----------
+  let euerYear = today().slice(0, 4);
+  function euerRows(year) {
+    const Y = String(year), rows = [];
+    const inY = (d) => String(d || "").startsWith(Y);
+    state.orders.forEach((o) => {
+      if (!inY(o.date)) return;
+      if (!o.refunded) rows.push({ date: o.date, type: "Einnahme", cat: "Umsatzerlöse Shop", desc: (o.items || []).map((it) => `${Number(it.qty) || 1}x ${itemName(it)}`).join(", ") || "Bestellung", amount: Number(o.gross) || 0, doc: o.invoiceNo || "PayPal " + o.id });
+      if (Number(o.fee)) rows.push({ date: o.date, type: "Ausgabe", cat: "Gebühren (PayPal)", desc: "PayPal-Gebühr Bestellung " + o.id, amount: Number(o.fee) || 0, doc: "PayPal-Aktivitätenbericht" });
+    });
+    state.receipts.filter((r) => r.status !== "storniert" && inY(r.date)).forEach((r) => rows.push({ date: r.date, type: "Ausgabe", cat: r.kind === "ware" ? "Wareneinkauf" : r.category || "Sonstiges", desc: [r.vendor, r.description].filter(Boolean).join(" – "), amount: Number(r.gross) || 0, doc: r.no }));
+    state.purchases.filter((p) => !p.receiptId && inY(p.date)).forEach((p) => rows.push({ date: p.date, type: "Ausgabe", cat: "Wareneinkauf", desc: `${p.qty}x ${(productBySku[p.sku] || {}).name || p.product || "Ware"}${p.supplier ? " – " + p.supplier : ""}`, amount: Number(p.total) || 0, doc: "fehlt" }));
+    const end = Y === today().slice(0, 4) ? today() : Y + "-12-31";
+    state.costs.filter((c) => !c.receiptId && c.date && Number(c.amount)).forEach((c) => {
+      const amt = Number(c.amount);
+      if (c.interval === "once") { if (inY(c.date)) rows.push({ date: c.date, type: "Ausgabe", cat: c.category || "Sonstiges", desc: c.name, amount: amt, doc: "fehlt" }); return; }
+      const day = c.date.slice(8, 10);
+      for (let m = 1; m <= 12; m++) {
+        const mm = String(m).padStart(2, "0");
+        if (c.interval === "yearly" && mm !== c.date.slice(5, 7)) continue;
+        const d = `${Y}-${mm}-${day > "28" ? "28" : day}`;
+        if (d < c.date || d > end || (c.until && d > c.until)) continue;
+        rows.push({ date: d, type: "Ausgabe", cat: c.category || "Sonstiges", desc: c.name + (c.interval === "monthly" ? ` (${MONTHS_LONG[m - 1]})` : ""), amount: amt, doc: "Rechnung ablegen" });
+      }
+    });
+    return rows.sort((a, b) => a.date.localeCompare(b.date) || a.type.localeCompare(b.type));
+  }
+  function renderEuer() {
+    const years = [...new Set([today().slice(0, 4), ...state.orders.map((o) => String(o.date || "").slice(0, 4)), ...state.receipts.map((r) => String(r.year || ""))].filter((y) => /^\d{4}$/.test(y)))].sort().reverse();
+    if (!years.includes(euerYear)) euerYear = years[0];
+    $("euer-year").innerHTML = years.map((y) => `<option ${y === euerYear ? "selected" : ""}>${y}</option>`).join("");
+    const rows = euerRows(euerYear);
+    const inc = rows.filter((r) => r.type === "Einnahme").reduce((s, r) => s + r.amount, 0);
+    const byCat = {};
+    rows.filter((r) => r.type === "Ausgabe").forEach((r) => { byCat[r.cat] = (byCat[r.cat] || 0) + r.amount; });
+    const exp = Object.values(byCat).reduce((s, v) => s + v, 0);
+    const missing = rows.filter((r) => r.type === "Ausgabe" && (r.doc === "fehlt")).length;
+    $("euer").innerHTML = `<div class="kpis">${kpi("Einnahmen " + euerYear, money(inc), "Umsatzerlöse aus Bestellungen")}${kpi("Ausgaben " + euerYear, money(exp), "inkl. Ware und PayPal-Gebühren")}${kpi("Überschuss", money(inc - exp), inc - exp >= 0 ? "Gewinn vor Steuern" : "Verlust", inc - exp > 0 ? "kpi--pos" : inc - exp < 0 ? "kpi--neg" : "")}</div>
+      <div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Ausgaben nach Kategorie</th><th class="r">Betrag</th></tr></thead>
+      <tbody>${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([c, v]) => `<tr><td>${esc(c)}</td><td class="r">${money(v)}</td></tr>`).join("") || `<tr><td>Noch keine Ausgaben</td><td class="r">–</td></tr>`}</tbody></table></div>
+      ${missing ? `<div class="notice" style="margin-top:10px">${missing} Ausgabe${missing === 1 ? "" : "n"} ohne Beleg. Fotografiere die Belege unter <b>Belege</b>, sonst erkennt das Finanzamt sie unter Umständen nicht an.</div>` : ""}`;
+  }
+  $("euer-year").addEventListener("change", (e) => { euerYear = e.target.value; renderEuer(); });
+  $("euer-export").addEventListener("click", async () => {
+    const box = $("euer-msg"); box.hidden = false; box.className = "notice";
+    if (!state.downloads) { box.className = "notice notice--bad"; box.textContent = "Herunterladen ist hier nicht möglich."; return; }
+    const rows = euerRows(euerYear);
+    const cell = (v) => { const s = String(v ?? ""); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+    const num = (n) => (Number(n) || 0).toFixed(2).replace(".", ",");
+    const inc = rows.filter((r) => r.type === "Einnahme").reduce((s, r) => s + r.amount, 0);
+    const exp = rows.filter((r) => r.type === "Ausgabe").reduce((s, r) => s + r.amount, 0);
+    const lines = [
+      [`Aksum – Einnahmen und Ausgaben ${euerYear}`], [`Erstellt am ${fmtDate(today())}. Alle Beträge brutto in Euro.${state.settings.smallBusiness ? " Kleinunternehmer nach § 19 UStG." : " Bei Umsatzsteuerpflicht Netto und Umsatzsteuer gesondert ermitteln."}`], [],
+      ["Summe Einnahmen", num(inc)], ["Summe Ausgaben", num(exp)], ["Überschuss", num(inc - exp)], [],
+      ["Datum", "Art", "Kategorie", "Beschreibung", "Betrag", "Beleg"],
+      ...rows.map((r) => [fmtDate(r.date), r.type, r.cat, r.desc, num(r.amount), r.doc]),
+    ];
+    try {
+      await state.downloads.save({ filename: `Aksum-EUER-${euerYear}.csv`, data: "﻿" + lines.map((l) => l.map(cell).join(";")).join("\r\n") });
+      box.className = "notice notice--ok"; box.textContent = `Aksum-EUER-${euerYear}.csv ist heruntergeladen. Öffnen mit Excel oder Numbers.`;
+    } catch (e) { box.textContent = e && e.code === "declined" ? "Herunterladen abgebrochen." : "Die Datei konnte nicht erstellt werden."; }
+  });
+
+  // ---------- Verpackung ----------
+  function renderPackaging() {
+    const paper = Number(state.settings.packPaper) || 0, plastic = Number(state.settings.packPlastic) || 0;
+    const y = Number(today().slice(0, 4));
+    const count = (yy) => state.orders.filter((o) => !o.refunded && String(o.date || "").startsWith(String(yy)) && (ordStatus(o) === "versendet" || !o.status)).length;
+    const row = (yy) => { const n = count(yy); return `<tr><td>${yy}</td><td class="r">${n}</td><td class="r">${((n * paper) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 })} kg</td><td class="r">${((n * plastic) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 })} kg</td></tr>`; };
+    $("packaging").innerHTML = (!paper && !plastic ? `<div class="notice">Trag unten bei <b>Firmendaten</b> ein, wie viel Pappe und Kunststoff ein Paket wiegt.</div>` : "") +
+      `<div class="tablewrap"><table><thead><tr><th>Jahr</th><th class="r">Pakete</th><th class="r">Pappe/Papier</th><th class="r">Kunststoff</th></tr></thead><tbody>${row(y)}${row(y - 1)}</tbody></table></div>
+      <p class="hint" style="margin-top:8px">Diese Mengen meldest du deinem Dualen System und gleichlautend in LUCID. Mehrere Pakete in einer Bestellung bitte selbst ergänzen.</p>`;
+  }
+
+  // ---------- Firmendaten ----------
+  function fillBiz() {
+    const f = $("biz-form"); if (f.contains(document.activeElement)) return;
+    const st = state.settings;
+    $("biz-name").value = st.bizName || ""; $("biz-address").value = st.bizAddress || ""; $("biz-email").value = st.bizEmail || "";
+    $("biz-taxno").value = st.bizTaxNo || ""; $("biz-paper").value = st.packPaper ?? ""; $("biz-plastic").value = st.packPlastic ?? "";
+    $("biz-ku").checked = !!st.smallBusiness;
+  }
+  $("biz-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const s2 = { ...state.settings, bizName: $("biz-name").value.trim(), bizAddress: $("biz-address").value.trim(), bizEmail: $("biz-email").value.trim(),
+      bizTaxNo: $("biz-taxno").value.trim(), packPaper: Number($("biz-paper").value) || 0, packPlastic: Number($("biz-plastic").value) || 0, smallBusiness: $("biz-ku").checked };
+    if (await write((db) => db.doc("settings/main").set(s2))) {
+      document.activeElement && document.activeElement.blur();
+      $("biz-msg").hidden = false; $("biz-msg").textContent = "Gespeichert." + (s2.smallBusiness ? " Denk daran, auch im Shop (config.js) „smallBusiness: true“ einzustellen – sag mir einfach Bescheid." : "");
+      setTimeout(() => ($("biz-msg").hidden = true), 6000);
+    }
+  });
+
+  // Ausverkauft im Shop: nur Produkte mit erfasstem Einkauf und Restbestand 0 (nur Web-App)
+  function syncShopStatus() {
+    if (!window.__kontorShopStatus || !state.ready) return;
+    const sold = soldBySku(), map = {};
+    PRODUCTS.forEach((p) => { const lots = lotsFor(p.sku, sold); if (lots.length) map[p.sku] = lots.reduce((s, l) => s + l.left, 0) <= 0; });
+    window.__kontorShopStatus(map);
+  }
+  // Zugang (nur Web-App)
+  async function renderAccess() {
+    const acc = window.__kontorAccess; if (!acc) return;
+    $("access-panel").hidden = false;
+    try {
+      const list = await acc.list();
+      $("access-list").innerHTML = list.map((e) => `<div class="dl"><span></span><span>${esc(e)}</span>${list.length > 1 && e !== acc.me ? `<button class="link" data-revoke="${esc(e)}">Entfernen</button>` : `<span class="muted">${e === acc.me ? "du" : ""}</span>`}</div>`).join("");
+    } catch (e) { $("access-list").innerHTML = `<div class="notice">Die Liste konnte nicht geladen werden.</div>`; }
+  }
+  $("access-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const acc = window.__kontorAccess; if (!acc) return;
+    const em = $("access-email").value.trim().toLowerCase(); if (!em) return;
+    try { await acc.add(em); $("access-email").value = ""; renderAccess(); }
+    catch (err) { $("access-msg").hidden = false; $("access-msg").className = "notice notice--bad"; $("access-msg").textContent = "Freischalten hat nicht geklappt."; }
+  });
+  document.addEventListener("click", async (e) => {
+    const b = e.target.closest("[data-revoke]"); if (!b || !window.__kontorAccess) return;
+    if (!b.classList.contains("confirm")) { b.classList.add("confirm"); b.textContent = "Wirklich entfernen?"; return; }
+    await window.__kontorAccess.remove(b.dataset.revoke); renderAccess();
+  });
+
+  function renderFinance() { renderKU(); renderDeadlines(); renderClosing(); renderEuer(); renderPackaging(); fillBiz(); }
+
+  // ---------- Rechnungen (PDF, ohne externe Bibliothek) ----------
+  const WIN = { "€": 128, "‚": 130, "„": 132, "…": 133, "–": 150, "—": 151, "‘": 145, "’": 146, "“": 147, "”": 148, "•": 149, "−": 45 };
+  const winStr = (s) => [...String(s)].map((ch) => { const c = ch.charCodeAt(0); const v = WIN[ch] ?? (c < 256 ? c : 63); return String.fromCharCode(v); }).join("").replace(/[\\()]/g, (m) => "\\" + m);
+  const W = { " ": 278, ",": 278, ".": 278, "-": 333, "%": 889, "€": 556, ":": 278, "x": 500, "×": 584 };
+  const textWidth = (s, size) => [...String(s)].reduce((w, ch) => w + (/\d/.test(ch) ? 556 : W[ch] ?? 556), 0) * size / 1000;
+  function buildPdf(pages) {
+    // pages: Array von Befehlslisten {t:"text", x, y, s, b, txt, right} | {t:"line", x1, y1, x2, y2}
+    const objs = [];
+    const add = (str) => { objs.push(str); return objs.length; };
+    const catalog = add(""), pagesId = add("");
+    const f1 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+    const f2 = add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+    const kids = [];
+    pages.forEach((ops) => {
+      const content = ops.map((o) => {
+        if (o.t === "line") return `${o.w || 0.6} w ${o.x1} ${o.y1} m ${o.x2} ${o.y2} l S`;
+        const x = o.right ? o.x - textWidth(o.txt, o.s) : o.x;
+        return `BT /${o.b ? "F2" : "F1"} ${o.s} Tf ${x.toFixed(2)} ${o.y} Td (${winStr(o.txt)}) Tj ET`;
+      }).join("\n");
+      const cId = add(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`);
+      kids.push(add(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> >> /Contents ${cId} 0 R >>`));
+    });
+    objs[catalog - 1] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+    objs[pagesId - 1] = `<< /Type /Pages /Kids [${kids.map((k) => k + " 0 R").join(" ")}] /Count ${kids.length} >>`;
+    let out = "%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";
+    const offs = [];
+    objs.forEach((o, i) => { offs.push(out.length); out += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+    const xref = out.length;
+    out += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n` + offs.map((o) => String(o).padStart(10, "0") + " 00000 n \n").join("");
+    out += `trailer\n<< /Size ${objs.length + 1} /Root ${catalog} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    const bytes = new Uint8Array(out.length);
+    for (let i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+    return bytes;
+  }
+  const eurPdf = (n) => (Number(n) || 0).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+  function invoiceLines(o) {
+    const lines = (o.items || []).map((it) => {
+      const p = productBySku[it.sku] || {};
+      const qty = Number(it.qty) || 1;
+      const total = Number(it.amount) || round2((p.price || 0) * qty);
+      return { qty, name: itemName(it), unit: total / qty, total, vat: p.vat || 19 };
+    });
+    const rest = round2((Number(o.gross) || 0) - lines.reduce((s, l) => s + l.total, 0));
+    if (Math.abs(rest) >= 0.01) lines.push({ qty: 1, name: rest > 0 ? "Versand" : "Rabatt", unit: rest, total: rest, vat: null });
+    return lines;
+  }
+  function invoicePdf(o) {
+    const st = state.settings, ku = !!st.smallBusiness;
+    const lines = invoiceLines(o);
+    const P = []; let y = 790;
+    const T = (x, yy, txt, s = 10, b = false, right = false) => P.push({ t: "text", x, y: yy, txt: String(txt), s, b, right });
+    T(50, y, st.bizName || "Aksum", 15, true);
+    (st.bizAddress || "").split(/\n/).forEach((l, i) => T(50, y - 18 - i * 13, l, 10));
+    const addrN = (st.bizAddress || "").split(/\n/).length;
+    if (st.bizEmail) T(50, y - 18 - addrN * 13, st.bizEmail, 10);
+    T(545, y, "Rechnung", 20, true, true);
+    const info = [["Rechnungsnummer", o.invoiceNo], ["Rechnungsdatum", fmtDate(o.invoiceDate)], ["Liefer-/Bestelldatum", fmtDate(o.date)], ["Bestellnummer", String(o.id)]];
+    info.forEach(([k, v], i) => { T(320, y - 30 - i * 14, k + ":", 9); T(545, y - 30 - i * 14, v, 9, true, true); });
+    y = 690;
+    const rec = o.invoiceRecipient;
+    if (rec && (rec.name || rec.address)) {
+      T(50, y, "Rechnung an:", 9); T(50, y - 14, rec.name || "", 10, true);
+      (rec.address || "").split(/\n/).forEach((l, i) => T(50, y - 28 - i * 13, l, 10));
+    } else T(50, y, "Kleinbetragsrechnung (§ 33 UStDV)", 9);
+    y = 610;
+    T(50, y, "Menge", 9, true); T(95, y, "Artikel", 9, true); T(440, y, "Einzelpreis", 9, true, true); T(545, y, "Gesamt", 9, true, true);
+    P.push({ t: "line", x1: 50, y1: y - 6, x2: 545, y2: y - 6 });
+    y -= 22;
+    lines.forEach((l) => {
+      T(50, y, l.vat === null ? "" : l.qty + "x", 10); T(95, y, l.name + (!ku && l.vat ? `  (${l.vat} %)` : ""), 10);
+      if (l.vat !== null) T(440, y, eurPdf(l.unit), 10, false, true);
+      T(545, y, eurPdf(l.total), 10, false, true); y -= 16;
+    });
+    P.push({ t: "line", x1: 300, y1: y + 6, x2: 545, y2: y + 6 });
+    y -= 10;
+    T(300, y, "Gesamtbetrag", 11, true); T(545, y, eurPdf(o.gross), 11, true, true); y -= 18;
+    if (ku) { T(300, y, "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.", 9); y -= 14; }
+    else {
+      const goods = lines.filter((l) => l.vat !== null), gsum = goods.reduce((s, l) => s + l.total, 0) || 1;
+      const extra = lines.filter((l) => l.vat === null).reduce((s, l) => s + l.total, 0);
+      const by = {};
+      goods.forEach((l) => { by[l.vat] = (by[l.vat] || 0) + l.total + extra * (l.total / gsum); });
+      Object.keys(by).sort().forEach((rate) => {
+        const g = by[rate], net = g / (1 + rate / 100);
+        T(300, y, `enthaltene USt ${rate} % (netto ${eurPdf(net)})`, 9); T(545, y, eurPdf(g - net), 9, false, true); y -= 14;
+      });
+    }
+    y -= 20;
+    T(50, y, `Bezahlt per PayPal am ${fmtDate(o.date)}. Vielen Dank für deine Bestellung!`, 10);
+    const foot = [st.bizName, st.bizEmail, st.bizTaxNo ? "Steuernummer: " + st.bizTaxNo : ""].filter(Boolean).join("  ·  ");
+    P.push({ t: "line", x1: 50, y1: 70, x2: 545, y2: 70, w: 0.4 });
+    T(50, 56, foot, 8);
+    return buildPdf([P]);
+  }
+  function nextInvoiceNo(year) {
+    const nums = state.orders.map((o) => String(o.invoiceNo || "")).filter((n) => n.startsWith("R-" + year + "-")).map((n) => Number(n.slice(7)) || 0);
+    return "R-" + year + "-" + String((nums.length ? Math.max(...nums) : 0) + 1).padStart(4, "0");
+  }
+  let invOrderId = null;
+  async function makeInvoice(o, recipient) {
+    const msg = $("ordmsg-" + o.id);
+    if (!state.settings.bizName || !state.settings.bizAddress) {
+      if (msg) msg.textContent = "Trag zuerst unter Finanzen → Firmendaten deinen Namen und deine Anschrift ein.";
+      return;
+    }
+    if (!state.downloads) { if (msg) msg.textContent = "Herunterladen ist hier nicht möglich."; return; }
+    let inv = o;
+    if (!o.invoiceNo) {
+      const upd = { invoiceNo: nextInvoiceNo(today().slice(0, 4)), invoiceDate: today(), invoiceRecipient: recipient || null };
+      if (!(await write((db) => db.doc("orders/" + o.id).update(upd)))) return;
+      inv = { ...o, ...upd };
+    }
+    try {
+      await state.downloads.save({ filename: `Rechnung-${inv.invoiceNo}.pdf`, data: new Blob([invoicePdf(inv)], { type: "application/pdf" }) });
+      if (msg) msg.textContent = `Rechnung ${inv.invoiceNo} heruntergeladen.`;
+    } catch (e) { if (msg) msg.textContent = e && e.code === "declined" ? "Herunterladen abgebrochen." : "Die Rechnung konnte nicht erstellt werden."; }
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-invoice]"); if (!b) return;
+    const o = state.orders.find((x) => x.id === b.dataset.invoice); if (!o) return;
+    if (!o.invoiceNo && (Number(o.gross) || 0) > 250) {
+      invOrderId = o.id;
+      $("inv-info").textContent = `Bestellung über ${money(Number(o.gross) || 0)}: Ab 250 € muss die Rechnung Name und Anschrift des Kunden enthalten (steht in PayPal).`;
+      $("inv-name").value = ""; $("inv-address").value = "";
+      $("inv-dialog").showModal();
+      return;
+    }
+    makeInvoice(o);
+  });
+  $("inv-cancel").addEventListener("click", () => $("inv-dialog").close());
+  $("inv-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = $("inv-name").value.trim(), address = $("inv-address").value.trim();
+    if (!name || !address) { (name ? $("inv-address") : $("inv-name")).focus(); return; }
+    $("inv-dialog").close();
+    const o = state.orders.find((x) => x.id === invOrderId);
+    if (o) makeInvoice(o, { name, address });
+  });
+
+  // ---------- Belege ----------
+  // Fotos: auf der Claude-Seite unter /_blob/<id>, in der Web-App aus dem Supabase-Speicher
+  const blobSrc = (id) => (window.__kontorBlob ? window.__kontorBlob.src(id) : "/_blob/" + encodeURIComponent(id));
+  async function blobFetch(id) {
+    if (window.__kontorBlob) return window.__kontorBlob.get(id);
+    const res = await fetch("/_blob/" + encodeURIComponent(id));
+    if (!res.ok) throw new Error("blob");
+    return res.blob();
+  }
+  window.addEventListener("kontor-blob-ready", () => renderReceipts());
+  const COST_CATS = ["Versandmaterial", "Software & Tools", "Domain & Hosting", "Behörden & Recht", "Marketing", "Gebühren", "Sonstiges"];
+  const PAY = { karte: "Karte", bar: "bar", paypal: "PayPal", ueberweisung: "Überweisung", unbekannt: "unbekannt" };
+  let rcYear = String(new Date().getFullYear());
+  let draft = null; // { file, url, isPdf, ctl }
+
+  async function initReceiptCaps() {
+    if (!window.claude) return;
+    const [assets, sample, downloads] = await Promise.all(["assets", "sample", "downloads"].map((n) => window.claude.use(n).catch(() => null)));
+    state.assets = assets; state.sample = sample; state.downloads = downloads;
+    let img = false;
+    if (sample) { try { img = !!(await sample.limits()).images; } catch (e) { img = false; } }
+    state.aiImages = img;
+    $("ai-state").textContent = !assets ? "Fotos speichern ist hier nicht möglich" : img ? "Automatisches Auslesen aktiv" : "Automatisches Auslesen nicht verfügbar – du füllst selbst aus";
+    $("rc-export").disabled = !downloads;
+  }
+
+  function rcMsg(kind, text) {
+    const m = $("rc-msg");
+    m.hidden = !text; m.className = "notice" + (kind === "ok" ? " notice--ok" : kind === "bad" ? " notice--bad" : ""); m.textContent = text || "";
+  }
+
+  // Eingabezeilen im Prüf-Dialog
+  const skuOptions = (sel) => `<option value="">– nicht zuordnen –</option>` + PRODUCTS.map((p) => `<option value="${p.sku}" ${p.sku === sel ? "selected" : ""}>${esc(p.name)}</option>`).join("");
+  function addLine(l = {}) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td><input class="ln-text" value="${esc(l.text || "")}" aria-label="Text auf dem Beleg" placeholder="Text auf dem Beleg"></td>
+      <td><select class="ln-sku" aria-label="Shop-Produkt">${skuOptions(l.sku || "")}</select></td>
+      <td><input class="ln-qty" type="number" min="1" step="1" inputmode="numeric" value="${Number(l.qty) > 0 ? Math.round(Number(l.qty)) : 1}" style="width:70px;text-align:right" aria-label="Anzahl" placeholder="Anz."></td>
+      <td><input class="ln-gross" type="number" step="0.01" inputmode="decimal" value="${Number.isFinite(Number(l.gross)) && l.gross !== "" ? round2(Number(l.gross)) : ""}" style="width:96px;text-align:right" aria-label="Brutto" placeholder="Brutto €"></td>
+      <td><button type="button" class="link" data-rm-row aria-label="Position entfernen">×</button></td>`;
+    $("rf-lines").appendChild(tr);
+  }
+  function addVat(v = {}) {
+    const tr = document.createElement("tr");
+    const rate = [0, 7, 19].includes(Number(v.rate)) ? Number(v.rate) : 19;
+    tr.innerHTML = `<td><select class="vt-rate" aria-label="Steuersatz">${[19, 7, 0].map((x) => `<option value="${x}" ${x === rate ? "selected" : ""}>${x} %</option>`).join("")}</select></td>
+      <td><input class="vt-net" type="number" step="0.01" inputmode="decimal" value="${v.net ?? ""}" style="width:96px;text-align:right" aria-label="Netto" placeholder="Netto"></td>
+      <td><input class="vt-tax" type="number" step="0.01" inputmode="decimal" value="${v.tax ?? ""}" style="width:90px;text-align:right" aria-label="MwSt" placeholder="MwSt"></td>
+      <td><input class="vt-gross" type="number" step="0.01" inputmode="decimal" value="${v.gross ?? ""}" style="width:96px;text-align:right" aria-label="Brutto" placeholder="Brutto"></td>
+      <td><button type="button" class="link" data-rm-row>×</button></td>`;
+    $("rf-vat").appendChild(tr);
+  }
+  $("rf-add-line").addEventListener("click", () => addLine());
+  $("rf-add-vat").addEventListener("click", () => addVat());
+  $("rc-form").addEventListener("click", (e) => { const b = e.target.closest("[data-rm-row]"); if (b) { b.closest("tr").remove(); checkDraft(); } });
+  // Netto/MwSt aus Brutto ergänzen, wenn nur Brutto eingetragen ist
+  $("rf-vat").addEventListener("change", (e) => {
+    const tr = e.target.closest("tr"); if (!tr) return;
+    const rate = Number(tr.querySelector(".vt-rate").value), g = tr.querySelector(".vt-gross"), n = tr.querySelector(".vt-net"), t = tr.querySelector(".vt-tax");
+    if (e.target === g && g.value !== "") { const net = round2(Number(g.value) / (1 + rate / 100)); n.value = net; t.value = round2(Number(g.value) - net); }
+    checkDraft();
+  });
+  const kindVal = () => (document.querySelector("input[name=rf-kind]:checked") || {}).value || "ware";
+  document.querySelectorAll("input[name=rf-kind]").forEach((r) => r.addEventListener("change", syncKind));
+  function syncKind() {
+    const k = kindVal();
+    $("rf-cat-wrap").hidden = k !== "kosten";
+    $("rf-lines-wrap").hidden = k !== "ware";
+    checkDraft();
+  }
+
+  function readDraft() {
+    const lines = [...$("rf-lines").querySelectorAll("tr")].map((tr) => ({
+      text: tr.querySelector(".ln-text").value.trim(), sku: tr.querySelector(".ln-sku").value,
+      qty: Math.max(1, Math.round(Number(tr.querySelector(".ln-qty").value) || 1)), gross: round2(Number(tr.querySelector(".ln-gross").value) || 0),
+    })).filter((l) => l.text || l.gross);
+    const vat = [...$("rf-vat").querySelectorAll("tr")].map((tr) => ({
+      rate: Number(tr.querySelector(".vt-rate").value), net: round2(Number(tr.querySelector(".vt-net").value) || 0),
+      tax: round2(Number(tr.querySelector(".vt-tax").value) || 0), gross: round2(Number(tr.querySelector(".vt-gross").value) || 0),
+    })).filter((v) => v.net || v.tax || v.gross);
+    return {
+      date: $("rf-date").value, vendor: $("rf-vendor").value.trim(), receiptNo: $("rf-rno").value.trim(), payment: $("rf-pay").value,
+      kind: kindVal(), category: $("rf-cat").value, description: $("rf-desc").value.trim(), gross: round2(Number($("rf-gross").value) || 0),
+      lines, vat,
+    };
+  }
+  function checkDraft() {
+    const d = readDraft(), warns = [];
+    const vatSum = round2(d.vat.reduce((s, v) => s + v.gross, 0));
+    const lineSum = round2(d.lines.reduce((s, l) => s + l.gross, 0));
+    if (d.gross && d.vat.length && Math.abs(vatSum - d.gross) > 0.02) warns.push(`Die MwSt-Zeilen ergeben ${money(vatSum)}, der Gesamtbetrag ist ${money(d.gross)}.`);
+    if (d.kind === "ware" && d.gross && d.lines.length && Math.abs(lineSum - d.gross) > 0.02) warns.push(`Die Positionen ergeben ${money(lineSum)}, der Gesamtbetrag ist ${money(d.gross)}. Rabatte oder Pfand ggf. als eigene Position eintragen.`);
+    if (d.kind === "ware" && d.lines.length && !d.lines.some((l) => l.sku)) warns.push("Keine Position ist einem Shop-Produkt zugeordnet, dann zählt der Einkauf nicht zum Bestand.");
+    if (d.date && d.date > today()) warns.push("Das Belegdatum liegt in der Zukunft.");
+    $("rf-warn").hidden = !warns.length; $("rf-warn").className = "notice"; $("rf-warn").innerHTML = warns.map(esc).join("<br>");
+  }
+  $("rc-form").addEventListener("input", (e) => { if (e.target.id !== "rf-ok") checkDraft(); });
+
+  function fillDraft(x) {
+    $("rf-date").value = /^\d{4}-\d{2}-\d{2}$/.test(x.datum || "") ? x.datum : "";
+    $("rf-vendor").value = x.haendler || "";
+    $("rf-rno").value = x.belegnummer || "";
+    $("rf-pay").value = PAY[x.zahlungsart] ? x.zahlungsart : "unbekannt";
+    document.querySelector(`input[name=rf-kind][value=${x.art === "kosten" ? "kosten" : "ware"}]`).checked = true;
+    $("rf-cat").value = COST_CATS.includes(x.kategorie) ? x.kategorie : "Sonstiges";
+    $("rf-gross").value = Number(x.brutto) ? round2(Number(x.brutto)) : "";
+    $("rf-desc").value = x.beschreibung || "";
+    $("rf-lines").innerHTML = ""; $("rf-vat").innerHTML = "";
+    (Array.isArray(x.positionen) ? x.positionen : []).slice(0, 40).forEach((p) => addLine({ text: p.text, sku: productBySku[p.sku] ? p.sku : "", qty: p.menge, gross: p.brutto }));
+    (Array.isArray(x.mwst) ? x.mwst : []).slice(0, 4).forEach((v) => addVat({ rate: v.satz, net: Number(v.netto) || "", tax: Number(v.steuer) || "", gross: Number(v.brutto) || "" }));
+    if (!$("rf-lines").children.length) addLine();
+    if (!$("rf-vat").children.length) addVat();
+    syncKind();
+  }
+
+  function aiPrompt() {
+    return `Du liest einen Kassenbon oder eine Rechnung für einen kleinen deutschen Online-Shop (eritreische Gewürze, Mehl, Kaffee und Kulturartikel). Lies das Foto genau ab und erfinde nichts. Was du nicht lesen kannst, lässt du leer ("") bzw. 0.
+
+Antworte NUR mit einem JSON-Objekt in genau dieser Form:
+{"lesbar":true,"datum":"JJJJ-MM-TT","haendler":"","belegnummer":"","zahlungsart":"bar|karte|paypal|ueberweisung|unbekannt","waehrung":"EUR","brutto":0.00,"mwst":[{"satz":19,"netto":0.00,"steuer":0.00,"brutto":0.00}],"positionen":[{"text":"","menge":1,"brutto":0.00,"sku":""}],"art":"ware","kategorie":"","beschreibung":""}
+
+Regeln:
+- "brutto": der bezahlte Gesamtbetrag in Euro, Zahl mit Punkt.
+- "mwst": je Steuersatz eine Zeile, wie auf dem Beleg ausgewiesen. Ist keine MwSt ausgewiesen, leeres Array.
+- "positionen": jede Artikelzeile mit Gesamtpreis der Zeile (brutto) und Menge. Rabatte als eigene Zeile mit negativem Betrag.
+- "art": "ware", wenn Produkte zum Weiterverkauf gekauft wurden (Gewürze, Mehl, Kaffee, Weihrauch, Jebena, Körbe, Tücher usw.), sonst "kosten" (Verpackung, Porto, Büromaterial, Software, Gebühren, Werbung).
+- "sku": ordne eine Position nur dann einem Shop-Produkt zu, wenn es eindeutig dasselbe Produkt in derselben Packungsgröße ist, sonst "". Shop-Produkte (sku = Name): ${PRODUCTS.map((p) => p.sku + " = " + p.name).join("; ")}
+- "kategorie": nur bei "kosten", genau eine von: ${COST_CATS.join(", ")}
+- "beschreibung": 3 bis 8 Wörter, worum es bei dem Einkauf geht.
+- "lesbar": false, wenn auf dem Bild kein Beleg zu erkennen ist oder er unlesbar ist.`;
+  }
+
+  async function openDraft(file) {
+    if (!file) return;
+    rcMsg("", "");
+    if (!state.db || !state.assets) { rcMsg("bad", "Belege können hier nicht gespeichert werden. Öffne die Seite in Claude und melde dich an."); return; }
+    const isPdf = file.type === "application/pdf";
+    const okTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
+    if (!okTypes.includes(file.type)) { rcMsg("bad", "Dieses Dateiformat geht nicht. Bitte ein Foto (JPG, PNG) oder ein PDF wählen."); return; }
+    if (file.size > 20 * 1024 * 1024) { rcMsg("bad", "Die Datei ist größer als 20 MB. Bitte ein kleineres Foto wählen."); return; }
+    if (draft && draft.url) URL.revokeObjectURL(draft.url);
+    draft = { file, url: URL.createObjectURL(file), isPdf, ctl: null };
+    $("rc-preview").innerHTML = isPdf ? `<div class="pdfnote"><b>PDF-Datei</b><br>${esc(file.name)}<br><span class="hint">Bitte die Angaben aus dem PDF eintragen.</span></div>` : `<img src="${draft.url}" alt="Foto des Belegs">`;
+    $("rc-dlg-file").textContent = file.name || "Foto";
+    $("rf-ok").checked = false; $("rf-err").hidden = true; $("rc-ai-note").hidden = true;
+    fillDraft({ datum: "", art: "ware" });
+    $("rc-dialog").showModal();
+
+    if (isPdf || !state.sample || !state.aiImages) {
+      if (!isPdf) { $("rc-ai-note").hidden = false; $("rc-ai-note").className = "notice"; $("rc-ai-note").textContent = "Automatisches Auslesen ist hier nicht verfügbar. Bitte trage die Angaben selbst ein."; }
+      return;
+    }
+    $("rc-reading").hidden = false; $("rc-reading-text").textContent = "Ich lese den Beleg … das dauert meist 10 bis 40 Sekunden.";
+    draft.ctl = new AbortController();
+    try {
+      const x = await state.sample.json(aiPrompt(), { images: [file], signal: draft.ctl.signal });
+      if (!x || typeof x !== "object") throw { code: "invalid_json" };
+      fillDraft(x);
+      $("rc-ai-note").hidden = false;
+      if (x.lesbar === false) { $("rc-ai-note").className = "notice notice--bad"; $("rc-ai-note").textContent = "Auf dem Foto konnte ich keinen lesbaren Beleg erkennen. Mach am besten ein schärferes Foto oder trag die Angaben selbst ein."; }
+      else { $("rc-ai-note").className = "notice notice--ok"; $("rc-ai-note").textContent = "Ausgelesen. Bitte jede Angabe mit dem Foto vergleichen, besonders Datum, Betrag und MwSt."; }
+      draft.ai = x;
+    } catch (e) {
+      const code = e && e.code;
+      if (code !== "cancelled") {
+        $("rc-ai-note").hidden = false; $("rc-ai-note").className = "notice";
+        $("rc-ai-note").textContent = code === "not_granted" ? "Du hast das Auslesen durch Claude nicht erlaubt. Bitte trag die Angaben selbst ein."
+          : code === "rate_limited" ? "Gerade zu viele Anfragen. Trag die Angaben selbst ein oder versuch es gleich nochmal."
+          : code === "image_rejected" ? "Das Foto konnte nicht gelesen werden. Bitte ein anderes Foto wählen oder selbst ausfüllen."
+          : "Das Auslesen hat nicht geklappt. Bitte trag die Angaben selbst ein.";
+        if (code === "not_granted" || code === "sampling_disabled") state.aiImages = false;
+      }
+    } finally {
+      $("rc-reading").hidden = true;
+    }
+  }
+  $("rc-stop").addEventListener("click", () => draft && draft.ctl && draft.ctl.abort());
+  ["rc-camera", "rc-file"].forEach((id) => $(id).addEventListener("change", (e) => { const f = e.target.files[0]; e.target.value = ""; if (f) showTab("belege"); openDraft(f); }));
+  function closeDraft() {
+    if (draft && draft.ctl) draft.ctl.abort();
+    if (draft && draft.url) URL.revokeObjectURL(draft.url);
+    draft = null; $("rc-dialog").close();
+  }
+  $("rc-cancel").addEventListener("click", closeDraft);
+  $("rc-dialog").addEventListener("cancel", (e) => { e.preventDefault(); closeDraft(); });
+
+  async function sha256(file) {
+    const buf = await file.arrayBuffer();
+    const h = await crypto.subtle.digest("SHA-256", buf);
+    return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  function nextNo(year) {
+    const nums = state.receipts.filter((r) => String(r.no || "").startsWith("B-" + year + "-")).map((r) => Number(String(r.no).slice(7)) || 0);
+    return "B-" + year + "-" + String((nums.length ? Math.max(...nums) : 0) + 1).padStart(4, "0");
+  }
+
+  $("rc-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!draft) return;
+    const d = readDraft();
+    const errs = [];
+    if (!d.date) errs.push("Belegdatum fehlt.");
+    if (!d.vendor) errs.push("Händler fehlt.");
+    if (!(d.gross > 0)) errs.push("Gesamtbetrag fehlt.");
+    if (!$("rf-ok").checked) errs.push("Bitte bestätige, dass du die Angaben geprüft hast.");
+    if (errs.length) { $("rf-err").hidden = false; $("rf-err").className = "notice notice--bad"; $("rf-err").textContent = errs.join(" "); return; }
+    const btn = $("rc-save"); btn.disabled = true; btn.textContent = "Speichere …";
+    try {
+      const file = draft.file;
+      const hash = await sha256(file);
+      const dup = state.receipts.find((r) => r.sha256 === hash && r.status !== "storniert");
+      if (dup) throw { user: `Genau dieses Foto ist schon als ${dup.no} gespeichert.` };
+      const up = await state.assets.upload(file, { type: file.type });
+      const year = d.date.slice(0, 4);
+      const no = nextNo(year);
+      const id = no;
+      const now = new Date().toISOString();
+      const links = { purchases: [], cost: "" };
+      const rec = {
+        no, year: Number(year), date: d.date, vendor: d.vendor, receiptNo: d.receiptNo, payment: d.payment, kind: d.kind,
+        category: d.kind === "kosten" ? d.category : "Wareneinkauf", description: d.description, gross: d.gross, currency: "EUR",
+        vat: d.vat, lines: d.kind === "ware" ? d.lines : [],
+        assetId: up.id, fileName: file.name || "", fileType: file.type, fileSize: file.size, sha256: hash,
+        capturedAt: now, confirmedAt: now, ai: draft.ai ? { used: true, raw: draft.ai } : { used: false },
+        status: "gebucht", links,
+      };
+      // Verknüpfte Einträge anlegen
+      if (d.kind === "ware") {
+        const lines = d.lines.length ? d.lines : [{ text: d.description || d.vendor, sku: "", qty: 1, gross: d.gross }];
+        for (let i = 0; i < lines.length; i++) {
+          const l = lines[i];
+          const pid = no + "-" + (i + 1);
+          await state.db.doc("purchases/" + pid).set({
+            date: d.date, sku: l.sku || "", product: l.sku ? (productBySku[l.sku] || {}).name : l.text || "Sonstiges", qty: l.qty, total: l.gross,
+            supplier: d.vendor, note: l.text, receiptId: id, receiptNo: no, createdAt: now,
+          });
+          links.purchases.push(pid);
+        }
+      } else {
+        await state.db.doc("costs/" + no).set({
+          name: d.vendor + (d.description ? " – " + d.description : ""), category: d.category, amount: d.gross, interval: "once",
+          date: d.date, note: "", receiptId: id, receiptNo: no, createdAt: now,
+        });
+        links.cost = no;
+      }
+      await state.db.doc("receipts/" + id).set(rec);
+      closeDraft();
+      rcMsg("ok", `Gespeichert als ${no}: ${d.vendor}, ${money(d.gross)}.`);
+      rcYear = year; renderReceipts();
+    } catch (err) {
+      $("rf-err").hidden = false; $("rf-err").className = "notice notice--bad";
+      $("rf-err").textContent = err && err.user ? err.user : err && err.code === "quota_or_state" ? "Der Speicherplatz für Fotos ist voll." : err && err.code === "too_large" ? "Das Foto ist zu groß (max. 20 MB)." : "Speichern hat nicht geklappt. Bitte nochmal versuchen.";
+    } finally { btn.disabled = false; btn.textContent = "Bestätigen & speichern"; }
+  });
+
+  // Archiv
+  function renderReceipts() {
+    const years = [...new Set([String(new Date().getFullYear()), ...state.receipts.map((r) => String(r.year))])].sort().reverse();
+    if (!years.includes(rcYear)) rcYear = years[0];
+    $("rc-year").innerHTML = years.map((y) => `<option ${y === rcYear ? "selected" : ""}>${y}</option>`).join("");
+    const list = state.receipts.filter((r) => String(r.year) === rcYear).sort((a, b) => (b.date || "").localeCompare(a.date || "") || (b.no || "").localeCompare(a.no || ""));
+    const ok = list.filter((r) => r.status !== "storniert");
+    const sum = (arr, f) => arr.reduce((s, r) => s + f(r), 0);
+    const tax = (r, rate) => (r.vat || []).filter((v) => Number(v.rate) === rate).reduce((s, v) => s + (Number(v.tax) || 0), 0);
+    $("rc-kpis").innerHTML = [
+      kpi("Belege " + rcYear, String(ok.length), list.length - ok.length ? `${list.length - ok.length} storniert` : "gebucht"),
+      kpi("Summe brutto", money(sum(ok, (r) => Number(r.gross) || 0)), "alle gebuchten Belege"),
+      kpi("Davon Ware", money(sum(ok.filter((r) => r.kind === "ware"), (r) => Number(r.gross) || 0)), "Wareneinkauf"),
+      kpi("Davon Kosten", money(sum(ok.filter((r) => r.kind !== "ware"), (r) => Number(r.gross) || 0)), "Betriebskosten"),
+      kpi("MwSt auf Belegen", money(sum(ok, (r) => tax(r, 19) + tax(r, 7))), `19 %: ${money(sum(ok, (r) => tax(r, 19)))} · 7 %: ${money(sum(ok, (r) => tax(r, 7)))}`),
+    ].join("");
+    if (!list.length) {
+      $("receipts").innerHTML = `<div class="empty">Noch keine Belege für ${rcYear}. Fotografiere oben deinen ersten Kassenzettel.</div>`;
+      return;
+    }
+    $("receipts").innerHTML = `<div class="tablewrap"><table>
+      <thead><tr><th></th><th>Nr.</th><th>Datum</th><th>Händler</th><th>Art</th><th class="r">Brutto</th><th class="r">MwSt</th><th>Status</th></tr></thead>
+      <tbody>${list.map((r) => {
+        const src = blobSrc(r.assetId);
+        const th = r.fileType === "application/pdf" ? `<a class="thumb thumb--pdf" href="${src}" target="_blank" rel="noopener">PDF</a>` : `<a href="${src}" target="_blank" rel="noopener" aria-label="Foto ${esc(r.no)} öffnen"><img class="thumb" src="${src}" alt="" loading="lazy"></a>`;
+        const vt = (r.vat || []).map((v) => `${v.rate} %: ${money(Number(v.tax) || 0)}`).join("<br>") || '<span class="muted">–</span>';
+        return `<tr class="${r.status === "storniert" ? "storno" : ""}" id="rc-${esc(r.no)}">
+          <td>${th}</td>
+          <td class="num"><b>${esc(r.no)}</b></td>
+          <td class="num">${fmtDate(r.date)}</td>
+          <td>${esc(r.vendor)}${r.description ? `<br><span class="muted">${esc(r.description)}</span>` : ""}${r.receiptNo ? `<br><span class="muted">Beleg-Nr. ${esc(r.receiptNo)}</span>` : ""}</td>
+          <td>${r.kind === "ware" ? "Ware" : esc(r.category)}${r.kind === "ware" && (r.lines || []).length ? `<br><span class="muted">${(r.lines || []).map((l) => `${l.qty}× ${esc((productBySku[l.sku] || {}).name || l.text)}`).join(", ")}</span>` : ""}</td>
+          <td class="r amt">${money(Number(r.gross) || 0)}</td>
+          <td class="r">${vt}</td>
+          <td>${r.status === "storniert" ? `<span class="chip chip--bad">storniert</span><br><span class="muted">${esc(r.stornoReason || "")}</span>` : `<span class="chip chip--good">gebucht</span><br><button class="link" data-storno="${esc(r.id)}">Stornieren</button>`}</td></tr>`;
+      }).join("")}</tbody></table></div>`;
+  }
+  $("rc-year").addEventListener("change", (e) => { rcYear = e.target.value; renderReceipts(); });
+  document.addEventListener("click", (e) => {
+    const g = e.target.closest("[data-goto-receipt]");
+    if (!g) return;
+    const r = state.receipts.find((x) => x.no === g.dataset.gotoReceipt);
+    if (r) rcYear = String(r.year);
+    showTab("belege"); renderReceipts();
+    const row = r && document.getElementById("rc-" + r.no);
+    if (row) row.scrollIntoView({ block: "center" });
+  });
+
+  // Stornieren
+  let stornoId = null;
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-storno]");
+    if (!b) return;
+    const r = state.receipts.find((x) => x.id === b.dataset.storno); if (!r) return;
+    stornoId = r.id;
+    $("rc-storno-info").textContent = `${r.no} · ${r.vendor} · ${money(Number(r.gross) || 0)}. Der Beleg bleibt im Archiv, die zugehörigen Einträge bei Einkauf bzw. Kosten werden entfernt.`;
+    $("rc-storno-reason").value = "";
+    $("rc-storno").showModal();
+  });
+  $("rc-storno-cancel").addEventListener("click", () => $("rc-storno").close());
+  $("rc-storno-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const reason = $("rc-storno-reason").value.trim();
+    if (!reason) { $("rc-storno-reason").focus(); return; }
+    const r = state.receipts.find((x) => x.id === stornoId); if (!r) return;
+    const okW = await write(async (db) => {
+      await db.doc("receipts/" + r.id).update({ status: "storniert", stornoReason: reason, stornoAt: new Date().toISOString() });
+      for (const pid of (r.links && r.links.purchases) || []) await db.doc("purchases/" + pid).delete();
+      if (r.links && r.links.cost) await db.doc("costs/" + r.links.cost).delete();
+    });
+    if (okW) $("rc-storno").close();
+  });
+
+  // Jahresarchiv (ZIP mit Belegliste, Originalen und Verfahrensbeschreibung)
+  const csvCell = (v) => { const s = String(v ?? ""); return /[";\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const deNum = (n) => (Number(n) || 0).toFixed(2).replace(".", ",");
+  const slug = (s) => String(s || "").normalize("NFKD").replace(/[^\w\s-]/g, "").trim().replace(/\s+/g, "-").slice(0, 30) || "beleg";
+  const extOf = (t) => ({ "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif", "application/pdf": "pdf" }[t] || "bin");
+  function buildCSV(list) {
+    const vatOf = (r, rate, f) => (r.vat || []).filter((v) => Number(v.rate) === rate).reduce((s, v) => s + (Number(v[f]) || 0), 0);
+    const head = ["Belegnr", "Datum", "Händler", "Beleg-Nr Händler", "Art", "Kategorie", "Beschreibung", "Positionen", "Brutto", "Netto 19%", "MwSt 19%", "Netto 7%", "MwSt 7%", "Netto 0%", "Zahlungsart", "Status", "Storno-Grund", "Storno am", "Datei", "SHA-256", "Erfasst am", "Bestätigt am", "Automatisch ausgelesen"];
+    const rows = list.map((r) => [r.no, fmtDate(r.date), r.vendor, r.receiptNo, r.kind === "ware" ? "Wareneinkauf" : "Betriebskosten", r.category, r.description,
+      (r.lines || []).map((l) => `${l.qty}x ${(productBySku[l.sku] || {}).name || l.text} (${deNum(l.gross)})`).join(" | "),
+      deNum(r.gross), deNum(vatOf(r, 19, "net")), deNum(vatOf(r, 19, "tax")), deNum(vatOf(r, 7, "net")), deNum(vatOf(r, 7, "tax")), deNum(vatOf(r, 0, "net")),
+      PAY[r.payment] || r.payment, r.status, r.stornoReason || "", r.stornoAt ? r.stornoAt.slice(0, 10) : "",
+      `Belege/${r.no}_${r.date}_${slug(r.vendor)}.${extOf(r.fileType)}`, r.sha256, r.capturedAt, r.confirmedAt, r.ai && r.ai.used ? "ja, manuell geprüft" : "nein"]);
+    return "﻿" + [head, ...rows].map((row) => row.map(csvCell).join(";")).join("\r\n");
+  }
+  function buildReadme(year, list) {
+    return `Aksum – Belegarchiv ${year}
+Erstellt am ${fmtDate(today())} aus dem Aksum Kontor.
+
+INHALT
+- belege-${year}.csv: Belegliste (Trennzeichen Semikolon, Dezimalkomma, für Excel geeignet)
+- Belege/: Originalfotos bzw. -PDFs, benannt nach Belegnummer, Datum und Händler
+- Diese Datei: Verfahrensbeschreibung
+
+ANZAHL: ${list.length} Belege (${list.filter((r) => r.status === "storniert").length} davon storniert)
+
+VERFAHREN (Vorlage für die Verfahrensdokumentation – bitte prüfen und ergänzen)
+1. Verantwortlich: Inhaber/in von Aksum.
+2. Erfassung: Papierbelege werden zeitnah nach Erhalt mit dem Smartphone fotografiert bzw. PDF-Rechnungen als Originaldatei hochgeladen.
+3. Auslesen: Datum, Händler, Beträge und MwSt werden automatisch vorgeschlagen und vor dem Speichern vollständig manuell mit dem Beleg verglichen und bestätigt.
+4. Speicherung: Die Originaldatei wird unverändert gespeichert. Ein SHA-256-Hashwert der Datei wird mit dem Datensatz abgelegt; er steht in der CSV-Spalte "SHA-256" und lässt sich jederzeit nachrechnen, um die Unverändertheit zu prüfen.
+5. Nummerierung: Jeder Beleg erhält eine fortlaufende Nummer je Jahr (B-JJJJ-NNNN).
+6. Unveränderbarkeit: Bestätigte Belege können nicht bearbeitet oder gelöscht werden. Korrekturen erfolgen durch Stornierung mit Grund und Datum; der stornierte Beleg bleibt im Archiv.
+7. Sicherung: Mindestens jährlich wird dieses Archiv heruntergeladen und an einem zweiten Ort gespeichert.
+8. Papierbelege: ${"werden bis zur Klärung mit dem Steuerberater zusätzlich im Ordner aufbewahrt."}
+9. Aufbewahrung: 8 Jahre ab Ende des Kalenderjahres, in dem der Beleg entstanden ist.
+`;
+  }
+  $("rc-export").addEventListener("click", async () => {
+    const box = $("rc-export-msg"); box.hidden = false; box.className = "notice"; box.textContent = "Erstelle das Archiv …";
+    const year = rcYear;
+    const list = state.receipts.filter((r) => String(r.year) === year).sort((a, b) => (a.no || "").localeCompare(b.no || ""));
+    if (!list.length) { box.textContent = `Für ${year} gibt es noch keine Belege.`; return; }
+    if (!state.downloads) { box.className = "notice notice--bad"; box.textContent = "Herunterladen ist hier nicht möglich."; return; }
+    try {
+      let data, filename;
+      if (window.JSZip) {
+        const zip = new window.JSZip();
+        zip.file(`belege-${year}.csv`, buildCSV(list));
+        zip.file("LIESMICH-Verfahren.txt", buildReadme(year, list));
+        let missing = 0;
+        for (const r of list) {
+          try {
+            zip.file(`Belege/${r.no}_${r.date}_${slug(r.vendor)}.${extOf(r.fileType)}`, await blobFetch(r.assetId));
+          } catch (e) { missing++; }
+        }
+        data = await zip.generateAsync({ type: "blob" });
+        filename = `Aksum-Belege-${year}.zip`;
+        if (missing) box.textContent = `${missing} Originaldatei${missing === 1 ? "" : "en"} konnte${missing === 1 ? "" : "n"} nicht ins Archiv geladen werden.`;
+      } else {
+        data = buildCSV(list); filename = `Aksum-Belege-${year}.csv`;
+      }
+      await state.downloads.save({ filename, data });
+      box.className = "notice notice--ok"; box.textContent = `${filename} ist heruntergeladen. Speichere die Datei zusätzlich an einem zweiten Ort.`;
+    } catch (e) {
+      box.className = e && e.code === "declined" ? "notice" : "notice notice--bad";
+      box.textContent = e && e.code === "declined" ? "Herunterladen abgebrochen." : "Das Archiv konnte nicht erstellt werden. Bitte nochmal versuchen.";
+    }
+  });
+
+  // ---------- Start ----------
+  $("c-date").value = today(); $("b-date").value = today();
+  fillSkuSelect();
+  renderAll();
+
+  async function connect() {
+    const db = window.claude && (await window.claude.use("db"));
+    if (!db) { setStatus("bad", "Speicher nicht verfügbar – bitte in Claude öffnen und angemeldet sein"); return; }
+    state.db = db;
+    const loaded = new Set();
+    const ready = (name) => { loaded.add(name); if (loaded.size >= 8) { state.ready = true; setStatus("ok", window.__kontorBlob ? "Verbunden mit deiner Datenbank" : "Gespeichert in deinem privaten Speicher"); } };
+    const listen = (name) => db.collection(name).onSnapshot((snap) => {
+      state[name] = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      ready(name); renderAll();
+    }, () => setStatus("bad", "Verbindung zum Speicher unterbrochen – bitte neu laden"));
+    ["costs", "purchases", "orders", "todos", "receipts", "closings", "deadlines"].forEach(listen);
+    db.doc("settings/main").onSnapshot((snap) => { state.settings = snap.exists ? { ...snap.data() } : {}; ready("settings"); renderAll(); },
+      () => setStatus("bad", "Verbindung zum Speicher unterbrochen – bitte neu laden"));
+    initReceiptCaps();
+    renderAccess();
+  }
+  connect();
+})();
+</script>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
 # Aksum – Eritreische Gewürze & Kultur
 
+> **Neu:** Datenbank und Kontor-Web-App einrichten → siehe [SUPABASE-EINRICHTUNG.md](SUPABASE-EINRICHTUNG.md)
+
 Online-Shop für eritreische Gewürze und Kulturgegenstände, auf Deutsch, Englisch und Tigrinya, mit Bezahlung über PayPal.
 Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages** veröffentlicht werden.
 
@@ -14,6 +16,9 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 | `js/lang-menu.js` | Sprachauswahl (Dropdown) und Reihenfolge der Sprachen |
 | `widerruf.html`, `js/widerruf.js` | Widerrufsbutton (Pflicht seit 19.06.2026), erscheint im Footer, sobald Bestellungen an sind |
 | `tools/mail-vorlagen.md` | Texte für Bestellbestätigung, Widerrufs-Eingang und Versandmail |
+| `kontor/` | **Aksum Kontor** – interne Web-App mit Login (aksum-shop.de/kontor) |
+| `supabase/` | Datenbank (`schema.sql`), Server-Funktionen für PayPal und Widerruf, Datenübernahme |
+| `SUPABASE-EINRICHTUNG.md` | **Anleitung**: Datenbank kostenlos einrichten und alles verbinden |
 | `images/` | Hier kommen deine Produktfotos hinein |
 | `impressum.html`, `datenschutz.html`, `agb.html` | Rechtstexte (**müssen noch ausgefüllt werden!**) |
 | `index.html`, `css/`, `js/app.js` | Aufbau, Design und Technik (normalerweise nicht ändern) |

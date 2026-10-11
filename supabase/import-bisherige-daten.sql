@@ -1,0 +1,8 @@
+-- Übernahme der bisherigen Kontor-Daten (Stand 12.10.2026) aus der Claude-Seite.
+-- Einmal im Supabase SQL Editor ausführen, NACH schema.sql.
+
+insert into public.docs (collection, id, data) values ('costs', 'claude', '{"amount": 23, "category": "Software & Tools", "createdAt": "2026-10-11T18:10:00Z", "date": "2026-10-01", "interval": "monthly", "name": "Claude", "note": "Abo"}'::jsonb) on conflict (collection, id) do nothing;
+insert into public.docs (collection, id, data) values ('costs', 'gewerbe', '{"amount": null, "category": "Behörden & Recht", "createdAt": "2026-10-11T18:10:00Z", "date": "", "interval": "once", "name": "Gewerbeanmeldung", "note": "Betrag und Datum eintragen, sobald angemeldet (je nach Stadt ca. 15–65 €)"}'::jsonb) on conflict (collection, id) do nothing;
+insert into public.docs (collection, id, data) values ('costs', 'ionos', '{"amount": 2, "category": "Domain & Hosting", "createdAt": "2026-10-11T18:10:00Z", "date": "2026-10-01", "interval": "monthly", "name": "IONOS Domain + E-Mail", "note": "aksum-shop.de + Mail Basic, monatlich kündbar; Preis gilt im 1. Jahr, danach prüfen"}'::jsonb) on conflict (collection, id) do nothing;
+insert into public.docs (collection, id, data) values ('todos', '8ysfgc38ocvnvgp1lw5s', '{"createdAt": "2026-10-11T18:49:11.539Z", "done": false, "due": "2026-10-18", "priority": "high", "source": "manual", "title": "Gewerbe beim Amt anmelden"}'::jsonb) on conflict (collection, id) do nothing;
+insert into public.docs (collection, id, data) values ('todos', 'f6qliy6sigazjn98cdzz', '{"createdAt": "2026-10-11T18:49:35.193Z", "done": false, "due": "2026-10-25", "priority": "normal", "source": "manual", "title": "Paypal Business einrichten"}'::jsonb) on conflict (collection, id) do nothing;

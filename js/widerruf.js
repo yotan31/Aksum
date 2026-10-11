@@ -127,12 +127,15 @@
     e.preventDefault();
     const now = new Date();
     const payload = { ...data, submittedAt: now.toISOString(), language: lang };
-    const endpoint = (SHOP_CONFIG.withdrawalEndpoint || "").trim();
+    const sb = (SHOP_CONFIG.supabaseUrl || "").replace(/\/$/, "");
+    const endpoint = (SHOP_CONFIG.withdrawalEndpoint || "").trim() || (sb ? sb + "/functions/v1/widerruf" : "");
+    const headers = { "Content-Type": "application/json" };
+    if (sb && SHOP_CONFIG.supabaseAnonKey) { headers.apikey = SHOP_CONFIG.supabaseAnonKey; headers.Authorization = "Bearer " + SHOP_CONFIG.supabaseAnonKey; }
     if (endpoint) {
       const btn = $("wd-confirm");
       btn.disabled = true; btn.textContent = t("sending");
       try {
-        const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+        const res = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify(payload) });
         if (!res.ok) throw new Error(String(res.status));
         $("wd-step2").hidden = true;
         $("wd-done").hidden = false;

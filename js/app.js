@@ -146,6 +146,21 @@
   const deliveryLine = () => t("delivery", { time: tr(SHOP_CONFIG.deliveryTime || { de: "2–5 Werktage" }) });
   // Text aus products.js: einfacher Text oder { de, en, ti }
   const infoText = (v) => (v && typeof v === "object" ? v[lang] || v.de || "" : v || "");
+  // ---------- Datenbank (Supabase) ----------
+  const SB = (SHOP_CONFIG.supabaseUrl || "").replace(/\/$/, "");
+  const sbHeaders = () => ({ apikey: SHOP_CONFIG.supabaseAnonKey, Authorization: "Bearer " + SHOP_CONFIG.supabaseAnonKey, "Content-Type": "application/json" });
+  let soldOut = new Set();
+  async function loadAvailability() {
+    if (!SB) return;
+    try {
+      const res = await fetch(SB + "/rest/v1/shop_status?sold_out=eq.true&select=sku", { headers: sbHeaders() });
+      if (!res.ok) return;
+      soldOut = new Set((await res.json()).map((r) => r.sku));
+      renderAll();
+    } catch (e) { console.warn("Verfügbarkeit nicht geladen", e); }
+  }
+  const isSoldOut = (p) => soldOut.has(p.id) || variantsOf(p).every((v) => soldOut.has(v.id ? p.id + ":" + v.id : p.id));
+
   // Lebensmittel brauchen vor dem Verkauf Zutaten und Hersteller/Importeur
   const incomplete = (p) => !!p.food && !(p.info && infoText(p.info.ingredients).trim() && infoText(p.info.producer).trim());
 
@@ -201,7 +216,9 @@
               <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
               ${basePrice(selectedVariant(p)) ? `<span class="product__base">${esc(basePrice(selectedVariant(p)))}</span>` : ""}
             </span>
-            ${!ordersOpen ? "" : incomplete(p)
+            ${!ordersOpen ? "" : isSoldOut(p)
+              ? `<button class="btn btn--small btn--soon" disabled>${esc(t("product.soldOut"))}</button>`
+              : incomplete(p)
               ? `<button class="btn btn--small btn--soon" disabled>${esc(t("product.soon"))}</button>`
               : `<button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>`}
           </div>
@@ -350,9 +367,17 @@
       .Buttons({
         style: { layout: "vertical", color: "gold", shape: "rect", label: "paypal" },
 
-        // Bestellung bei PayPal anlegen – mit allen Artikeln, damit du
-        // in deinem PayPal-Konto siehst, was gekauft wurde.
-        createOrder: function (data, actions) {
+        // Mit Datenbank: Bestellung über die Server-Funktion anlegen
+        // (Preise werden dort berechnet, nicht im Browser).
+        createOrder: SB ? async function () {
+          const res = await fetch(SB + "/functions/v1/paypal", { method: "POST", headers: sbHeaders(),
+            body: JSON.stringify({ action: "create", cart: cartLines().map(({ key, qty }) => ({ key, qty })) }) });
+          const d = await res.json();
+          if (!res.ok || !d.id) { alert(d.error || t("error.payment")); throw new Error(d.error || "create"); }
+          return d.id;
+        } :
+        // Ohne Datenbank: Bestellung direkt bei PayPal anlegen.
+        function (data, actions) {
           const sums = totals();
           return actions.order.create({
             purchase_units: [
@@ -378,7 +403,17 @@
           });
         },
 
-        onApprove: function (data, actions) {
+        onApprove: SB ? async function (data) {
+          const res = await fetch(SB + "/functions/v1/paypal", { method: "POST", headers: sbHeaders(), body: JSON.stringify({ action: "capture", orderID: data.orderID }) });
+          const d = await res.json();
+          if (!res.ok) { alert(d.error || t("error.payment")); return; }
+          cart = {};
+          save(CART_KEY, cart);
+          renderCart();
+          closeCart();
+          document.getElementById("order-id").textContent = d.id;
+          document.getElementById("thanks").showModal();
+        } : function (data, actions) {
           return actions.order.capture().then(function (details) {
             cart = {};
             save(CART_KEY, cart);
@@ -458,6 +493,7 @@
     lang = code;
     renderAll();
   });
+  loadAvailability();
 
   if (ordersOpen) {
     renderAll();
