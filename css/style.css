@@ -171,7 +171,7 @@ html[lang="ti"] .hero__kicker { text-transform: none; letter-spacing: 0; }
 }
 .variants button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
 .product__desc { margin: 0 0 16px; font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
-.product__footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.product__footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .product__price { font: 700 1.2rem var(--font-body); }
 
 /* ---------- Über uns / Kontakt ---------- */
