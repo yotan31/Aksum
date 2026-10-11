@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vertrag widerrufen – Aksum</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="images/logo-kranz.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=Noto+Sans+Ethiopic:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo"><img class="logo__mark" src="images/logo-kranz.svg" alt="" width="54" height="54"><span>Aksum</span></a>
+      <nav class="nav"><a href="index.html" id="wd-back">← Zurück zum Shop</a></nav>
+      <div class="header__actions"><div data-lang-menu></div></div>
+    </div>
+  </header>
+  <main class="container legal withdraw">
+    <h1 id="wd-title">Vertrag widerrufen</h1>
+    <p id="wd-intro"></p>
+
+    <!-- Schritt 1: Angaben -->
+    <form id="wd-step1" class="wd-form" novalidate>
+      <label class="wd-field"><span id="l-order"></span><input id="wd-order" required autocomplete="off"></label>
+      <label class="wd-field"><span id="l-date"></span><input id="wd-date" type="date" required></label>
+      <label class="wd-field"><span id="l-name"></span><input id="wd-name" required autocomplete="name"></label>
+      <label class="wd-field"><span id="l-email"></span><input id="wd-email" type="email" required autocomplete="email"></label>
+      <label class="wd-field"><span id="l-items"></span><textarea id="wd-items" rows="2"></textarea></label>
+      <p class="wd-error" id="wd-error1" hidden></p>
+      <button class="btn" type="submit" id="wd-next"></button>
+    </form>
+
+    <!-- Schritt 2: Bestätigen -->
+    <form id="wd-step2" class="wd-form" hidden>
+      <p id="wd-confirm-text"></p>
+      <dl class="wd-summary" id="wd-summary"></dl>
+      <p class="wd-error" id="wd-error2" hidden></p>
+      <div class="wd-actions">
+        <button class="btn btn--ghost" type="button" id="wd-back2"></button>
+        <button class="btn" type="submit" id="wd-confirm"></button>
+      </div>
+    </form>
+
+    <!-- Schritt 3: Eingegangen / Ersatzweg per E-Mail -->
+    <div id="wd-done" hidden>
+      <p class="wd-ok" id="wd-done-text"></p>
+    </div>
+    <div id="wd-fallback" hidden>
+      <p id="wd-fallback-text"></p>
+      <textarea id="wd-mailtext" rows="9" readonly></textarea>
+      <div class="wd-actions">
+        <button class="btn btn--ghost" type="button" id="wd-copy"></button>
+        <a class="btn" id="wd-mailto" href="#"></a>
+      </div>
+    </div>
+  </main>
+  <script src="js/config.js"></script>
+  <script src="js/lang-menu.js"></script>
+  <script src="js/widerruf.js"></script>
+</body>
+</html>

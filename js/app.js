@@ -124,11 +124,30 @@
     document.querySelectorAll("[data-i18n-html]").forEach((el) => {
       el.innerHTML = t(el.dataset.i18nHtml);
     });
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => el.setAttribute("aria-label", t(el.dataset.i18nAria)));
+    document.getElementById("cart-tax").textContent = t(SHOP_CONFIG.smallBusiness ? "cart.taxSmall" : "cart.taxIncl");
+    document.getElementById("cart-delivery").textContent = t("cart.delivery", { time: tr(SHOP_CONFIG.deliveryTime || { de: "2–5 Werktage" }) });
+    document.getElementById("withdraw-link").hidden = !ordersOpen;
     document.getElementById("shipping-info").textContent = t("footer.shipping", {
       cost: formatCents(toCents(SHOP_CONFIG.shippingCost)),
       free: formatCents(toCents(SHOP_CONFIG.freeShippingFrom)),
     });
   }
+
+  // Grundpreis (€ pro kg) aus der Größe, z. B. "250 g" -> Preis × 4
+  function basePrice(variant) {
+    const m = String((variant.weight && variant.weight.de) || "").replace(",", ".").match(/^\s*([\d.]+)\s*(g|kg)\b/i);
+    if (!m) return "";
+    const kg = m[2].toLowerCase() === "kg" ? Number(m[1]) : Number(m[1]) / 1000;
+    if (!(kg > 0)) return "";
+    return t("price.perKg", { price: formatCents(Math.round(toCents(variant.price) / kg)) });
+  }
+  const taxLine = () => t(SHOP_CONFIG.smallBusiness ? "price.taxSmall" : "price.taxIncl");
+  const deliveryLine = () => t("delivery", { time: tr(SHOP_CONFIG.deliveryTime || { de: "2–5 Werktage" }) });
+  // Text aus products.js: einfacher Text oder { de, en, ti }
+  const infoText = (v) => (v && typeof v === "object" ? v[lang] || v.de || "" : v || "");
+  // Lebensmittel brauchen vor dem Verkauf Zutaten und Hersteller/Importeur
+  const incomplete = (p) => !!p.food && !(p.info && infoText(p.info.ingredients).trim() && infoText(p.info.producer).trim());
 
   function glutenBadge() {
     return `<span class="badge-gf">
@@ -170,16 +189,23 @@
       .map(
         (p) => `
       <article class="product">
-        <div class="product__image">${productImage(p)}${p.glutenFree ? glutenBadge() : ""}</div>
+        <div class="product__image" data-detail="${esc(p.id)}">${productImage(p)}${p.glutenFree ? glutenBadge() : ""}</div>
         <div class="product__body">
           <p class="product__category">${esc(t("filter." + p.category))}</p>
           <h3 class="product__name">${esc(tr(p.name))}</h3>
           ${variantPicker(p)}
           <p class="product__desc">${esc(tr(p.description))}</p>
+          <button class="product__more" data-detail="${esc(p.id)}">${esc(t("detail.more"))}</button>
           <div class="product__footer">
-            <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
-            ${ordersOpen ? `<button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>` : ""}
+            <span class="product__pricebox">
+              <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
+              ${basePrice(selectedVariant(p)) ? `<span class="product__base">${esc(basePrice(selectedVariant(p)))}</span>` : ""}
+            </span>
+            ${!ordersOpen ? "" : incomplete(p)
+              ? `<button class="btn btn--small btn--soon" disabled>${esc(t("product.soon"))}</button>`
+              : `<button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>`}
           </div>
+          <p class="product__meta">${esc(taxLine())}<br>${esc(deliveryLine())}</p>
         </div>
       </article>`
       )
@@ -234,7 +260,50 @@
     applyTexts();
     renderProducts();
     renderCart();
+    if (detail.open) renderDetail();
   }
+
+  // ---------- Produktdetails ----------
+  const detail = document.getElementById("detail");
+  let detailId = null;
+  function renderDetail() {
+    const p = PRODUCTS.find((x) => x.id === detailId);
+    if (!p) return;
+    const v = selectedVariant(p);
+    document.getElementById("detail-image").innerHTML = productImage(p);
+    document.getElementById("detail-cat").textContent = t("filter." + p.category);
+    document.getElementById("detail-name").textContent = tr(p.name);
+    document.getElementById("detail-price").textContent = formatCents(toCents(v.price)) + " · " + tr(v.weight);
+    document.getElementById("detail-base").textContent = basePrice(v) ? "(" + basePrice(v) + ")" : "";
+    document.getElementById("detail-tax").textContent = taxLine() + " · " + deliveryLine();
+    document.getElementById("detail-desc").textContent = tr(p.description);
+    const info = p.info || {};
+    const rows = [
+      ["detail.netQty", variantsOf(p).map((x) => tr(x.weight)).join(" / ")],
+      ["detail.basePrice", variantsOf(p).map(basePrice).filter(Boolean).join(" / ")],
+      ["detail.ingredients", infoText(info.ingredients)],
+      ["detail.allergens", infoText(info.allergens)],
+      ["detail.nutrition", infoText(info.nutrition)],
+      ["detail.origin", infoText(info.origin)],
+      ["detail.producer", infoText(info.producer)],
+      ["detail.storage", infoText(info.storage)],
+    ].filter(([, val]) => String(val || "").trim());
+    document.getElementById("detail-facts").innerHTML = rows.map(([k, val]) => `<dt>${esc(t(k))}</dt><dd>${esc(val)}</dd>`).join("");
+    const pend = document.getElementById("detail-pending");
+    pend.hidden = !incomplete(p);
+    pend.textContent = t("detail.pending");
+  }
+  function openDetail(id) {
+    detailId = id;
+    renderDetail();
+    if (!detail.open) detail.showModal();
+  }
+  document.addEventListener("click", (e) => {
+    const d = e.target.closest("[data-detail]");
+    if (d) openDetail(d.dataset.detail);
+  });
+  document.getElementById("detail-close").addEventListener("click", () => detail.close());
+  detail.addEventListener("click", (e) => { if (e.target === detail) detail.close(); });
 
   // ---------- Warenkorb öffnen / schließen ----------
 

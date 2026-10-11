@@ -15,6 +15,22 @@
  *              (nur setzen, wenn das Produkt nachweislich glutenfrei ist!)
  *  variants  – statt "price" und "weight": mehrere Größen zur Auswahl,
  *              jede mit eigener id, Größe und eigenem Preis (siehe Teff-Mehl)
+ *  food      – true = Lebensmittel. Dann MÜSSEN vor dem Verkauf die Angaben
+ *              unter "info" ausgefüllt sein (Lebensmittel-Informations-
+ *              verordnung). Solange Zutaten oder Hersteller fehlen, kann das
+ *              Produkt nicht in den Warenkorb gelegt werden.
+ *  info      – Produktangaben für die Detailansicht (Text auf Deutsch,
+ *              optional zusätzlich { de: "...", en: "..." }):
+ *                ingredients – Zutatenliste, Allergene in GROSSBUCHSTABEN
+ *                              (z. B. "Chili, Ingwer, SENF, Knoblauch")
+ *                allergens   – z. B. "Enthält Senf. Kann Spuren von Sesam enthalten."
+ *                              oder "Keine kennzeichnungspflichtigen Allergene"
+ *                producer    – Name und Anschrift des Herstellers oder Importeurs
+ *                origin      – Herkunftsland, z. B. "Eritrea"
+ *                nutrition   – Nährwerte je 100 g (bei Mehl und Kaffee Pflicht,
+ *                              bei reinen Gewürzen nicht nötig)
+ *                storage     – Lagerhinweis
+ *              Der Grundpreis (€ pro kg) wird automatisch aus der Größe berechnet.
  *
  *  HINWEIS: Das sind BEISPIELPRODUKTE. Bitte durch deine echten
  *  Produkte, Preise und Fotos ersetzen.
@@ -25,6 +41,7 @@ const PRODUCTS = [
   {
     id: "berbere-250",
     category: "spices",
+    food: true,
     price: 6.90,
     image: "images/berbere.jpg",
     name: { de: "Berbere", en: "Berbere", ti: "በርበረ" },
@@ -34,10 +51,19 @@ const PRODUCTS = [
       en: "The classic Eritrean spice blend of chili, ginger, garlic and many other spices. Essential for tsebhi and zigni.",
       ti: "ብበርበረ፡ ጀንጀብል፡ ጻዕዳ ሽጉርቲን ካልኦት ቅመማትን ዝተዳለወ ክላሲካዊ ኤርትራዊ ቅመም። ንጸብሒ ዝግኒ ኣገዳሲ።",
     },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "",
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
+    },
   },
   {
     id: "shiro-500",
     category: "spices",
+    food: true,
     price: 8.90,
     image: "images/shiro.jpg",
     name: { de: "Shiro-Pulver", en: "Shiro powder", ti: "ሽሮ" },
@@ -47,10 +73,19 @@ const PRODUCTS = [
       en: "Finely ground, seasoned chickpea flour for the popular shiro dish.",
       ti: "ንጥዑም ጸብሒ ሽሮ ዝኸውን ብቅመም ዝተዳለወ ጽሩይ ሽሮ።",
     },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "",
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
+    },
   },
   {
     id: "mitmita-100",
     category: "spices",
+    food: true,
     price: 3.90,
     image: "images/mitmita.jpg",
     name: { de: "Mitmita", en: "Mitmita", ti: "ሚጥሚጣ" },
@@ -60,10 +95,19 @@ const PRODUCTS = [
       en: "Very hot spice blend of bird's eye chili, cardamom and salt – for seasoning at the table.",
       ti: "ኣዝዩ ዘሕርር ቅመም ካብ ሚጥሚጣ፡ ኮረሪማን ጨውን።",
     },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "",
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
+    },
   },
   {
     id: "korerima-50",
     category: "spices",
+    food: true,
     price: 2.90,
     image: "images/korerima.jpg",
     name: { de: "Korerima (Äthiopischer Kardamom)", en: "Korerima (Ethiopian cardamom)", ti: "ኮረሪማ" },
@@ -73,10 +117,19 @@ const PRODUCTS = [
       en: "Aromatic seeds that give coffee, tea and stews a warm, smoky note.",
       ti: "ንቡን፡ ሻሂን ጸብሒን ጥዑም መዓዛ ዝህብ ቅመም።",
     },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "",
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
+    },
   },
   {
     id: "coffee-500",
     category: "spices",
+    food: true,
     price: 7.90,
     image: "images/rohkaffee.jpg",
     name: { de: "Rohkaffee für die Kaffeezeremonie", en: "Green coffee for the coffee ceremony", ti: "ጥረ ቡን" },
@@ -85,6 +138,14 @@ const PRODUCTS = [
       de: "Grüne Kaffeebohnen zum Selbströsten – so wie bei der traditionellen Bun-Zeremonie.",
       en: "Green coffee beans for roasting yourself – just like in the traditional bun ceremony.",
       ti: "ከም ልምዲ ስርዓተ ቡን ገዛእ ርእስኻ እትቖልዎ ጥረ ቡን።",
+    },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "", // Pflicht: Nährwerte je 100 g
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
     },
   },
   {
@@ -105,6 +166,7 @@ const PRODUCTS = [
   {
     id: "teff",
     category: "flour",
+    food: true,
     image: "images/teff.jpg",
     name: { de: "Teff-Mehl", en: "Teff flour", ti: "ሓርጭ ጣፍ" },
     glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
@@ -117,10 +179,19 @@ const PRODUCTS = [
       en: "Finely ground flour from teff, the ancient grain of East Africa – the basis for authentic injera.",
       ti: "ካብ ጣፍ ዝተጠሓነ ጽሩይ ሓርጭ – መሰረት ናይ ሓቀኛ ጣይታ (እንጀራ)።",
     },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "", // Pflicht: Nährwerte je 100 g
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
+    },
   },
   {
     id: "mashella",
     category: "flour",
+    food: true,
     image: "images/maschella.jpg",
     name: { de: "Maschella-Mehl (Sorghum)", en: "Mashella flour (sorghum)", ti: "ሓርጭ መሽላ" },
     glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
@@ -132,6 +203,14 @@ const PRODUCTS = [
       de: "Mehl aus Maschella (Sorghum-Hirse) – für Injera, gemischt mit Teff, und für Ga'at (Brei).",
       en: "Flour from mashella (sorghum) – for injera mixed with teff, and for ga'at (porridge).",
       ti: "ካብ መሽላ ዝተጠሓነ ሓርጭ – ንጣይታ ምስ ጣፍ ተሓዊሱ፡ ከምኡ'ውን ንዓጊት።",
+    },
+    info: {
+      ingredients: "",
+      allergens: "",
+      producer: "",
+      origin: "",
+      nutrition: "", // Pflicht: Nährwerte je 100 g
+      storage: "Kühl, trocken und lichtgeschützt lagern.",
     },
   },
 

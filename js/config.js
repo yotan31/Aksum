@@ -16,6 +16,19 @@ const SHOP_CONFIG = {
   // true  = Kunden können bestellen und mit PayPal bezahlen.
   ordersEnabled: false,
 
+  // Kleinunternehmer nach § 19 UStG?
+  // false = Preise werden als "inkl. MwSt." angezeigt.
+  // true  = Hinweis "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
+  // Erst umstellen, wenn das Finanzamt deinen Status bestätigt hat.
+  smallBusiness: false,
+
+  // Lieferzeit (erscheint bei jedem Produkt und im Warenkorb)
+  deliveryTime: { de: "2–5 Werktage", en: "2–5 working days", ti: "2–5 መዓልታት ስራሕ" },
+
+  // Adresse der E-Mail-Funktion für den Widerrufsbutton (Cloudflare Worker).
+  // Leer lassen, solange sie nicht eingerichtet ist.
+  withdrawalEndpoint: "",
+
   // Deine PayPal Client-ID (Anleitung in README.md, Schritt 3).
   // "sb" ist ein Test-Modus von PayPal: Es fließt KEIN echtes Geld.
   // Für echte Verkäufe hier deine "Live Client ID" eintragen.

@@ -193,6 +193,39 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--ochre); outline
 .product__desc { margin: 0 0 16px; font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
 .product__footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .product__price { font: 700 1.2rem var(--font-body); }
+.product__pricebox { display: grid; gap: 1px; }
+.product__base { font-size: 0.78rem; color: var(--ink-soft); }
+.product__meta { margin: 10px 0 0; font-size: 0.76rem; color: var(--ink-soft); line-height: 1.4; }
+.product__more { border: 0; background: none; padding: 0; margin: 0 0 12px; color: var(--red); font: 600 0.85rem var(--font-body); cursor: pointer; text-align: left; text-decoration: underline; text-underline-offset: 3px; }
+.product__image[data-detail] { cursor: pointer; }
+.btn--soon { background: var(--bg-alt); color: var(--ink-soft); cursor: default; }
+.btn--soon:hover { background: var(--bg-alt); }
+.cart__meta { font-size: 0.8rem; color: var(--ink-soft); margin: 4px 0 0; }
+
+/* Produktdetails */
+.detail { border: 0; border-radius: 18px; padding: 0; width: min(860px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); }
+.detail::backdrop { background: rgba(20, 12, 6, 0.55); }
+.detail__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+.detail__close { position: absolute; top: 8px; right: 10px; z-index: 2; background: var(--surface); border-radius: 50%; width: 40px; height: 40px; }
+.detail__image { background: var(--bg-alt); min-height: 260px; }
+.detail__image img, .detail__image .placeholder { width: 100%; height: 100%; object-fit: cover; }
+.detail__body { padding: 28px 28px 24px; overflow: auto; max-height: calc(100dvh - 24px); }
+.detail__body h2 { margin: 4px 0 8px; font-size: 1.6rem; }
+.detail__price { margin: 0; font-size: 1.15rem; }
+.detail__price span { font-size: 0.85rem; color: var(--ink-soft); }
+.detail__tax { margin: 2px 0 14px; font-size: 0.8rem; color: var(--ink-soft); }
+.detail__facts { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 0.9rem; }
+.detail__facts dt { font-weight: 600; }
+.detail__facts dd { margin: 0; color: var(--ink-soft); white-space: pre-line; }
+.detail__pending { margin: 14px 0 0; padding: 10px 12px; border-radius: 8px; background: var(--bg-alt); font-size: 0.85rem; color: var(--ink-soft); }
+@media (max-width: 680px) {
+  .detail { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; border-radius: 0; }
+  .detail__inner { grid-template-columns: 1fr; height: 100%; overflow: auto; }
+  .detail__image { min-height: 0; aspect-ratio: 4 / 3; }
+  .detail__body { max-height: none; padding: 20px 16px 32px; }
+  .detail__facts { grid-template-columns: 1fr; gap: 2px; }
+  .detail__facts dd { margin-bottom: 8px; }
+}
 
 /* ---------- Über uns / Kontakt ---------- */
 .about, .contact { max-width: 720px; }
@@ -272,3 +305,17 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--ochre); outline
 .faq summary::after { content: "+"; position: absolute; right: 18px; top: 10px; font-size: 1.4rem; color: var(--red); }
 .faq[open] summary::after { content: "−"; }
 .faq p { margin: 0; padding: 0 18px 16px; color: var(--ink-soft); }
+
+/* ---------- Widerruf ---------- */
+.withdraw .wd-form { display: grid; gap: 14px; margin-top: 20px; max-width: 560px; }
+.wd-field { display: grid; gap: 6px; font-size: 0.9rem; font-weight: 600; }
+.wd-field input, .wd-field textarea, #wd-mailtext { font: 400 1rem var(--font-body); padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); width: 100%; }
+.wd-error { margin: 0; padding: 10px 12px; border-radius: 8px; background: #fbe9e4; color: var(--red-dark); font-size: 0.9rem; }
+.wd-ok { padding: 14px 16px; border-radius: 10px; background: #e6f0e9; color: var(--green); }
+.wd-summary { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.wd-summary dt { font-weight: 600; }
+.wd-summary dd { margin: 0; }
+.wd-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.btn--ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn--ghost:hover { background: var(--bg-alt); }
+#wd-fallback { max-width: 560px; margin-top: 20px; }

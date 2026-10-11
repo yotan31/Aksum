@@ -12,6 +12,8 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 | `js/i18n.js` | Alle Texte der Seite auf Deutsch, Englisch und Tigrinya |
 | `js/faq.js` | **Häufige Fragen** (FAQ) auf Deutsch, Englisch und Tigrinya |
 | `js/lang-menu.js` | Sprachauswahl (Dropdown) und Reihenfolge der Sprachen |
+| `widerruf.html`, `js/widerruf.js` | Widerrufsbutton (Pflicht seit 19.06.2026), erscheint im Footer, sobald Bestellungen an sind |
+| `tools/mail-vorlagen.md` | Texte für Bestellbestätigung, Widerrufs-Eingang und Versandmail |
 | `images/` | Hier kommen deine Produktfotos hinein |
 | `impressum.html`, `datenschutz.html`, `agb.html` | Rechtstexte (**müssen noch ausgefüllt werden!**) |
 | `index.html`, `css/`, `js/app.js` | Aufbau, Design und Technik (normalerweise nicht ändern) |
@@ -44,6 +46,19 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 - Jede Bestellung erscheint in deinem PayPal-Konto unter **Aktivitäten**, mit allen Artikeln und der Lieferadresse.
 - Du bekommst von PayPal zu jeder Bestellung eine E-Mail.
 - **Tipp:** Vor dem Versand kurz prüfen, ob der bezahlte Betrag zu den bestellten Artikeln passt.
+
+## Vor dem Verkaufsstart: Pflichtangaben für Lebensmittel
+Lebensmittel sind in `js/products.js` mit `food: true` markiert. Für jedes davon unter `info` ausfüllen:
+**Zutaten** (Allergene in GROSSBUCHSTABEN), **Allergene**, **Hersteller/Importeur mit Anschrift**, **Herkunft**,
+bei Mehl und Kaffee zusätzlich **Nährwerte je 100 g**. Solange Zutaten oder Hersteller fehlen, zeigt der Shop
+„Bald verfügbar“ statt „In den Warenkorb“. Der Grundpreis (€/kg) wird automatisch berechnet.
+
+**Kleinunternehmer?** In `js/config.js` `smallBusiness: true` setzen, sobald das Finanzamt es bestätigt hat.
+Dann stellt der Shop alle Hinweise auf „Gemäß § 19 UStG wird keine Umsatzsteuer berechnet“ um.
+Achtung: In `agb.html` steht noch „inkl. gesetzlicher MwSt.“ – das dann ebenfalls anpassen.
+
+**Widerrufsbutton:** Ohne eingerichtete E-Mail-Funktion (`withdrawalEndpoint` in `js/config.js`) bereitet die Seite
+nur eine E-Mail vor. Für die Pflicht-Eingangsbestätigung muss die E-Mail-Funktion vor dem Start eingerichtet sein.
 
 ## Produkte ändern
 `js/products.js` öffnen. Auf GitHub geht das mit dem Stift-Symbol direkt im Browser. Dann einen Produkt-Block kopieren und die Werte anpassen.

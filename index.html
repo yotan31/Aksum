@@ -87,6 +87,7 @@
         <a href="impressum.html" data-i18n="footer.imprint">Impressum</a>
         <a href="datenschutz.html" data-i18n="footer.privacy">Datenschutz</a>
         <a href="agb.html" data-i18n="footer.terms">AGB & Widerruf</a>
+        <a href="widerruf.html" id="withdraw-link" data-i18n="footer.withdraw" hidden>Vertrag widerrufen</a>
       </nav>
     </div>
   </footer>
@@ -107,11 +108,29 @@
         <div class="cart__total"><dt data-i18n="cart.total">Gesamt</dt><dd id="sum-total"></dd></div>
       </dl>
       <p class="cart__hint" id="free-hint" hidden></p>
+      <p class="cart__meta"><span id="cart-tax"></span> <span id="cart-delivery"></span></p>
       <p class="cart__pay" data-i18n="cart.payWith">Sicher bezahlen mit PayPal:</p>
       <div id="paypal-buttons"></div>
       <p class="cart__legal" data-i18n-html="cart.legal"></p>
     </div>
   </aside>
+
+  <!-- Produktdetails -->
+  <dialog class="detail" id="detail" aria-labelledby="detail-name">
+    <div class="detail__inner">
+      <button class="cart__close detail__close" id="detail-close" data-i18n-aria="detail.close" aria-label="Schließen">×</button>
+      <div class="detail__image" id="detail-image"></div>
+      <div class="detail__body">
+        <p class="product__category" id="detail-cat"></p>
+        <h2 id="detail-name"></h2>
+        <p class="detail__price"><strong id="detail-price"></strong> <span id="detail-base"></span></p>
+        <p class="detail__tax" id="detail-tax"></p>
+        <p id="detail-desc"></p>
+        <dl class="detail__facts" id="detail-facts"></dl>
+        <p class="detail__pending" id="detail-pending" hidden></p>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Danke-Fenster nach erfolgreicher Zahlung -->
   <dialog class="thanks" id="thanks">
