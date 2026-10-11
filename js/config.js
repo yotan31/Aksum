@@ -28,8 +28,8 @@ const SHOP_CONFIG = {
   // Supabase (Datenbank). Beide Werte findest du in Supabase unter
   // Project Settings → API. Der "anon"-Schlüssel ist öffentlich und darf hier stehen.
   // Leer lassen = Shop läuft wie bisher ohne Datenbank.
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://dmmecpmjuogfqcsabnnw.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtbWVjcG1qdW9nZnFjc2Fibm53Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE3NTM3ODksImV4cCI6MjEwNzMyOTc4OX0.LU9j3nwS8xb1SE6APaL1jlfOpNMShDaB0pvZIg09j9s",
 
   // Nur falls die Widerrufs-Funktion woanders liegt. Leer = Supabase-Funktion "widerruf".
   withdrawalEndpoint: "",

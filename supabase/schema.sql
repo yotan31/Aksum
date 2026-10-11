@@ -25,7 +25,8 @@ as $$
     where lower(email) = lower(coalesce(auth.jwt() ->> 'email', ''))
   );
 $$;
-grant execute on function public.is_admin() to anon, authenticated;
+revoke execute on function public.is_admin() from anon, public;
+grant execute on function public.is_admin() to authenticated;
 
 drop policy if exists "admins lesen" on public.admins;
 create policy "admins lesen" on public.admins for select to authenticated using (public.is_admin());
@@ -51,7 +52,7 @@ drop policy if exists "kontor admins" on public.docs;
 create policy "kontor admins" on public.docs for all to authenticated using (public.is_admin()) with check (public.is_admin());
 
 create or replace function public.docs_touch()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql set search_path = '' as $$
 begin
   new.updated_at := now();
   if tg_op = 'UPDATE' then new.version := old.version + 1; end if;
@@ -90,7 +91,7 @@ create policy "belege admins hochladen" on storage.objects for insert to authent
 
 -- ---------- Wach-halten (kostenloser Tarif pausiert nach 7 Tagen ohne Zugriff) ----------
 create or replace function public.ping()
-returns text language sql stable as $$ select 'ok'::text $$;
+returns text language sql stable set search_path = '' as $$ select 'ok'::text $$;
 grant execute on function public.ping() to anon;
 
 -- ============================================================
