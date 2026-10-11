@@ -10,6 +10,12 @@ const SHOP_CONFIG = {
   // Name des Shops (erscheint oben links und im Browser-Tab)
   shopName: "Aksum",
 
+  // Bestellen und Bezahlen ein- oder ausschalten.
+  // false = Die Seite zeigt nur die Produkte (ohne Warenkorb und PayPal)
+  //         und einen Hinweis, dass der Shop bald öffnet.
+  // true  = Kunden können bestellen und mit PayPal bezahlen.
+  ordersEnabled: false,
+
   // Deine PayPal Client-ID (Anleitung in README.md, Schritt 3).
   // "sb" ist ein Test-Modus von PayPal: Es fließt KEIN echtes Geld.
   // Für echte Verkäufe hier deine "Live Client ID" eintragen.

@@ -46,6 +46,9 @@
 
   // ---------- Zustand ----------
 
+  // Bestellungen aus? Dann keine Warenkorb-Knöpfe und kein PayPal.
+  const ordersOpen = SHOP_CONFIG.ordersEnabled !== false;
+
   let lang = load(LANG_KEY, "de") === "ti" ? "ti" : "de";
   let filter = "all";
   let cart = load(CART_KEY, {}); // { produktId: anzahl }
@@ -175,7 +178,7 @@
           <p class="product__desc">${esc(p.description[lang])}</p>
           <div class="product__footer">
             <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
-            <button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>
+            ${ordersOpen ? `<button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>` : ""}
           </div>
         </div>
       </article>`
@@ -386,6 +389,14 @@
   if (SHOP_CONFIG.instagram) insta.href = SHOP_CONFIG.instagram;
   else insta.parentElement.hidden = true;
 
-  renderAll();
-  loadPayPal();
+  if (ordersOpen) {
+    renderAll();
+    loadPayPal();
+  } else {
+    // Shop noch geschlossen: Warenkorb ausblenden, Hinweis zeigen
+    cart = {};
+    document.querySelector(".cart-button").hidden = true;
+    document.getElementById("shop-closed").hidden = false;
+    renderAll();
+  }
 })();

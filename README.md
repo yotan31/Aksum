@@ -37,6 +37,8 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 
 > Solange dort `"sb"` steht, läuft PayPal im **Testmodus**: Es fließt kein echtes Geld.
 
+5. **Bestellungen einschalten:** In `js/config.js` steht `ordersEnabled: false`. Solange das so ist, zeigt die Seite nur die Produkte mit einem „Shop öffnet bald“-Hinweis, ohne Warenkorb und ohne PayPal. Zum Start auf `true` ändern.
+
 ### 4. Bestellungen bearbeiten
 - Jede Bestellung erscheint in deinem PayPal-Konto unter **Aktivitäten**, mit allen Artikeln und der Lieferadresse.
 - Du bekommst von PayPal zu jeder Bestellung eine E-Mail.
