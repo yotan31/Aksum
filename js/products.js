@@ -11,6 +11,8 @@
  *  image     – Pfad zu einem Foto, z. B. "images/berbere.jpg"
  *              (leer lassen "" = es wird ein Platzhalter angezeigt)
  *  name / weight / description – jeweils auf Deutsch (de) und Tigrinya (ti)
+ *  glutenFree – true = grünes Zeichen „Glutenfrei“ am Produkt
+ *              (nur setzen, wenn das Produkt nachweislich glutenfrei ist!)
  *  variants  – statt "price" und "weight": mehrere Größen zur Auswahl,
  *              jede mit eigener id, Größe und eigenem Preis (siehe Teff-Mehl)
  *
@@ -99,6 +101,7 @@ const PRODUCTS = [
     category: "flour",
     image: "",
     name: { de: "Teff-Mehl", ti: "ሓርጭ ጣፍ" },
+    glutenFree: true,
     variants: [
       { id: "500g", weight: { de: "500 g", ti: "500 ግራም" }, price: 5.90 },
       { id: "1kg", weight: { de: "1 kg", ti: "1 ኪሎ" }, price: 9.90 },
@@ -113,6 +116,7 @@ const PRODUCTS = [
     category: "flour",
     image: "",
     name: { de: "Maschella-Mehl (Sorghum)", ti: "ሓርጭ መሽላ" },
+    glutenFree: true,
     variants: [
       { id: "500g", weight: { de: "500 g", ti: "500 ግራም" }, price: 3.90 },
       { id: "1kg", weight: { de: "1 kg", ti: "1 ኪሎ" }, price: 6.90 },

@@ -127,6 +127,12 @@
     });
   }
 
+  function glutenBadge() {
+    return `<span class="badge-gf">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+      ${esc(t("badge.glutenFree"))}</span>`;
+  }
+
   function productImage(product) {
     if (product.image) {
       return `<img src="${esc(product.image)}" alt="${esc(product.name[lang])}" loading="lazy">`;
@@ -161,7 +167,7 @@
       .map(
         (p) => `
       <article class="product">
-        <div class="product__image">${productImage(p)}</div>
+        <div class="product__image">${productImage(p)}${p.glutenFree ? glutenBadge() : ""}</div>
         <div class="product__body">
           <p class="product__category">${esc(t("filter." + p.category))}</p>
           <h3 class="product__name">${esc(p.name[lang])}</h3>

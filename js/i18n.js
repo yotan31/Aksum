@@ -25,6 +25,7 @@ const TEXTS = {
     "filter.culture": "Kultur",
     "product.add": "In den Warenkorb",
     "product.added": "Hinzugefügt ✓",
+    "badge.glutenFree": "Glutenfrei",
 
     "about.title": "Über Aksum",
     "about.text1": "Aksum war eines der großen Königreiche der Antike – am Roten Meer, im Gebiet des heutigen Eritrea und Äthiopien. Der Name steht für eine reiche Geschichte und Kultur, die wir mit diesem Shop teilen möchten.",
@@ -76,6 +77,7 @@ const TEXTS = {
     "filter.culture": "ባህሊ",
     "product.add": "ናብ ዘንቢል ወስኽ",
     "product.added": "ተወሲኹ ✓",
+    "badge.glutenFree": "ብዘይ ግሉተን",
 
     "about.title": "ብዛዕባ ኣኽሱም",
     "about.text1": "ኣኽሱም ሓደ ካብ ዓበይቲ መንግስታት ጥንቲ እዩ ነይሩ – ኣብ ጥቓ ቀይሕ ባሕሪ። እዚ ስም ንሃብታም ታሪኽን ባህልን ዝውክል እዩ።",
