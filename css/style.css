@@ -56,7 +56,7 @@ h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
 }
 .btn:hover { background: var(--red-dark); }
 .btn:disabled { background: var(--green); cursor: default; }
-.btn--small { padding: 0.55em 1em; font-size: 0.875rem; }
+.btn--small { padding: 0.55em 1em; font-size: 0.875rem; white-space: nowrap; }
 
 button:focus-visible, a:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
 
