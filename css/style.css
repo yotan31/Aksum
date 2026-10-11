@@ -90,12 +90,36 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--ochre); outline
 .nav a:hover { color: var(--red); }
 .header__actions { display: flex; align-items: center; gap: 12px; }
 
-.lang-switch { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
-.lang-switch button {
-  border: 0; background: transparent; padding: 6px 12px; cursor: pointer;
-  font: 600 0.85rem var(--font-body); color: var(--ink-soft);
+/* Sprachauswahl (Dropdown) */
+.lang-menu { position: relative; }
+.lang-menu__toggle {
+  display: flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 999px; padding: 6px 10px 6px 10px; cursor: pointer;
+  font: 600 0.85rem var(--font-body); line-height: 1;
 }
-.lang-switch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.lang-menu__toggle:hover { border-color: var(--ink-soft); }
+.lang-menu__toggle svg { color: var(--ink-soft); flex: none; }
+.lang-menu__chevron { transition: transform 0.15s; }
+.lang-menu__toggle[aria-expanded="true"] .lang-menu__chevron { transform: rotate(180deg); }
+.lang-menu__list {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 30;
+  min-width: 170px; margin: 0; padding: 6px; list-style: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(60, 35, 15, 0.14);
+}
+.lang-menu__list[hidden] { display: none; }
+.lang-menu__list button {
+  width: 100%; display: flex; align-items: center; gap: 10px;
+  border: 0; background: transparent; cursor: pointer; text-align: left;
+  padding: 9px 10px; border-radius: 8px;
+  font: 500 0.95rem var(--font-body); color: var(--ink);
+}
+.lang-menu__list button:hover, .lang-menu__list button:focus-visible { background: var(--bg-alt); outline: none; }
+.lang-menu__list button[lang="ti"] { font-family: "Noto Sans Ethiopic", sans-serif; }
+.lang-menu__check { visibility: hidden; color: var(--green); flex: none; }
+.lang-menu__list button[aria-checked="true"] { font-weight: 600; }
+.lang-menu__list button[aria-checked="true"] .lang-menu__check { visibility: visible; }
 
 .cart-button {
   position: relative; border: 0; background: transparent; cursor: pointer;

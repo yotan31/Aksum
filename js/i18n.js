@@ -1,8 +1,10 @@
 /*
  * ============================================================
- *  TEXTE DER WEBSEITE (Deutsch = de, Tigrinya = ti)
- *  Die Tigrinya-Texte sollten von einer Muttersprachlerin
- *  oder einem Muttersprachler gegengelesen werden.
+ *  TEXTE DER WEBSEITE
+ *  de = Deutsch, en = Englisch, ti = Tigrinya
+ *  Fehlt ein Text in einer Sprache, wird der deutsche angezeigt.
+ *  Alle Übersetzungen sollten von Muttersprachlern
+ *  gegengelesen werden.
  * ============================================================
  */
 const TEXTS = {
@@ -57,6 +59,59 @@ const TEXTS = {
     "footer.privacy": "Datenschutz",
     "footer.terms": "AGB & Widerruf",
     "footer.shipping": "Versandkosten: {cost} · ab {free} versandkostenfrei",
+  },
+
+  en: {
+    "nav.shop": "Shop",
+    "nav.about": "About us",
+    "nav.contact": "Contact",
+    "nav.faq": "FAQ",
+    "nav.cart": "Cart",
+
+    "hero.kicker": "From Eritrea to your home",
+    "hero.title": "Spices & culture from Eritrea",
+    "hero.text": "Authentic berbere, shiro, teff flour, coffee for the bun ceremony and handmade cultural items – carefully selected and shipped quickly.",
+    "hero.cta": "Go to shop",
+
+    "shop.title": "Our products",
+    "shop.closed": "Our shop is opening soon! Orders are not possible yet. If you have any questions, feel free to contact us below.",
+    "filter.all": "All",
+    "filter.spices": "Spices",
+    "filter.flour": "Flour",
+    "filter.culture": "Culture",
+    "product.add": "Add to cart",
+    "product.added": "Added ✓",
+    "badge.glutenFree": "Gluten-free",
+
+    "about.title": "About Aksum",
+    "about.text1": "Aksum was one of the great kingdoms of antiquity – on the Red Sea, in the region of today's Eritrea and Ethiopia. The name stands for a rich history and culture that we want to share with this shop.",
+    "about.text2": "We bring the flavours of Eritrean cuisine and the beautiful things of everyday life – from the jebena to the mesob – straight to your home.",
+
+    "contact.title": "Contact",
+    "contact.text": "Questions about products or orders? Just write to us!",
+
+    "cart.title": "Your cart",
+    "cart.empty": "Your cart is empty.",
+    "cart.subtotal": "Subtotal",
+    "cart.shipping": "Shipping",
+    "cart.free": "free",
+    "cart.total": "Total",
+    "cart.freeHint": "Only {amount} more for free shipping.",
+    "cart.remove": "Remove",
+    "cart.payWith": "Pay securely with PayPal:",
+    "cart.legal": "By placing an order you accept our <a href=\"agb.html\">terms and conditions</a> and our <a href=\"datenschutz.html\">privacy policy</a>. All prices include VAT.",
+    "cart.paypalError": "PayPal could not be loaded. Please try again later.",
+
+    "thanks.title": "Thank you for your order!",
+    "thanks.text": "Your payment has been received. PayPal will send you a confirmation by email. Order number:",
+    "thanks.close": "Continue shopping",
+    "error.payment": "Unfortunately the payment did not go through. Please try again.",
+
+    "footer.faq": "FAQ",
+    "footer.imprint": "Legal notice",
+    "footer.privacy": "Privacy",
+    "footer.terms": "Terms & cancellation",
+    "footer.shipping": "Shipping: {cost} · free from {free}",
   },
 
   ti: {

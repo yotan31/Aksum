@@ -6,7 +6,6 @@
 (function () {
   "use strict";
 
-  const LANG_KEY = "aksum-lang";
   const CART_KEY = "aksum-cart";
 
   // ---------- Kleine Helfer ----------
@@ -38,18 +37,19 @@
   // Beträge intern in Cent rechnen, damit keine Rundungsfehler entstehen.
   const toCents = (euro) => Math.round(euro * 100);
   const centsToValue = (cents) => (cents / 100).toFixed(2);
-  const priceFormat = new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: SHOP_CONFIG.currency,
-  });
-  const formatCents = (cents) => priceFormat.format(cents / 100);
+  // Preisformat passend zur Sprache (z. B. 8,90 € oder €8.90)
+  const formatCents = (cents) =>
+    new Intl.NumberFormat(localeFor(lang), {
+      style: "currency",
+      currency: SHOP_CONFIG.currency,
+    }).format(cents / 100);
 
   // ---------- Zustand ----------
 
   // Bestellungen aus? Dann keine Warenkorb-Knöpfe und kein PayPal.
   const ordersOpen = SHOP_CONFIG.ordersEnabled !== false;
 
-  let lang = load(LANG_KEY, "de") === "ti" ? "ti" : "de";
+  let lang = loadLanguage(); // "de", "en" oder "ti" (siehe lang-menu.js)
   let filter = "all";
   let cart = load(CART_KEY, {}); // { produktId: anzahl }
 
@@ -82,6 +82,9 @@
     }
     return text;
   }
+
+  // Produkttext in der gewählten Sprache (sonst Deutsch)
+  const tr = (field) => (field && (field[lang] || field.de)) || "";
 
   // ---------- Warenkorb-Berechnung ----------
 
@@ -121,9 +124,6 @@
     document.querySelectorAll("[data-i18n-html]").forEach((el) => {
       el.innerHTML = t(el.dataset.i18nHtml);
     });
-    document.querySelectorAll(".lang-switch button").forEach((btn) => {
-      btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
-    });
     document.getElementById("shipping-info").textContent = t("footer.shipping", {
       cost: formatCents(toCents(SHOP_CONFIG.shippingCost)),
       free: formatCents(toCents(SHOP_CONFIG.freeShippingFrom)),
@@ -138,7 +138,7 @@
 
   function productImage(product) {
     if (product.image) {
-      return `<img src="${esc(product.image)}" alt="${esc(product.name[lang])}" loading="lazy">`;
+      return `<img src="${esc(product.image)}" alt="${esc(tr(product.name))}" loading="lazy">`;
     }
     // Platzhalter, solange kein Foto vorhanden ist
     return `<div class="placeholder placeholder--${product.category}" aria-hidden="true">
@@ -153,12 +153,12 @@
 
   function variantPicker(product) {
     const all = variantsOf(product);
-    if (all.length < 2) return `<p class="product__weight">${esc(all[0].weight[lang])}</p>`;
+    if (all.length < 2) return `<p class="product__weight">${esc(tr(all[0].weight))}</p>`;
     const current = selectedVariant(product);
     return `<div class="variants" role="group">${all
       .map(
         (v) => `<button data-variant="${esc(v.id)}" data-product="${esc(product.id)}"
-          aria-pressed="${v === current}">${esc(v.weight[lang])}</button>`
+          aria-pressed="${v === current}">${esc(tr(v.weight))}</button>`
       )
       .join("")}</div>`;
   }
@@ -173,9 +173,9 @@
         <div class="product__image">${productImage(p)}${p.glutenFree ? glutenBadge() : ""}</div>
         <div class="product__body">
           <p class="product__category">${esc(t("filter." + p.category))}</p>
-          <h3 class="product__name">${esc(p.name[lang])}</h3>
+          <h3 class="product__name">${esc(tr(p.name))}</h3>
           ${variantPicker(p)}
-          <p class="product__desc">${esc(p.description[lang])}</p>
+          <p class="product__desc">${esc(tr(p.description))}</p>
           <div class="product__footer">
             <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
             ${ordersOpen ? `<button class="btn btn--small" data-add="${esc(p.id)}">${esc(t("product.add"))}</button>` : ""}
@@ -206,8 +206,8 @@
         ({ key, product, variant, qty }) => `
       <li class="cart-item">
         <div class="cart-item__info">
-          <strong>${esc(product.name[lang])}</strong>
-          <span>${esc(variant.weight[lang])} · ${formatCents(toCents(variant.price))}</span>
+          <strong>${esc(tr(product.name))}</strong>
+          <span>${esc(tr(variant.weight))} · ${formatCents(toCents(variant.price))}</span>
         </div>
         <div class="qty">
           <button data-qty="${esc(key)}" data-delta="-1" aria-label="−">−</button>
@@ -357,10 +357,6 @@
     } else if (el.dataset.filter) {
       filter = el.dataset.filter;
       renderProducts();
-    } else if (el.dataset.lang) {
-      lang = el.dataset.lang;
-      save(LANG_KEY, lang);
-      renderAll();
     } else if (el.hasAttribute("data-open-cart")) {
       openCart();
     }
@@ -388,6 +384,11 @@
   const insta = document.getElementById("contact-instagram");
   if (SHOP_CONFIG.instagram) insta.href = SHOP_CONFIG.instagram;
   else insta.parentElement.hidden = true;
+
+  initLangMenu(lang, (code) => {
+    lang = code;
+    renderAll();
+  });
 
   if (ordersOpen) {
     renderAll();

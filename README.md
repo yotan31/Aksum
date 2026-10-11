@@ -1,6 +1,6 @@
 # Aksum – Eritreische Gewürze & Kultur
 
-Online-Shop für eritreische Gewürze und Kulturgegenstände, auf Deutsch und Tigrinya, mit Bezahlung über PayPal.
+Online-Shop für eritreische Gewürze und Kulturgegenstände, auf Deutsch, Englisch und Tigrinya, mit Bezahlung über PayPal.
 Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages** veröffentlicht werden.
 
 ## Was ist wo?
@@ -9,8 +9,9 @@ Die Seite braucht keinen eigenen Server und kann kostenlos über **GitHub Pages*
 |---|---|
 | `js/products.js` | **Deine Produkte** (Name, Preis, Beschreibung, Foto) |
 | `js/config.js` | **Einstellungen**: PayPal-ID, Versandkosten, Kontaktdaten |
-| `js/i18n.js` | Alle Texte der Seite auf Deutsch und Tigrinya |
-| `js/faq.js` | **Häufige Fragen** (FAQ) auf Deutsch und Tigrinya |
+| `js/i18n.js` | Alle Texte der Seite auf Deutsch, Englisch und Tigrinya |
+| `js/faq.js` | **Häufige Fragen** (FAQ) auf Deutsch, Englisch und Tigrinya |
+| `js/lang-menu.js` | Sprachauswahl (Dropdown) und Reihenfolge der Sprachen |
 | `images/` | Hier kommen deine Produktfotos hinein |
 | `impressum.html`, `datenschutz.html`, `agb.html` | Rechtstexte (**müssen noch ausgefüllt werden!**) |
 | `index.html`, `css/`, `js/app.js` | Aufbau, Design und Technik (normalerweise nicht ändern) |
@@ -54,4 +55,4 @@ Für ein Foto lädst du das Bild in den Ordner `images/` hoch und trägst den Pf
 - **Lebensmittel** (Gewürze, Kaffee): beim zuständigen **Lebensmittelüberwachungsamt** registrieren und Kennzeichnung beachten (Zutaten, Allergene, Mindesthaltbarkeit, Füllmenge, Hersteller bzw. Importeur).
 - **Impressum, Datenschutzerklärung, AGB und Widerrufsbelehrung** ausfüllen und am besten prüfen lassen, z. B. über Händlerbund, IHK oder einen Rechtstext-Generator.
 - **Verpackungsgesetz:** Registrierung bei LUCID (kostenlos) und Lizenzierung der Versandverpackungen.
-- **Tigrinya-Texte** von einer Muttersprachlerin oder einem Muttersprachler gegenlesen lassen.
+- **Tigrinya- und Englisch-Texte** von Muttersprachlern gegenlesen lassen.
