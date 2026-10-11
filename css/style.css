@@ -1,0 +1,232 @@
+/* ============================================================
+   Farben – hier kannst du das Aussehen des Shops anpassen
+   ============================================================ */
+:root {
+  --bg: #faf5ec;
+  --bg-alt: #f2e8d8;
+  --surface: #ffffff;
+  --ink: #2a1d14;
+  --ink-soft: #6b5a4c;
+  --line: #e4d6c1;
+  --red: #a8361b;       /* Berbere-Rot */
+  --red-dark: #862a14;
+  --ochre: #d4952a;     /* Gold / Ocker */
+  --green: #1f6b45;     /* Grün */
+  --blue: #2b5f8a;      /* Blau */
+  --radius: 14px;
+  --shadow: 0 6px 24px rgba(60, 35, 15, 0.08);
+  --font-body: "Inter", "Noto Sans Ethiopic", system-ui, sans-serif;
+  --font-head: "Fraunces", "Noto Sans Ethiopic", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+html[lang="ti"] body { --font-head: "Noto Sans Ethiopic", sans-serif; }
+
+img { max-width: 100%; display: block; }
+a { color: var(--red); }
+
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.2; margin: 0 0 0.5em; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+
+.container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 16px; }
+
+.btn {
+  display: inline-block;
+  background: var(--red);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8em 1.6em;
+  font: 600 1rem var(--font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn:hover { background: var(--red-dark); }
+.btn:disabled { background: var(--green); cursor: default; }
+.btn--small { padding: 0.55em 1em; font-size: 0.875rem; }
+
+button:focus-visible, a:focus-visible { outline: 3px solid var(--ochre); outline-offset: 2px; }
+
+/* Traditionelles Tilet-Band (Webmuster-Bordüre) */
+.tilet {
+  height: 12px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--green) 0 18px, var(--ochre) 18px 24px,
+      var(--red) 24px 42px, var(--ochre) 42px 48px,
+      var(--blue) 48px 66px, var(--ochre) 66px 72px);
+}
+
+/* ---------- Kopfzeile ---------- */
+.header {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(250, 245, 236, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.header__inner { display: flex; align-items: center; gap: 24px; height: 68px; }
+.logo {
+  display: flex; align-items: center; gap: 8px;
+  font: 700 1.4rem var(--font-head);
+  color: var(--ink); text-decoration: none;
+}
+.logo__mark { color: var(--ochre); }
+.logo__ge { font: 600 0.95rem "Noto Sans Ethiopic", sans-serif; color: var(--ink-soft); margin-left: 4px; }
+.nav { display: flex; gap: 20px; margin-left: auto; }
+.nav a { color: var(--ink); text-decoration: none; font-weight: 500; }
+.nav a:hover { color: var(--red); }
+.header__actions { display: flex; align-items: center; gap: 12px; }
+
+.lang-switch { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.lang-switch button {
+  border: 0; background: transparent; padding: 6px 12px; cursor: pointer;
+  font: 600 0.85rem var(--font-body); color: var(--ink-soft);
+}
+.lang-switch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+
+.cart-button {
+  position: relative; border: 0; background: transparent; cursor: pointer;
+  color: var(--ink); padding: 8px; border-radius: 50%;
+}
+.cart-button:hover { background: var(--bg-alt); }
+.cart-button__count {
+  position: absolute; top: 0; right: 0;
+  min-width: 20px; height: 20px; padding: 0 5px;
+  background: var(--red); color: #fff; border-radius: 999px;
+  font-size: 0.75rem; font-weight: 600; line-height: 20px; text-align: center;
+}
+.cart-button__count[hidden] { display: none; }
+
+/* ---------- Startbereich ---------- */
+.hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(212, 149, 42, 0.25), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(168, 54, 27, 0.15), transparent 40%),
+    var(--bg-alt);
+}
+.hero__inner { padding: clamp(64px, 12vw, 128px) 16px; max-width: 760px; margin-left: max(0px, calc((100% - 1140px) / 2)); }
+.hero__kicker { color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; margin: 0 0 12px; }
+html[lang="ti"] .hero__kicker { text-transform: none; letter-spacing: 0; }
+.hero__title { font-size: clamp(2.2rem, 6vw, 4rem); }
+.hero__text { font-size: 1.15rem; color: var(--ink-soft); margin: 0 0 28px; max-width: 600px; }
+
+/* ---------- Abschnitte ---------- */
+.section { padding: clamp(56px, 8vw, 96px) 0; }
+.section--alt { background: var(--bg-alt); }
+.section__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+.section__head h2 { margin: 0; }
+
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filters button {
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  padding: 8px 18px; border-radius: 999px; cursor: pointer; font: 500 0.95rem var(--font-body);
+}
+.filters button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* ---------- Produkte ---------- */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 24px; }
+.product {
+  display: flex; flex-direction: column;
+  background: var(--surface); border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow); border: 1px solid var(--line);
+}
+.product__image { aspect-ratio: 4 / 3; overflow: hidden; }
+.product__image img { width: 100%; height: 100%; object-fit: cover; }
+.placeholder {
+  width: 100%; height: 100%; display: grid; place-items: center;
+  font: 700 2.4rem "Noto Sans Ethiopic", sans-serif; color: rgba(255, 255, 255, 0.92);
+  text-align: center; padding: 16px;
+}
+.placeholder--spices { background: linear-gradient(135deg, var(--red), var(--ochre)); }
+.placeholder--culture { background: linear-gradient(135deg, var(--green), var(--blue)); }
+.product__body { display: flex; flex-direction: column; flex: 1; padding: 18px 20px 20px; }
+.product__category { margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; }
+.product__name { font-size: 1.2rem; margin: 4px 0 2px; }
+.product__weight { margin: 0 0 8px; font-size: 0.85rem; color: var(--ink-soft); }
+.product__desc { margin: 0 0 16px; font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
+.product__footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.product__price { font: 700 1.2rem var(--font-body); }
+
+/* ---------- Über uns / Kontakt ---------- */
+.about, .contact { max-width: 720px; }
+.about p { font-size: 1.08rem; color: var(--ink-soft); }
+.contact__list { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; font-size: 1.05rem; }
+.contact__list li[hidden] { display: none; }
+
+/* ---------- Fußzeile ---------- */
+.footer { background: var(--ink); color: #e9dccb; }
+.footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding: 28px 16px; font-size: 0.9rem; }
+.footer__inner p { margin: 0; }
+.footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.footer a { color: #e9dccb; }
+
+/* ---------- Warenkorb ---------- */
+.overlay { position: fixed; inset: 0; background: rgba(20, 12, 6, 0.45); z-index: 30; }
+.cart {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 40;
+  width: min(420px, 100%);
+  background: var(--bg); box-shadow: -8px 0 32px rgba(0, 0, 0, 0.15);
+  display: flex; flex-direction: column; padding: 20px; overflow-y: auto;
+  transform: translateX(100%); transition: transform 0.3s ease; visibility: hidden;
+}
+.cart.is-open { transform: none; visibility: visible; }
+.cart__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.cart__head h2 { margin: 0; font-size: 1.5rem; }
+.cart__close { border: 0; background: transparent; font-size: 2rem; line-height: 1; cursor: pointer; color: var(--ink); padding: 0 6px; }
+.cart__empty { color: var(--ink-soft); }
+.cart__items { list-style: none; padding: 0; margin: 0; }
+.cart-item {
+  display: grid; grid-template-columns: 1fr auto; gap: 6px 12px;
+  padding: 14px 0; border-bottom: 1px solid var(--line);
+}
+.cart-item__info { display: flex; flex-direction: column; }
+.cart-item__info span { font-size: 0.85rem; color: var(--ink-soft); }
+.cart-item__remove { grid-column: 1; justify-self: start; border: 0; background: none; color: var(--red); font-size: 0.8rem; padding: 0; cursor: pointer; text-decoration: underline; }
+.qty { display: flex; align-items: center; gap: 4px; align-self: center; }
+.qty button {
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--surface); cursor: pointer; font-size: 1rem; color: var(--ink);
+}
+.qty span { min-width: 24px; text-align: center; font-weight: 600; }
+.cart__summary dl { margin: 16px 0 8px; }
+.cart__summary dl div { display: flex; justify-content: space-between; padding: 4px 0; }
+.cart__summary dt, .cart__summary dd { margin: 0; }
+.cart__total { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px !important; font-weight: 700; font-size: 1.15rem; }
+.cart__hint { margin: 0 0 12px; padding: 8px 12px; background: #e6f0e9; color: var(--green); border-radius: 8px; font-size: 0.88rem; }
+.cart__pay { margin: 16px 0 8px; font-weight: 600; }
+.cart__legal { font-size: 0.78rem; color: var(--ink-soft); margin-top: 12px; }
+.notice { padding: 10px 12px; background: #fbe9e4; color: var(--red-dark); border-radius: 8px; font-size: 0.9rem; }
+
+/* ---------- Danke-Fenster ---------- */
+.thanks {
+  border: 0; border-radius: var(--radius); padding: 32px; max-width: 440px; width: calc(100% - 32px);
+  box-shadow: var(--shadow); text-align: center; background: var(--bg); color: var(--ink);
+}
+.thanks::backdrop { background: rgba(20, 12, 6, 0.5); }
+
+/* ---------- Rechtliche Seiten ---------- */
+.legal { max-width: 760px; padding: 48px 16px 80px; }
+.legal h1 { font-size: 2rem; }
+.legal h2 { font-size: 1.3rem; margin-top: 1.6em; }
+.todo { background: #fff4d6; border-left: 4px solid var(--ochre); padding: 10px 14px; border-radius: 6px; }
+
+/* ---------- Handy ---------- */
+@media (max-width: 720px) {
+  .nav { display: none; }
+  .header__actions { margin-left: auto; }
+  .logo__ge { display: none; }
+  .product-grid { grid-template-columns: 1fr; }
+}
