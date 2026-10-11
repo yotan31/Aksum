@@ -151,11 +151,18 @@ html[lang="ti"] .hero__kicker { text-transform: none; letter-spacing: 0; }
   text-align: center; padding: 16px;
 }
 .placeholder--spices { background: linear-gradient(135deg, var(--red), var(--ochre)); }
+.placeholder--flour { background: linear-gradient(135deg, #8a5a2b, var(--ochre)); }
 .placeholder--culture { background: linear-gradient(135deg, var(--green), var(--blue)); }
 .product__body { display: flex; flex-direction: column; flex: 1; padding: 18px 20px 20px; }
 .product__category { margin: 0; font-size: 0.75rem; font-weight: 600; color: var(--green); text-transform: uppercase; letter-spacing: 0.06em; }
 .product__name { font-size: 1.2rem; margin: 4px 0 2px; }
 .product__weight { margin: 0 0 8px; font-size: 0.85rem; color: var(--ink-soft); }
+.variants { display: flex; gap: 6px; margin: 2px 0 10px; }
+.variants button {
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  padding: 4px 12px; border-radius: 999px; cursor: pointer; font: 500 0.85rem var(--font-body);
+}
+.variants button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
 .product__desc { margin: 0 0 16px; font-size: 0.92rem; color: var(--ink-soft); flex: 1; }
 .product__footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .product__price { font: 700 1.2rem var(--font-body); }
@@ -230,3 +237,11 @@ html[lang="ti"] .hero__kicker { text-transform: none; letter-spacing: 0; }
   .logo__ge { display: none; }
   .product-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- Häufige Fragen ---------- */
+.faq { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 0 0 10px; }
+.faq summary { cursor: pointer; padding: 14px 44px 14px 18px; font-weight: 600; list-style: none; position: relative; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; position: absolute; right: 18px; top: 10px; font-size: 1.4rem; color: var(--red); }
+.faq[open] summary::after { content: "−"; }
+.faq p { margin: 0; padding: 0 18px 16px; color: var(--ink-soft); }
