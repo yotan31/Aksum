@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Eritreischer Olivenkranz">
+  <defs>
+    <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="10" y1="10" x2="90" y2="95">
+      <stop offset="0" stop-color="#e9bd3c"/>
+      <stop offset="0.5" stop-color="#d4a017"/>
+      <stop offset="1" stop-color="#a87a0c"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#g)" stroke="#9c7208" stroke-width="0.35">
+    <path d="M55.0,87.6 L62.1,85.9 L68.7,82.7 L74.6,78.3 L79.4,72.8 L83.0,66.4 L85.2,59.4 L86.0,52.1 L85.3,44.8 L83.1,37.8 L79.5,31.4 L74.7,25.8 L68.9,21.4 L62.3,18.2" fill="none" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(62.1,85.9) rotate(18.3) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(62.1,85.9) rotate(-57.7) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(68.7,82.7) rotate(6.6) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(68.7,82.7) rotate(-69.4) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(74.6,78.3) rotate(-5.1) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(74.6,78.3) rotate(-81.1) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(79.4,72.8) rotate(-16.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(79.4,72.8) rotate(-92.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(83.0,66.4) rotate(-28.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(83.0,66.4) rotate(-104.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(85.2,59.4) rotate(-40.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(85.2,59.4) rotate(-116.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(86.0,52.1) rotate(-51.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(86.0,52.1) rotate(-127.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(85.3,44.8) rotate(-63.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(85.3,44.8) rotate(-139.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(83.1,37.8) rotate(-75.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(83.1,37.8) rotate(-151.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(79.5,31.4) rotate(-86.9) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(79.5,31.4) rotate(-162.9) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(74.7,25.8) rotate(-98.6) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(74.7,25.8) rotate(-174.6) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(68.9,21.4) rotate(-110.3) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(68.9,21.4) rotate(-186.3) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(62.3,18.2) rotate(-122.0) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(62.3,18.2) rotate(-198.0) scale(0.9)"/>
+    <path d="M45.0,87.6 L37.9,85.9 L31.3,82.7 L25.4,78.3 L20.6,72.8 L17.0,66.4 L14.8,59.4 L14.0,52.1 L14.7,44.8 L16.9,37.8 L20.5,31.4 L25.3,25.8 L31.1,21.4 L37.7,18.2" fill="none" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(37.9,85.9) rotate(161.7) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(37.9,85.9) rotate(237.7) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(31.3,82.7) rotate(173.4) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(31.3,82.7) rotate(249.4) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(25.4,78.3) rotate(185.1) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(25.4,78.3) rotate(261.1) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(20.6,72.8) rotate(196.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(20.6,72.8) rotate(272.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(17.0,66.4) rotate(208.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(17.0,66.4) rotate(284.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(14.8,59.4) rotate(220.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(14.8,59.4) rotate(296.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(14.0,52.1) rotate(231.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(14.0,52.1) rotate(307.8) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(14.7,44.8) rotate(243.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(14.7,44.8) rotate(319.5) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(16.9,37.8) rotate(255.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(16.9,37.8) rotate(331.2) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(20.5,31.4) rotate(266.9) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(20.5,31.4) rotate(342.9) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(25.3,25.8) rotate(278.6) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(25.3,25.8) rotate(354.6) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(31.1,21.4) rotate(290.3) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(31.1,21.4) rotate(366.3) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(37.7,18.2) rotate(302.0) scale(0.9)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(37.7,18.2) rotate(378.0) scale(0.9)"/>
+    <path d="M50,82 L50,26" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,76) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,76) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,69) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,69) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,62) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,62) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,55) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,55) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,48) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,48) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,41) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,41) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,34) rotate(-140) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,34) rotate(-40) scale(0.8)"/>
+    <path fill="#d4a017" d="M0,0 C3,-2.8 9,-2.8 12,0 C9,2.8 3,2.8 0,0 Z" transform="translate(50,27) rotate(-90) scale(0.8)"/>
+  </g>
+</svg>
