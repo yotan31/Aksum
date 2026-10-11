@@ -195,7 +195,7 @@
           <h3 class="product__name">${esc(tr(p.name))}</h3>
           ${variantPicker(p)}
           <p class="product__desc">${esc(tr(p.description))}</p>
-          <button class="product__more" data-detail="${esc(p.id)}">${esc(t("detail.more"))}</button>
+          <button class="product__more" data-detail="${esc(p.id)}">${esc(t(p.food ? "detail.moreFood" : "detail.more"))}</button>
           <div class="product__footer">
             <span class="product__pricebox">
               <span class="product__price">${formatCents(toCents(selectedVariant(p).price))}</span>
@@ -279,7 +279,7 @@
     document.getElementById("detail-desc").textContent = tr(p.description);
     const info = p.info || {};
     const rows = [
-      ["detail.netQty", variantsOf(p).map((x) => tr(x.weight)).join(" / ")],
+      [basePrice(v) ? "detail.netQty" : "detail.size", variantsOf(p).map((x) => tr(x.weight)).join(" / ")],
       ["detail.basePrice", variantsOf(p).map(basePrice).filter(Boolean).join(" / ")],
       ["detail.ingredients", infoText(info.ingredients)],
       ["detail.allergens", infoText(info.allergens)],
