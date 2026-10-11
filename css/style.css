@@ -110,18 +110,9 @@ button:focus-visible, a:focus-visible { outline: 3px solid var(--ochre); outline
 }
 .cart-button__count[hidden] { display: none; }
 
-/* ---------- Startbereich ---------- */
-.hero {
-  background:
-    radial-gradient(circle at 85% 20%, rgba(212, 149, 42, 0.25), transparent 45%),
-    radial-gradient(circle at 10% 90%, rgba(168, 54, 27, 0.15), transparent 40%),
-    var(--bg-alt);
-}
-.hero__inner { padding: clamp(64px, 12vw, 128px) 16px; max-width: 760px; margin-left: max(0px, calc((100% - 1140px) / 2)); }
-.hero__kicker { color: var(--green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.85rem; margin: 0 0 12px; }
-html[lang="ti"] .hero__kicker { text-transform: none; letter-spacing: 0; }
-.hero__title { font-size: clamp(2.2rem, 6vw, 4rem); }
-.hero__text { font-size: 1.15rem; color: var(--ink-soft); margin: 0 0 28px; max-width: 600px; }
+/* ---------- Startbereich (Landschafts-Illustration) ---------- */
+.hero { background: #f3dcbc; }
+.hero__img { width: 100%; height: clamp(260px, 36vw, 500px); object-fit: cover; object-position: 60% 100%; }
 
 /* ---------- Abschnitte ---------- */
 .section { padding: clamp(56px, 8vw, 96px) 0; }

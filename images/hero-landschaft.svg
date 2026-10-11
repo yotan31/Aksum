@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Eritreische Landschaft mit Tafelbergen, Akazie und Kamel">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7eedf"/>
+      <stop offset="0.55" stop-color="#f3dcbc"/>
+      <stop offset="1" stop-color="#ecc597"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#f4c56f" stop-opacity="0.95"/>
+      <stop offset="0.6" stop-color="#eeb45a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#eeb45a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b0704a"/>
+      <stop offset="1" stop-color="#8a4c2f"/>
+    </linearGradient>
+    <linearGradient id="front" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6e3a24"/>
+      <stop offset="1" stop-color="#4f2817"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Himmel -->
+  <rect width="1600" height="600" fill="url(#sky)"/>
+
+  <!-- Sonne -->
+  <circle cx="1010" cy="300" r="190" fill="url(#sun)"/>
+  <circle cx="1010" cy="300" r="62" fill="#f2bd63" opacity="0.9"/>
+
+  <!-- Ferne Tafelberge (Hochland) -->
+  <path fill="#e2bb92" opacity="0.75" d="M0,360 L60,350 L110,318 L250,316 L290,340 L380,346 L430,300 L470,292 L600,294 L640,322 L720,330 L790,312 L860,310 L900,336 L1000,340 L1060,298 L1110,288 L1250,290 L1290,318 L1380,326 L1430,304 L1530,302 L1600,322 L1600,600 L0,600 Z"/>
+
+  <!-- Mittlere Hügel -->
+  <path fill="#cf9a6c" d="M0,398 C120,380 220,372 330,384 C430,394 500,370 600,366 C700,362 760,388 870,392 C980,396 1060,372 1170,368 C1290,364 1380,390 1480,388 C1540,386 1580,380 1600,378 L1600,600 L0,600 Z"/>
+
+  <!-- Ebene -->
+  <path fill="url(#ground)" d="M0,446 C180,432 360,428 560,438 C760,448 940,430 1120,426 C1300,422 1460,436 1600,432 L1600,600 L0,600 Z"/>
+
+  <!-- Kamel auf der Ebene -->
+  <g transform="translate(834,380) scale(0.66)" fill="#3b2216">
+    <path d="M15,38 C18,24 32,8 48,7 C60,6 70,18 78,30 C84,36 92,34 98,26 C102,20 104,14 108,12 C112,10 116,11 120,14 L128,19 C129,22 127,24 124,24 L114,24 C110,26 106,32 102,40 C98,48 94,54 90,58 L94,78 L97,98 L101,100 L95,100 L90,80 L85,62 L82,80 L80,98 L84,100 L77,100 L77,80 L76,62 C62,64 44,64 32,62 L34,80 L36,98 L40,100 L33,100 L29,80 L25,62 L22,80 L18,98 L22,100 L15,100 L16,80 L18,58 C14,52 13,46 14,42 C11,46 9,52 8,58 C8,59 10,59 10,58 C11,52 13,46 15,38 Z"/>
+  </g>
+  <ellipse cx="877" cy="446" rx="46" ry="3" fill="#6e3a24" opacity="0.35"/>
+
+  <!-- Schirmakazie -->
+  <g transform="translate(1150,452)" fill="#3b2216">
+    <path d="M-4,0 C-3,-30 -8,-62 -30,-92 L-24,-95 C-6,-74 0,-54 1,-34 C5,-56 18,-78 38,-94 L43,-90 C22,-72 9,-46 5,0 Z"/>
+    <path d="M-20,-80 C-36,-88 -56,-92 -74,-94 L-73,-98 C-52,-96 -32,-92 -17,-85 Z"/>
+    <path d="M30,-84 C46,-90 64,-94 82,-95 L82,-99 C62,-98 44,-94 27,-88 Z"/>
+    <path d="M-120,-96 C-100,-114 -40,-122 10,-121 C60,-122 112,-114 128,-98 C118,-90 70,-88 10,-89 C-50,-88 -104,-88 -120,-96 Z"/>
+    <path d="M-86,-112 C-60,-126 -10,-132 30,-130 C70,-130 100,-122 108,-112 C90,-106 50,-106 10,-107 C-30,-106 -70,-104 -86,-112 Z" opacity="0.92"/>
+  </g>
+
+  <!-- Vordergrund -->
+  <path fill="url(#front)" d="M0,520 C200,500 420,496 640,508 C860,520 1080,500 1300,494 C1440,490 1540,498 1600,502 L1600,600 L0,600 Z"/>
+</svg>
