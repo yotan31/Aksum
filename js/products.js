@@ -101,7 +101,7 @@ const PRODUCTS = [
     category: "flour",
     image: "",
     name: { de: "Teff-Mehl", ti: "ሓርጭ ጣፍ" },
-    glutenFree: true,
+    glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
     variants: [
       { id: "500g", weight: { de: "500 g", ti: "500 ግራም" }, price: 5.90 },
       { id: "1kg", weight: { de: "1 kg", ti: "1 ኪሎ" }, price: 9.90 },
@@ -116,7 +116,7 @@ const PRODUCTS = [
     category: "flour",
     image: "",
     name: { de: "Maschella-Mehl (Sorghum)", ti: "ሓርጭ መሽላ" },
-    glutenFree: true,
+    glutenFree: false, // erst auf true setzen, wenn vom Lieferanten bestätigt
     variants: [
       { id: "500g", weight: { de: "500 g", ti: "500 ግራም" }, price: 3.90 },
       { id: "1kg", weight: { de: "1 kg", ti: "1 ኪሎ" }, price: 6.90 },
