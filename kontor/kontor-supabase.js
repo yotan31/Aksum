@@ -272,6 +272,7 @@
     async list() { const { data, error } = await sb.from("admins").select("email").order("email"); if (error) throw error; return data.map((r) => r.email.toLowerCase()); },
     async add(email) { const { error } = await sb.from("admins").insert({ email }); if (error && !/duplicate/i.test(error.message)) throw error; },
     async remove(email) { const { error } = await sb.from("admins").delete().eq("email", email); if (error) throw error; },
+    async setPassword(password) { const { error } = await sb.auth.updateUser({ password }); if (error) throw error; },
   };
   let lastStatus = null;
   window.__kontorShopStatus = async (map) => {

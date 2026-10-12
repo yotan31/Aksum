@@ -511,6 +511,12 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
       </form>
       <p class="hint">Die Person registriert sich danach auf der Anmeldeseite mit genau dieser Adresse.</p>
       <div id="access-msg" hidden></div>
+      <form class="inline" id="pw-form" style="margin-top:14px">
+        <label class="f">Neues Passwort<input id="pw-new" type="password" minlength="8" required autocomplete="new-password" placeholder="mind. 8 Zeichen"></label>
+        <label class="f">Wiederholen<input id="pw-new2" type="password" minlength="8" required autocomplete="new-password"></label>
+        <button class="btn btn--ghost" type="submit">Passwort ändern</button>
+      </form>
+      <div id="pw-msg" hidden></div>
     </div>
   </section>
 
@@ -1715,6 +1721,16 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     const em = $("access-email").value.trim().toLowerCase(); if (!em) return;
     try { await acc.add(em); $("access-email").value = ""; renderAccess(); }
     catch (err) { $("access-msg").hidden = false; $("access-msg").className = "notice notice--bad"; $("access-msg").textContent = "Freischalten hat nicht geklappt."; }
+  });
+  $("pw-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const acc = window.__kontorAccess, msg = $("pw-msg"); if (!acc || !acc.setPassword) return;
+    const a = $("pw-new").value, b = $("pw-new2").value;
+    msg.hidden = false;
+    if (a.length < 8) { msg.className = "notice notice--bad"; msg.textContent = "Bitte mindestens 8 Zeichen."; return; }
+    if (a !== b) { msg.className = "notice notice--bad"; msg.textContent = "Die beiden Passwörter sind nicht gleich."; return; }
+    try { await acc.setPassword(a); $("pw-new").value = $("pw-new2").value = ""; msg.className = "notice notice--ok"; msg.textContent = "Passwort geändert. Ab jetzt gilt das neue Passwort."; }
+    catch (err) { msg.className = "notice notice--bad"; msg.textContent = "Ändern hat nicht geklappt: " + (err.message || err); }
   });
   document.addEventListener("click", async (e) => {
     const b = e.target.closest("[data-revoke]"); if (!b || !window.__kontorAccess) return;
