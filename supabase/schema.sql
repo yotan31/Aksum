@@ -94,6 +94,39 @@ create or replace function public.ping()
 returns text language sql stable set search_path = '' as $$ select 'ok'::text $$;
 grant execute on function public.ping() to anon;
 
+
+-- ---------- Rechte eng halten ----------
+revoke all on public.docs, public.admins, public.shop_status from anon;
+revoke truncate, references, trigger on public.docs, public.admins, public.shop_status from authenticated;
+grant select on public.shop_status to anon;
+alter default privileges in schema public revoke all on tables from anon;
+
+-- ---------- Missbrauchsbremse für die Server-Funktionen ----------
+create table if not exists public.rate_limits (
+  key text not null,
+  window_start timestamptz not null,
+  hits integer not null default 0,
+  primary key (key, window_start)
+);
+alter table public.rate_limits enable row level security;
+revoke all on public.rate_limits from anon, authenticated;
+create or replace function public.rate_hit(p_key text, p_max integer, p_seconds integer)
+returns boolean language plpgsql security definer set search_path = '' as $$
+declare
+  w timestamptz := to_timestamp(floor(extract(epoch from now()) / p_seconds) * p_seconds);
+  n integer;
+begin
+  insert into public.rate_limits (key, window_start, hits) values (p_key, w, 1)
+  on conflict (key, window_start) do update set hits = public.rate_limits.hits + 1
+  returning hits into n;
+  return n <= p_max;
+end $$;
+revoke execute on function public.rate_hit(text, integer, integer) from public, anon, authenticated;
+grant execute on function public.rate_hit(text, integer, integer) to service_role;
+
+-- Belegfotos: nur Bilder und PDFs, höchstens 10 MB
+update storage.buckets set file_size_limit = 10485760, allowed_mime_types = array['image/jpeg','image/png','image/webp','image/heic','image/heif','application/pdf'] where id = 'belege';
+
 -- ============================================================
 --  ZUM SCHLUSS: deine E-Mail als ersten Admin eintragen
 --  (die Adresse, mit der du dich im Kontor anmeldest)

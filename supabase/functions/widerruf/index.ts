@@ -10,11 +10,25 @@ const SHOP_URL = env("SHOP_URL", "https://aksum-shop.de").replace(/\/$/, "");
 const SHOP_EMAIL = env("SHOP_EMAIL", "info@aksum-shop.de");
 const DB = env("SUPABASE_URL") + "/rest/v1";
 const SERVICE_KEY = env("SUPABASE_SERVICE_ROLE_KEY");
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+// Nur der eigene Shop darf die Funktion aus dem Browser aufrufen.
+const ALLOWED = new Set([SHOP_URL, SHOP_URL.replace("://", "://www."), "https://aksum-shop.de", "https://www.aksum-shop.de"]);
+let CORS: Record<string, string> = {};
+const corsFor = (req: Request) => {
+  const o = req.headers.get("origin") || "";
+  return { "Access-Control-Allow-Origin": ALLOWED.has(o) ? o : "https://aksum-shop.de", "Vary": "Origin",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 };
+// Missbrauchsbremse: zählt Aufrufe pro Absender (IP) und insgesamt.
+async function allowed(key: string, max: number, seconds: number) {
+  const res = await fetch(env("SUPABASE_URL") + "/rest/v1/rpc/rate_hit", {
+    method: "POST",
+    headers: { apikey: env("SUPABASE_SERVICE_ROLE_KEY"), Authorization: "Bearer " + env("SUPABASE_SERVICE_ROLE_KEY"), "Content-Type": "application/json" },
+    body: JSON.stringify({ p_key: key, p_max: max, p_seconds: seconds }),
+  });
+  if (!res.ok) return true; // Bremse defekt -> Shop nicht blockieren
+  return (await res.json()) === true;
+}
+const clientIp = (req: Request) => (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unbekannt";
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 const esc = (s: unknown) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 const clip = (s: unknown, n: number) => String(s ?? "").trim().slice(0, n);
@@ -40,10 +54,15 @@ async function sendMail(to: { email: string; name?: string }, subject: string, h
 }
 
 Deno.serve(async (req) => {
+  CORS = corsFor(req);
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return json({ error: "Nur POST" }, 405);
   try {
     const b = await req.json();
+    if (b.website) return json({ ok: true, receivedAt: new Date().toISOString(), mailed: false }); // Bot-Falle
+    const ip = clientIp(req);
+    if (!(await allowed("wd:ip:" + ip, 5, 3600)) || !(await allowed("wd:all", 100, 86400)))
+      return json({ error: "Zu viele Anfragen. Bitte versuche es später noch einmal oder schreib uns an " + SHOP_EMAIL + "." }, 429);
     const w = {
       orderNo: clip(b.orderNo, 60), orderDate: clip(b.orderDate, 10), name: clip(b.name, 120), email: clip(b.email, 160),
       items: clip(b.items, 1000), language: clip(b.language, 5), receivedAt: new Date().toISOString(),
@@ -56,7 +75,8 @@ Deno.serve(async (req) => {
       due: "", priority: "high", done: false, source: "shop", createdAt: w.receivedAt,
     });
     const when = new Intl.DateTimeFormat("de-DE", { timeZone: "Europe/Berlin", dateStyle: "long", timeStyle: "short" }).format(new Date(w.receivedAt));
-    const mailed = await sendMail({ email: w.email, name: w.name }, `Wir haben deinen Widerruf erhalten – Bestellung ${w.orderNo}`,
+    const mailOk = await allowed("wd:mail", 30, 86400);
+    const mailed = mailOk && await sendMail({ email: w.email, name: w.name }, `Wir haben deinen Widerruf erhalten – Bestellung ${w.orderNo}`,
       `<div style="font-family:Arial,sans-serif;font-size:15px;color:#2a1d14;max-width:620px">
       <p>Hallo ${esc(w.name)},</p>
       <p>dein Widerruf ist am <b>${esc(when)} Uhr</b> bei uns eingegangen.</p>

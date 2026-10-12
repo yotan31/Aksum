@@ -19,11 +19,25 @@ const PAYPAL_BASE = env("PAYPAL_ENV", "sandbox") === "live" ? "https://api-m.pay
 const DB = env("SUPABASE_URL") + "/rest/v1";
 const SERVICE_KEY = env("SUPABASE_SERVICE_ROLE_KEY");
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+// Nur der eigene Shop darf die Funktion aus dem Browser aufrufen.
+const ALLOWED = new Set([SHOP_URL, SHOP_URL.replace("://", "://www."), "https://aksum-shop.de", "https://www.aksum-shop.de"]);
+let CORS: Record<string, string> = {};
+const corsFor = (req: Request) => {
+  const o = req.headers.get("origin") || "";
+  return { "Access-Control-Allow-Origin": ALLOWED.has(o) ? o : "https://aksum-shop.de", "Vary": "Origin",
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 };
+// Missbrauchsbremse: zählt Aufrufe pro Absender (IP) und insgesamt.
+async function allowed(key: string, max: number, seconds: number) {
+  const res = await fetch(env("SUPABASE_URL") + "/rest/v1/rpc/rate_hit", {
+    method: "POST",
+    headers: { apikey: env("SUPABASE_SERVICE_ROLE_KEY"), Authorization: "Bearer " + env("SUPABASE_SERVICE_ROLE_KEY"), "Content-Type": "application/json" },
+    body: JSON.stringify({ p_key: key, p_max: max, p_seconds: seconds }),
+  });
+  if (!res.ok) return true; // Bremse defekt -> Shop nicht blockieren
+  return (await res.json()) === true;
+}
+const clientIp = (req: Request) => (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unbekannt";
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 
 // ---------- Shop-Daten (products.js / config.js als einzige Quelle) ----------
@@ -89,12 +103,12 @@ async function priceCart(cart: { key: string; qty: number }[]) {
     const p = products.find((x) => x.id === pid);
     const v = p && variantsOf(p).find((x) => x.id === vid);
     const qty = Math.max(1, Math.min(99, Math.round(Number(line.qty) || 0)));
-    if (!p || !v) throw new Error("Produkt nicht gefunden: " + line.key);
-    if (incomplete(p)) throw new Error("Produkt noch nicht bestellbar: " + p.name.de);
-    if (out.has(line.key) || out.has(pid)) throw new Error("Leider ausverkauft: " + p.name.de);
+    if (!p || !v) throw new Public("Produkt nicht gefunden: " + line.key);
+    if (incomplete(p)) throw new Public("Produkt noch nicht bestellbar: " + p.name.de);
+    if (out.has(line.key) || out.has(pid)) throw new Public("Leider ausverkauft: " + p.name.de);
     lines.push({ key: line.key, sku: line.key, name: p.name.de + (v.weight?.de ? " (" + v.weight.de + ")" : ""), shortName: p.name.de, qty, unit: cents(v.price), amount: cents(v.price) * qty });
   }
-  if (!lines.length) throw new Error("Der Warenkorb ist leer.");
+  if (!lines.length) throw new Public("Der Warenkorb ist leer.");
   const itemTotal = lines.reduce((s, l) => s + l.amount, 0);
   const freeFrom = cents(Number(config.freeShippingFrom) || 0);
   const shipping = freeFrom > 0 && itemTotal >= freeFrom ? 0 : cents(Number(config.shippingCost) || 0);
@@ -145,11 +159,25 @@ async function confirmationHtml(order: any, config: Record<string, any>) {
 }
 
 // ---------- Anfragen ----------
+// Angefangene, nie bezahlte Warenkörbe nach 2 Tagen löschen
+async function cleanupPending() {
+  const before = new Date(Date.now() - 2 * 86400_000).toISOString();
+  await db(`/docs?collection=eq.pending&created_at=lt.${encodeURIComponent(before)}`, { method: "DELETE", headers: { Prefer: "return=minimal" } }).catch(() => null);
+  await db(`/rate_limits?window_start=lt.${encodeURIComponent(before)}`, { method: "DELETE", headers: { Prefer: "return=minimal" } }).catch(() => null);
+}
+class Public extends Error {} // Meldungen, die der Kunde sehen darf
+
 Deno.serve(async (req) => {
+  CORS = corsFor(req);
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
   if (req.method !== "POST") return json({ error: "Nur POST" }, 405);
   try {
     const body = await req.json();
+    const ip = clientIp(req);
+    const limit = body.action === "create" ? 20 : 30;
+    if (!(await allowed(`pp:${body.action === "create" ? "create" : "capture"}:${ip}`, limit, 3600)) || !(await allowed("pp:all", 500, 86400)))
+      throw new Public("Zu viele Anfragen. Bitte versuche es in einer Stunde noch einmal.");
+    if (Math.random() < 0.05) cleanupPending();
 
     if (body.action === "create") {
       const c = await priceCart(body.cart);
@@ -169,11 +197,11 @@ Deno.serve(async (req) => {
     if (body.action === "capture") {
       const id = String(body.orderID || "").replace(/[^A-Za-z0-9-]/g, "");
       const pending = await getDoc("pending", id);
-      if (!pending) throw new Error("Unbekannte Bestellung.");
+      if (!pending) throw new Public("Unbekannte Bestellung.");
       const res = await paypal(`/v2/checkout/orders/${id}/capture`);
       const unit = res.purchase_units?.[0] || {};
       const cap = unit.payments?.captures?.[0];
-      if (!cap || cap.status !== "COMPLETED") throw new Error("Zahlung nicht abgeschlossen (" + (cap?.status || "unbekannt") + ").");
+      if (!cap || cap.status !== "COMPLETED") throw new Public("Zahlung nicht abgeschlossen (" + (cap?.status || "unbekannt") + ").");
       const gross = Number(cap.amount?.value) || pending.total / 100;
       const fee = Number(cap.seller_receivable_breakdown?.paypal_fee?.value) || 0;
       const a = unit.shipping?.address || {};
@@ -197,6 +225,6 @@ Deno.serve(async (req) => {
     return json({ error: "Unbekannte Aktion" }, 400);
   } catch (e) {
     console.error(e);
-    return json({ error: e instanceof Error ? e.message : String(e) }, 400);
+    return json({ error: e instanceof Public ? e.message : "Die Zahlung konnte gerade nicht verarbeitet werden. Bitte versuche es später noch einmal." }, 400);
   }
 });

@@ -27,7 +27,6 @@ Danach gilt:
    ```sql
    insert into public.admins (email) values ('deine@email.de');
    ```
-4. Den Inhalt von `supabase/import-bisherige-daten.sql` ausführen. Das übernimmt deine bisherigen Kosten und Todos.
 
 ## 3. Anmeldung einstellen
 1. **Authentication → Sign In / Providers → Email**: aktiviert lassen, **Confirm email** an.

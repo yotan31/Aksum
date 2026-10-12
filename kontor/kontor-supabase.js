@@ -214,9 +214,11 @@
   const assetsApi = {
     async upload(blob, opts) {
       const id = [...crypto.getRandomValues(new Uint8Array(16))].map((b) => b.toString(16).padStart(2, "0")).join("");
-      const { error } = await sb.storage.from(BUCKET).upload(id, blob, { contentType: (opts && opts.type) || blob.type, upsert: false });
+      const name = (blob.name || "").toLowerCase();
+      const type = (opts && opts.type) || blob.type || (/\.pdf$/.test(name) ? "application/pdf" : /\.png$/.test(name) ? "image/png" : /\.hei[cf]$/.test(name) ? "image/heic" : "image/jpeg");
+      const { error } = await sb.storage.from(BUCKET).upload(id, blob, { contentType: type, upsert: false });
       if (error) throw { code: /size|large/i.test(error.message) ? "too_large" : "upstream_error", message: error.message };
-      return { id, url: URL.createObjectURL(blob), sizeBytes: blob.size, contentType: (opts && opts.type) || blob.type };
+      return { id, url: URL.createObjectURL(blob), sizeBytes: blob.size, contentType: type };
     },
     async list() { return { assets: [], usage: {} }; },
     async delete() { return { deleted: false }; }, // Belegfotos werden nie gelöscht
@@ -240,7 +242,7 @@
   let tess = null;
   async function loadTesseract() {
     if (window.Tesseract) return window.Tesseract;
-    if (!tess) tess = new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"; s.onload = () => res(window.Tesseract); s.onerror = rej; document.head.appendChild(s); });
+    if (!tess) tess = new Promise((res, rej) => { const s = document.createElement("script"); s.src = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"; s.integrity = "sha256-qOKZGNCYsrBuEBK9rv+0rsBEXF1WVHCQI+C9H0QqgOg="; s.crossOrigin = "anonymous"; s.onload = () => res(window.Tesseract); s.onerror = rej; document.head.appendChild(s); });
     return tess;
   }
   const sampleFn = async () => { throw { code: "not_granted" }; };

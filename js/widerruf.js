@@ -126,7 +126,8 @@
   $("wd-step2").addEventListener("submit", async (e) => {
     e.preventDefault();
     const now = new Date();
-    const payload = { ...data, submittedAt: now.toISOString(), language: lang };
+    const hp = document.getElementById("wd-website");
+    const payload = { ...data, submittedAt: now.toISOString(), language: lang, website: hp ? hp.value : "" };
     const sb = (SHOP_CONFIG.supabaseUrl || "").replace(/\/$/, "");
     const endpoint = (SHOP_CONFIG.withdrawalEndpoint || "").trim() || (sb ? sb + "/functions/v1/widerruf" : "");
     const headers = { "Content-Type": "application/json" };
