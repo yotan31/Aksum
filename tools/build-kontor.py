@@ -12,7 +12,7 @@ head = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#261a12">
+<meta name="theme-color" content="#faf5ec">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="../images/logo-kranz.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -31,6 +31,7 @@ inject = """<script src="../js/config.js"></script>
 marker = '<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>'
 assert app.count(marker) == 1
 # JSZip liegt in der Web-App lokal (keine fremde Quelle nötig)
+app = app.replace('<div class="brand"><h1>Aksum</h1>', '<div class="brand"><img class="brand__logo" src="../images/logo-kranz.svg" alt="" width="40" height="40"><h1>Aksum</h1>')
 body = app.replace(marker, inject + '<script src="vendor/jszip-3.10.1.min.js"></script>')
 # Sicherheitsregel (CSP): nur eigene Skripte, die festen Bibliotheken und Supabase
 hashes = " ".join("'sha256-" + base64.b64encode(hashlib.sha256(m.encode()).digest()).decode() + "'" for m in re.findall(r"<script>([\s\S]*?)</script>", body))

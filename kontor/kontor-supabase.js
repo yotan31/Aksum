@@ -21,7 +21,7 @@
   gate.id = "gate";
   gate.innerHTML = `
     <div class="gate__box">
-      <h1>Aksum Kontor</h1>
+      <div class="gate__brand"><img src="../images/logo-kranz.svg" alt="" width="56" height="56"><h1>Aksum <span>Kontor</span></h1></div>
       <p class="hint" id="g-sub">Bitte melde dich an.</p>
       <form id="g-form" novalidate>
         <label class="f">E-Mail<input id="g-email" type="email" autocomplete="username" required></label>
@@ -41,6 +41,9 @@
     #gate[hidden] { display: none !important; }
     .gate__box { width: min(400px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 28px 24px; display: grid; gap: 14px; }
     .gate__box h1 { font-size: 1.6rem; }
+    .gate__brand { display: flex; align-items: center; gap: 10px; }
+    .gate__brand h1 span { color: var(--accent); font-size: 1.1rem; }
+    .gate__box { border-top: 6px solid transparent; border-image: repeating-linear-gradient(90deg, #1f6b45 0 18px, #d4952a 18px 24px, #a8361b 24px 42px, #d4952a 42px 48px, #2b5f8a 48px 66px, #d4952a 66px 72px) 6 0 0 0; }
     .gate__box form { display: grid; gap: 12px; }
     .gate__links { display: flex; flex-wrap: wrap; gap: 6px 14px; }
     .logout { margin-left: 8px; }`;

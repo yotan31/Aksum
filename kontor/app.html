@@ -5,23 +5,16 @@
 <style>
 /* Layout: Kopfleiste mit Reitern, darunter je Reiter eine Arbeitsfläche; Zahlen zuerst, Details darunter. */
 :root {
-  --bg: #faf5ec; --surface: #ffffff; --surface-2: #f3ebdd; --ink: #2a1d14; --ink-soft: #6b5a4c; --ink-muted: #8d7c6c;
-  --line: #e6d9c6; --accent: #a8361b; --accent-ink: #ffffff;
+  /* gleiche Farben wie der Shop (css/style.css) */
+  --bg: #faf5ec; --surface: #ffffff; --surface-2: #f2e8d8; --ink: #2a1d14; --ink-soft: #6b5a4c; --ink-muted: #8d7c6c;
+  --line: #e4d6c1; --accent: #a8361b; --accent-dark: #862a14; --accent-ink: #ffffff;
   --good: #1f6b45; --good-bg: #e3f1e8; --warn: #8a5a00; --warn-bg: #fbefd6; --bad: #a8361b; --bad-bg: #f8e4de;
-  --s1: #b5742a; --s2: #2f6ea8; --grid: #ece2d3;
+  --s1: #d4952a; --s2: #2b5f8a; --grid: #ece2d3;
+  --green: #1f6b45; --ochre: #d4952a; --blue: #2b5f8a; --red: #a8361b;
   --font-head: "Fraunces", Georgia, serif; --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --r: 12px;
+  --r: 14px; --shadow: 0 6px 24px rgba(60, 35, 15, 0.08);
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #17120e; --surface: #211a14; --surface-2: #2a221a; --ink: #f2e9dc; --ink-soft: #c2b2a0; --ink-muted: #9a8a79;
-  --line: #3a2f25; --accent: #e07a55; --accent-ink: #1a110b;
-  --good: #6cc496; --good-bg: #1d3227; --warn: #e6b866; --warn-bg: #3a2e17; --bad: #f08a6c; --bad-bg: #3d211a;
-  --s1: #b98035; --s2: #4f8fcf; --grid: #2e251d; color-scheme: dark; } }
-:root[data-theme="dark"] {
-  --bg: #17120e; --surface: #211a14; --surface-2: #2a221a; --ink: #f2e9dc; --ink-soft: #c2b2a0; --ink-muted: #9a8a79;
-  --line: #3a2f25; --accent: #e07a55; --accent-ink: #1a110b;
-  --good: #6cc496; --good-bg: #1d3227; --warn: #e6b866; --warn-bg: #3a2e17; --bad: #f08a6c; --bad-bg: #3d211a;
-  --s1: #b98035; --s2: #4f8fcf; --grid: #2e251d; color-scheme: dark; }
 
 * { box-sizing: border-box; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--font-body); }
@@ -386,12 +379,47 @@ span.neg { color: var(--bad); font-weight: 600; }
   .kpis--3 > .kpi:first-child { grid-column: 1 / -1; }
   body[data-tab="einstellungen"] .fab, body[data-tab="todos"] .fab { display: none; }
 }
+
+/* ---------- Design wie die Webseite ---------- */
+.top { background: rgba(250, 245, 236, 0.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-bottom: 0; }
+.top::after { content: ""; display: block; height: 6px; background: repeating-linear-gradient(90deg, var(--green) 0 18px, var(--ochre) 18px 24px, var(--red) 24px 42px, var(--ochre) 42px 48px, var(--blue) 48px 66px, var(--ochre) 66px 72px); }
+.brand { align-items: center; }
+.brand__logo { width: 40px; height: 40px; flex: none; }
+.brand h1 { font-size: 1.45rem; font-weight: 700; }
+.brand span { font-family: var(--font-head); font-size: 1.05rem; color: var(--accent); font-weight: 600; }
+.panel, .kpi { box-shadow: var(--shadow); border-radius: var(--r); }
+.panel.inset, .oc { box-shadow: none; }
+.btn { border-radius: 999px; padding: 9px 18px; transition: background 0.2s; }
+.btn:hover:not(:disabled) { background: var(--accent-dark); }
+.btn--ghost { background: var(--surface); color: var(--ink); }
+.btn--ghost:hover:not(:disabled) { background: var(--surface-2); }
+.seg { background: var(--surface); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.gear { color: var(--ink); }
+.kpi__label { color: var(--ink-soft); }
+input, select, textarea { background: var(--surface); }
+.panel.inset input, .panel.inset select { background: var(--surface); }
+.today__item { background: var(--surface); }
+.today-panel { border-left: 4px solid var(--ochre); }
+#gate { background: var(--bg); }
+.gate__box { box-shadow: var(--shadow); }
+.tax-form { display: grid; gap: 12px; }
+.pp { display: grid; grid-template-columns: 64px 1fr auto; gap: 10px; align-items: center; }
+.pp b { font-variant-numeric: tabular-nums; }
+.pp .checkline { white-space: nowrap; }
+.elster { display: grid; }
+.elster .rw__main b { font-weight: 500; }
+@media (max-width: 640px) {
+  .brand span { display: inline !important; }
+  .brand__logo { width: 34px; height: 34px; }
+  .bottomnav { background: rgba(255, 255, 255, 0.96); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+}
 @media (prefers-reduced-motion: no-preference) { .bar__fill { transition: width 0.3s; } }
 </style>
 
 <header class="top">
   <div class="top__inner">
-    <div class="brand"><h1>Aksum Kontor</h1><span>Interne Übersicht</span></div>
+    <div class="brand"><h1>Aksum</h1><span>Kontor</span></div>
     <div class="status" id="status" title=""><span class="dot" id="status-dot"></span><span id="status-text">Verbinde mit dem Speicher …</span></div>
     <button type="button" class="gear" data-goto-tab="einstellungen" aria-label="Einstellungen" title="Einstellungen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Einstellungen</span></button>
     <nav class="tabs" role="tablist" aria-label="Bereiche">
@@ -539,6 +567,20 @@ span.neg { color: var(--bad); font-weight: 600; }
     </div>
 
     <div class="panel" data-fsub="steuer" hidden>
+      <div class="panel__head"><h2>Einkommensteuer</h2><span class="hint" id="tax-year"></span></div>
+      <div class="kpis kpis--3" id="tax-kpis"></div>
+      <details class="fold-mini">
+        <summary>Vorauszahlungen laut Bescheid &amp; Rücklage</summary>
+        <form id="tax-form" class="tax-form">
+          <div id="tax-prepay"></div>
+          <label class="f">Rücklage in % vom Gewinn<input id="tax-rate" type="number" min="0" max="60" step="1" inputmode="numeric" placeholder="25"></label>
+          <button class="btn btn--ghost" type="submit">Speichern</button>
+        </form>
+        <p class="hint">Die Beträge stehen im Vorauszahlungsbescheid vom Finanzamt. Steht dort 0 € oder kam noch keiner, lass die Felder leer.</p>
+        <div id="tax-msg" class="hint" hidden></div>
+      </details>
+    </div>
+    <div class="panel" data-fsub="steuer" hidden>
       <div class="panel__head"><h2>Kleinunternehmer-Grenze</h2><span class="hint" id="ku-status"></span></div>
       <div id="ku"></div>
     </div>
@@ -671,6 +713,7 @@ span.neg { color: var(--bad); font-weight: 600; }
         <label class="f">Pappe/Papier pro Paket (g)<input id="biz-paper" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 180"></label>
         <label class="f">Kunststoff pro Paket (g)<input id="biz-plastic" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 10"></label>
         <label class="checkline" style="grid-column: 1 / -1"><input type="checkbox" id="biz-ku"> Ich bin Kleinunternehmer nach § 19 UStG (keine Umsatzsteuer auf Rechnungen)</label>
+        <p class="hint" id="biz-ku-note" style="grid-column: 1 / -1" hidden>Gilt für Shop, Rechnungen und Kontor gemeinsam. Ändern? Sag Claude Bescheid.</p>
         <button class="btn" type="submit">Speichern</button>
       </form>
       <div id="biz-msg" class="hint" hidden></div>
@@ -838,6 +881,8 @@ span.neg { color: var(--bad); font-weight: 600; }
   };
 
   // ---------- Zustand ----------
+  // Kleinunternehmer kommt aus der Shop-Einstellung (js/config.js), wenn vorhanden
+  const SHOP_KU = (typeof SHOP_CONFIG !== "undefined" && SHOP_CONFIG && typeof SHOP_CONFIG.smallBusiness === "boolean") ? SHOP_CONFIG.smallBusiness : null;
   const state = { costs: [], purchases: [], orders: [], todos: [], receipts: [], closings: [], deadlines: [], settings: {}, ready: false, db: null, assets: null, sample: null, downloads: null, writable: true };
   let period = prefs.get("period", "year");
   let geoMode = prefs.get("geo", "city");
@@ -1645,7 +1690,7 @@ span.neg { color: var(--bad); font-weight: 600; }
     };
     annual("01-15", (yy) => `Belege-Jahresarchiv ${yy - 1} herunterladen und doppelt sichern`, "unter Belege → Jahresarchiv");
     annual("01-31", (yy) => `Verpackungsmengen ${yy - 1} melden (Duales System & LUCID)`, "genauen Termin im Lizenzvertrag prüfen · Mengen unter Finanzen");
-    annual("07-31", (yy) => `Steuererklärungen ${yy - 1} abgeben (EÜR, Einkommensteuer, ggf. Gewerbe- und Umsatzsteuer)`, "Frist ohne Steuerberater · EÜR-Tabelle unter Finanzen");
+    annual("07-31", (yy) => `Steuererklärung ${yy - 1} abgeben (Einkommensteuer mit Anlage EÜR${state.settings.smallBusiness ? "" : ", Umsatzsteuer"}, Gewerbesteuer erst ab 24.500 € Gewinn)`, "Frist ohne Steuerberater · EÜR-Tabelle unter Finanzen");
     // Monatsabschluss: Vormonat (falls offen) und die nächsten zwei
     let mk = prevMonthKey(t.slice(0, 7));
     for (let i = 0; i < 3; i++) {
@@ -1665,6 +1710,7 @@ span.neg { color: var(--bad); font-weight: 600; }
       const d = (Number(c.date.slice(0, 4)) + 1) + c.date.slice(4);
       if (daysUntil(d) >= -14) list.push({ date: d, title: `${c.name}: Aktionspreis endet – Preis prüfen`, sub: "laut deiner Notiz bei den Kosten", auto: true });
     });
+    prepayOf(y).forEach((e, i) => { if (e && Number(e.amount) > 0 && !e.paid) list.push({ date: y + "-" + PP_DATES[i], title: `Einkommensteuer-Vorauszahlung ${money(Number(e.amount))}`, sub: "laut Bescheid · nach dem Bezahlen unter Finanzen → Steuer abhaken", auto: true }); });
     state.deadlines.forEach((d) => list.push({ date: d.date, title: d.title, sub: "eigener Termin", id: d.id }));
     return list.filter((d) => d.date).sort((a, b) => a.date.localeCompare(b.date));
   }
@@ -1698,7 +1744,7 @@ span.neg { color: var(--bad); font-weight: 600; }
     else if (cur > 25000) note = `<div class="notice">Dieses Jahr liegst du über 25.000 €. Dann gilt die Kleinunternehmerregelung <b>ab nächstem Jahr</b> nicht mehr. Plane das ein (Preise, Rechnungen, Shop-Hinweis).</div>`;
     $("ku").innerHTML = row(`Umsatz ${y - 1} (Grenze Vorjahr)`, prev, 25000) + row(`Umsatz ${y} bisher (Grenze laufendes Jahr)`, cur, 100000) + note +
       `<p class="hint" style="margin-top:10px">Umsatz = Einnahmen aus Bestellungen ohne Erstattungen. Andere Einnahmen deines Gewerbes zählen ebenfalls mit.</p>`;
-    $("ku-status").textContent = state.settings.smallBusiness ? "Du bist als Kleinunternehmer eingetragen" : "Laut Firmendaten kein Kleinunternehmer – nur zur Info";
+    $("ku-status").textContent = state.settings.smallBusiness ? "Du bist als Kleinunternehmer eingetragen" : "Kein Kleinunternehmer eingestellt – nur zur Info";
   }
 
   // ---------- Monatsabschluss ----------
@@ -1766,9 +1812,20 @@ span.neg { color: var(--bad); font-weight: 600; }
     rows.filter((r) => r.type === "Ausgabe").forEach((r) => { byCat[r.cat] = (byCat[r.cat] || 0) + r.amount; });
     const exp = Object.values(byCat).reduce((s, v) => s + v, 0);
     const missing = rows.filter((r) => r.type === "Ausgabe" && (r.doc === "fehlt")).length;
+    const ware = byCat["Wareneinkauf"] || 0;
+    const ku = !!state.settings.smallBusiness;
+    const elster = [
+      [ku ? "Betriebseinnahmen als umsatzsteuerlicher Kleinunternehmer" : "Umsatzsteuerpflichtige Betriebseinnahmen (netto) und vereinnahmte Umsatzsteuer", inc, "Einnahmen"],
+      ["Waren, Rohstoffe und Hilfsstoffe einschließlich der Nebenkosten", ware, "Ausgaben"],
+      ["Übrige unbeschränkt abziehbare Betriebsausgaben", exp - ware, "Ausgaben"],
+    ];
     $("euer").innerHTML = `<div class="kpis">${kpi("Einnahmen " + euerYear, money(inc), "Umsatzerlöse aus Bestellungen")}${kpi("Ausgaben " + euerYear, money(exp), "inkl. Ware und PayPal-Gebühren")}${kpi("Überschuss", money(inc - exp), inc - exp >= 0 ? "Gewinn vor Steuern" : "Verlust", inc - exp > 0 ? "kpi--pos" : inc - exp < 0 ? "kpi--neg" : "")}</div>
-      <div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>Ausgaben nach Kategorie</th><th class="r">Betrag</th></tr></thead>
-      <tbody>${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([c, v]) => `<tr><td>${esc(c)}</td><td class="r">${money(v)}</td></tr>`).join("") || `<tr><td>Noch keine Ausgaben</td><td class="r">–</td></tr>`}</tbody></table></div>
+      <h3 style="margin-top:14px">So trägst du es in ELSTER ein (Anlage EÜR)</h3>
+      <div class="rows elster">${elster.map(([f, v, k]) => `<div class="rw"><div class="rw__main"><b>${esc(f)}</b><small>${k}</small></div><div class="rw__num"><b>${money(v)}</b></div></div>`).join("")}
+        <div class="rw rw--sum"><div class="rw__main"><b>Gewinn (Überschuss)</b><small>ELSTER rechnet ihn selbst aus – zum Vergleich</small></div><div class="rw__num"><b>${money(inc - exp)}</b></div></div></div>
+      <p class="hint">Die Feldnamen sind wie in ELSTER. Die Zeilennummern ändern sich manchmal von Jahr zu Jahr, darum stehen sie hier nicht.</p>
+      <details class="fold-mini"><summary>Ausgaben nach Kategorie</summary>
+      <div class="rows">${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([c, v]) => `<div class="rw"><div class="rw__main"><b>${esc(c)}</b></div><div class="rw__num"><b>${money(v)}</b></div></div>`).join("") || `<div class="empty">Noch keine Ausgaben</div>`}</div></details>
       ${missing ? `<div class="notice" style="margin-top:10px">${missing} Ausgabe${missing === 1 ? "" : "n"} ohne Beleg. Fotografiere die Belege unter <b>Belege</b>, sonst erkennt das Finanzamt sie unter Umständen nicht an.</div>` : ""}`;
   }
   $("euer-year").addEventListener("change", (e) => { euerYear = e.target.value; renderEuer(); });
@@ -1783,6 +1840,10 @@ span.neg { color: var(--bad); font-weight: 600; }
     const lines = [
       [`Aksum – Einnahmen und Ausgaben ${euerYear}`], [`Erstellt am ${fmtDate(today())}. Alle Beträge brutto in Euro.${state.settings.smallBusiness ? " Kleinunternehmer nach § 19 UStG." : " Bei Umsatzsteuerpflicht Netto und Umsatzsteuer gesondert ermitteln."}`], [],
       ["Summe Einnahmen", num(inc)], ["Summe Ausgaben", num(exp)], ["Überschuss", num(inc - exp)], [],
+      ["Für ELSTER (Anlage EÜR)"],
+      [state.settings.smallBusiness ? "Betriebseinnahmen als umsatzsteuerlicher Kleinunternehmer" : "Umsatzsteuerpflichtige Betriebseinnahmen (brutto, Umsatzsteuer noch herausrechnen)", num(inc)],
+      ["Waren, Rohstoffe und Hilfsstoffe einschließlich der Nebenkosten", num(rows.filter((r) => r.type === "Ausgabe" && r.cat === "Wareneinkauf").reduce((s, r) => s + r.amount, 0))],
+      ["Übrige unbeschränkt abziehbare Betriebsausgaben", num(rows.filter((r) => r.type === "Ausgabe" && r.cat !== "Wareneinkauf").reduce((s, r) => s + r.amount, 0))], [],
       ["Datum", "Art", "Kategorie", "Beschreibung", "Betrag", "Beleg"],
       ...rows.map((r) => [fmtDate(r.date), r.type, r.cat, r.desc, num(r.amount), r.doc]),
     ];
@@ -1798,7 +1859,7 @@ span.neg { color: var(--bad); font-weight: 600; }
     const y = Number(today().slice(0, 4));
     const count = (yy) => state.orders.filter((o) => !o.refunded && String(o.date || "").startsWith(String(yy)) && (ordStatus(o) === "versendet" || !o.status)).length;
     const row = (yy) => { const n = count(yy); return `<tr><td>${yy}</td><td class="r">${n}</td><td class="r">${((n * paper) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 })} kg</td><td class="r">${((n * plastic) / 1000).toLocaleString("de-DE", { maximumFractionDigits: 2 })} kg</td></tr>`; };
-    $("packaging").innerHTML = (!paper && !plastic ? `<div class="notice">Trag unten bei <b>Firmendaten</b> ein, wie viel Pappe und Kunststoff ein Paket wiegt.</div>` : "") +
+    $("packaging").innerHTML = (!paper && !plastic ? `<button type="button" class="notice notice--btn" data-goto-tab="einstellungen">Trag unter Einstellungen ein, wie viel Pappe und Kunststoff ein Paket wiegt. <b>Jetzt eintragen ›</b></button>` : "") +
       `<div class="tablewrap"><table><thead><tr><th>Jahr</th><th class="r">Pakete</th><th class="r">Pappe/Papier</th><th class="r">Kunststoff</th></tr></thead><tbody>${row(y)}${row(y - 1)}</tbody></table></div>
       <p class="hint" style="margin-top:8px">Diese Mengen meldest du deinem Dualen System und gleichlautend in LUCID. Mehrere Pakete in einer Bestellung bitte selbst ergänzen.</p>`;
   }
@@ -1810,14 +1871,15 @@ span.neg { color: var(--bad); font-weight: 600; }
     $("biz-name").value = st.bizName || ""; $("biz-address").value = st.bizAddress || ""; $("biz-email").value = st.bizEmail || "";
     $("biz-taxno").value = st.bizTaxNo || ""; $("biz-paper").value = st.packPaper ?? ""; $("biz-plastic").value = st.packPlastic ?? "";
     $("biz-ku").checked = !!st.smallBusiness;
+    $("biz-ku").disabled = SHOP_KU !== null; $("biz-ku-note").hidden = SHOP_KU === null;
   }
   $("biz-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const s2 = { ...state.settings, bizName: $("biz-name").value.trim(), bizAddress: $("biz-address").value.trim(), bizEmail: $("biz-email").value.trim(),
-      bizTaxNo: $("biz-taxno").value.trim(), packPaper: Number($("biz-paper").value) || 0, packPlastic: Number($("biz-plastic").value) || 0, smallBusiness: $("biz-ku").checked };
+      bizTaxNo: $("biz-taxno").value.trim(), packPaper: Number($("biz-paper").value) || 0, packPlastic: Number($("biz-plastic").value) || 0, smallBusiness: SHOP_KU !== null ? SHOP_KU : $("biz-ku").checked };
     if (await write((db) => db.doc("settings/main").set(s2))) {
       document.activeElement && document.activeElement.blur();
-      $("biz-msg").hidden = false; $("biz-msg").textContent = "Gespeichert." + (s2.smallBusiness ? " Denk daran, auch im Shop (config.js) „smallBusiness: true“ einzustellen – sag mir einfach Bescheid." : "");
+      $("biz-msg").hidden = false; $("biz-msg").textContent = "Gespeichert.";
       setTimeout(() => ($("biz-msg").hidden = true), 6000);
     }
   });
@@ -1863,7 +1925,45 @@ span.neg { color: var(--bad); font-weight: 600; }
     await window.__kontorAccess.remove(b.dataset.revoke); renderAccess();
   });
 
-  function renderFinance() { renderKU(); renderDeadlines(); renderClosing(); renderEuer(); renderPackaging(); fillBiz(); }
+  // ---------- Einkommensteuer ----------
+  const PP_DATES = ["03-10", "06-10", "09-10", "12-10"];
+  const prepayOf = (y) => ((state.settings.prepay || {})[String(y)] || []).slice(0, 4);
+  function renderTax() {
+    const y = today().slice(0, 4);
+    const rows = euerRows(y);
+    const inc = rows.filter((r) => r.type === "Einnahme").reduce((s, r) => s + r.amount, 0);
+    const exp = rows.filter((r) => r.type === "Ausgabe").reduce((s, r) => s + r.amount, 0);
+    const profit = inc - exp;
+    const rate = Number.isFinite(Number(state.settings.taxRate)) && state.settings.taxRate !== "" && state.settings.taxRate != null ? Number(state.settings.taxRate) : 25;
+    const reserve = Math.max(0, profit) * rate / 100;
+    const pp = prepayOf(y);
+    const paid = pp.reduce((s, e) => s + (e && e.paid ? Number(e.amount) || 0 : 0), 0);
+    const open = Math.max(0, reserve - paid);
+    $("tax-year").textContent = y + " bis heute";
+    $("tax-kpis").innerHTML = [
+      kpi("Gewinn " + y, money(profit), "Einnahmen minus Ausgaben, wie in der EÜR", profit > 0 ? "kpi--pos" : profit < 0 ? "kpi--neg" : ""),
+      kpi("Zur Seite legen", money(reserve), `${rate} % vom Gewinn für die Einkommensteuer`),
+      kpi("Davon noch offen", money(open), paid ? `${money(paid)} schon vorausgezahlt` : "noch keine Vorauszahlung abgehakt"),
+    ].join("");
+    const f = $("tax-form");
+    if (!f.contains(document.activeElement)) {
+      $("tax-prepay").innerHTML = PP_DATES.map((md, i) => { const e = pp[i] || {}; return `<div class="pp"><b>${md.slice(3)}.${md.slice(0, 2)}.</b><input id="pp-${i}" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Betrag €" value="${e.amount ? Number(e.amount) : ""}" aria-label="Vorauszahlung ${md.slice(3)}.${md.slice(0, 2)}."><label class="checkline"><input type="checkbox" id="ppd-${i}" ${e.paid ? "checked" : ""}> bezahlt</label></div>`; }).join("");
+      $("tax-rate").value = state.settings.taxRate ?? "";
+    }
+  }
+  async function saveTax() {
+    const y = today().slice(0, 4);
+    const list = PP_DATES.map((_, i) => ({ amount: round2(Number($("pp-" + i).value) || 0), paid: $("ppd-" + i).checked }));
+    const rateRaw = $("tax-rate").value.trim();
+    const s2 = { ...state.settings, prepay: { ...(state.settings.prepay || {}), [y]: list }, taxRate: rateRaw === "" ? null : Math.max(0, Math.min(60, Number(rateRaw))) };
+    if (SHOP_KU !== null) delete s2.smallBusiness;
+    const ok = await write((db) => db.doc("settings/main").set(s2));
+    if (ok) { $("tax-msg").hidden = false; $("tax-msg").textContent = "Gespeichert."; setTimeout(() => ($("tax-msg").hidden = true), 3000); }
+  }
+  $("tax-form").addEventListener("submit", (e) => { e.preventDefault(); document.activeElement && document.activeElement.blur(); saveTax(); });
+  $("tax-form").addEventListener("change", (e) => { if (e.target.matches("input[type=checkbox]")) saveTax(); });
+
+  function renderFinance() { renderTax(); renderKU(); renderDeadlines(); renderClosing(); renderEuer(); renderPackaging(); fillBiz(); }
 
   // ---------- Rechnungen (PDF, ohne externe Bibliothek) ----------
   const WIN = { "€": 128, "‚": 130, "„": 132, "…": 133, "–": 150, "—": 151, "‘": 145, "’": 146, "“": 147, "”": 148, "•": 149, "−": 45 };
@@ -1967,7 +2067,7 @@ span.neg { color: var(--bad); font-weight: 600; }
   async function makeInvoice(o, recipient) {
     const msg = $("ordmsg-" + o.id);
     if (!state.settings.bizName || !state.settings.bizAddress) {
-      if (msg) msg.textContent = "Trag zuerst unter Finanzen → Firmendaten deinen Namen und deine Anschrift ein.";
+      if (msg) msg.textContent = "Trag zuerst unter Einstellungen (Zahnrad oben rechts) → Firmendaten deinen Namen und deine Anschrift ein.";
       return;
     }
     if (!state.downloads) { if (msg) msg.textContent = "Herunterladen ist hier nicht möglich."; return; }
@@ -2416,7 +2516,7 @@ VERFAHREN (Vorlage für die Verfahrensdokumentation – bitte prüfen und ergän
       ready(name); renderAll();
     }, () => setStatus("bad", "Verbindung zum Speicher unterbrochen – bitte neu laden"));
     ["costs", "purchases", "orders", "todos", "receipts", "closings", "deadlines"].forEach(listen);
-    db.doc("settings/main").onSnapshot((snap) => { state.settings = snap.exists ? { ...snap.data() } : {}; ready("settings"); renderAll(); },
+    db.doc("settings/main").onSnapshot((snap) => { state.settings = snap.exists ? { ...snap.data() } : {}; if (SHOP_KU !== null) state.settings.smallBusiness = SHOP_KU; ready("settings"); renderAll(); },
       () => setStatus("bad", "Verbindung zum Speicher unterbrochen – bitte neu laden"));
     initReceiptCaps();
     renderAccess();

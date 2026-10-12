@@ -20,7 +20,7 @@ const SHOP_CONFIG = {
   // false = Preise werden als "inkl. MwSt." angezeigt.
   // true  = Hinweis "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
   // Erst umstellen, wenn das Finanzamt deinen Status bestätigt hat.
-  smallBusiness: false,
+  smallBusiness: true,
 
   // Lieferzeit (erscheint bei jedem Produkt und im Warenkorb)
   deliveryTime: { de: "2–5 Werktage", en: "2–5 working days", ti: "2–5 መዓልታት ስራሕ" },
