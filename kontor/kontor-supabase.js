@@ -108,10 +108,11 @@
     gate.hidden = true;
     const st = document.getElementById("status");
     if (st && !document.getElementById("logout")) {
+      const host = document.getElementById("account-actions");
       const b = document.createElement("button");
-      b.id = "logout"; b.className = "link logout"; b.type = "button"; b.textContent = "Abmelden";
+      b.id = "logout"; b.className = host ? "btn btn--ghost" : "link logout"; b.type = "button"; b.textContent = "Abmelden";
       b.onclick = async () => { await sb.auth.signOut(); location.reload(); };
-      st.appendChild(b);
+      (host || st).appendChild(b);
     }
     readyResolve(true);
   }

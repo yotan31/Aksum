@@ -158,7 +158,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
 @media (prefers-reduced-motion: no-preference) { .spin { animation: spin 0.8s linear infinite; } }
 @keyframes spin { to { transform: rotate(360deg); } }
 .checkline { display: flex; gap: 8px; align-items: flex-start; font-size: 0.88rem; color: var(--ink-soft); }
-.checkline input { width: auto; margin-top: 3px; accent-color: var(--good); }
+.checkline input { width: 20px; height: 20px; min-height: 0 !important; flex: 0 0 auto; margin-top: 1px; accent-color: var(--good); }
 .legalbox { font-size: 0.88rem; color: var(--ink-soft); }
 .legalbox ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 4px; }
 @media (max-width: 760px) {
@@ -303,13 +303,97 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
   .status { margin-left: 0; width: 100%; }
   .seg button { padding: 6px 9px; font-size: 0.8rem; }
 }
+
+/* ---------- Übersichtlicher (v2) ---------- */
+.gear { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); border-radius: 999px; padding: 5px 12px 5px 9px; cursor: pointer; font-size: 0.85rem; font-weight: 500; }
+.gear svg { width: 18px; height: 18px; }
+.gear[aria-current] { color: var(--accent); border-color: var(--accent); }
+.kpis--3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.notes { display: grid; gap: 8px; }
+.notice--btn { border: 0; width: 100%; text-align: left; cursor: pointer; font: inherit; font-size: 0.9rem; }
+.notice--btn b { white-space: nowrap; }
+.seg--sub { justify-self: start; }
+.seg--sub .badge { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 6px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); font-size: 0.7rem; line-height: 18px; text-align: center; font-weight: 700; }
+.seg button[aria-pressed="true"] .badge { background: var(--bg); color: var(--ink); }
+.panel.inset { background: var(--bg); border-style: dashed; }
+details.fold > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary span { display: grid; gap: 2px; }
+details.fold > summary small { color: var(--ink-muted); font-size: 0.82rem; font-weight: 400; }
+details.fold > summary::after { content: "›"; font-size: 1.3rem; color: var(--ink-muted); transform: rotate(90deg); transition: transform 0.15s; }
+details.fold[open] > summary::after { transform: rotate(-90deg); }
+details.fold:not([open]) { gap: 0; }
+details.fold-mini > summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 0.9rem; padding: 4px 0; }
+details.fold-mini[open] > summary { margin-bottom: 10px; }
+.today__more { justify-self: start; font-size: 0.88rem; padding: 6px 2px; }
+
+/* Listen-Zeilen (Kosten, Einkäufe, Bestand) */
+.rows { display: grid; }
+.rw, .sk { display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.rows > :last-child { border-bottom: 0; }
+.rw__main, .sk__main { display: grid; gap: 3px; min-width: 0; justify-items: start; }
+.rw__main small, .sk__main small, .rw__num small, .sk__num small { color: var(--ink-muted); font-size: 0.82rem; }
+.rw__num, .sk__num { text-align: right; display: grid; gap: 1px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rw__act { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; margin-left: -4px; }
+.rw__act:empty { display: none; }
+.rw__lot { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rw--sum { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; margin-top: 6px; border-bottom: 0; }
+.sk__num b { font-size: 1.35rem; line-height: 1.1; }
+.sk.warn .sk__num b { color: var(--warn); }
+.sk.bad .sk__num b { color: var(--bad); }
+span.pos { color: var(--good); font-weight: 600; }
+span.neg { color: var(--bad); font-weight: 600; }
+
+/* Bestellungen als Karten */
+.olist { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.oc { border: 1px solid var(--line); border-radius: 12px; background: var(--bg); padding: 12px 14px; display: grid; gap: 6px; align-content: start; border-left: 4px solid var(--line); }
+.oc--neu { border-left-color: var(--warn); }
+.oc--gepackt { border-left-color: var(--s2); }
+.oc--versendet { border-left-color: var(--good); }
+.oc--erstattet { border-left-color: var(--bad); opacity: 0.8; }
+.oc__top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.oc__who { font-size: 1.02rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.oc__meta { color: var(--ink-muted); font-size: 0.82rem; }
+.oc__items { font-size: 0.92rem; }
+.oc__money > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; font-weight: 600; font-variant-numeric: tabular-nums; padding: 6px 0; border-top: 1px solid var(--line); }
+.oc__money > summary::-webkit-details-marker { display: none; }
+.oc__money > summary span:last-child::after { content: " ▾"; color: var(--ink-muted); font-size: 0.75rem; }
+.oc__money[open] > summary span:last-child::after { content: " ▴"; }
+.oc__calc { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; font-size: 0.85rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; padding: 4px 0 6px; }
+.oc__calc > :nth-child(even) { text-align: right; }
+.oc__calc b { color: var(--ink); }
+.oc__act { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.oc__ship { display: flex; gap: 6px; flex: 1 1 100%; }
+.oc__ship input { flex: 1; min-width: 0; padding: 6px 8px; min-height: 0; }
+.oc__trk { font-size: 0.82rem; }
+
+/* Todos: schnell eintragen */
+.todo-add { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; }
+.todo-more { grid-column: 1 / -1; }
+.todo-more__row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#todo-sync:empty { display: none; }
+
+@media (max-width: 640px) {
+  .status #status-text, .status .logout { display: none; }
+  .status { margin-left: auto; width: auto !important; }
+  .gear span { display: none; }
+  .gear { padding: 7px; }
+  main { padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
+  .olist { grid-template-columns: 1fr; }
+  .seg--sub { width: 100%; }
+  .todo-add { grid-template-columns: 1fr; }
+  .kpis--3 { grid-template-columns: 1fr 1fr; }
+  .kpis--3 > .kpi:first-child { grid-column: 1 / -1; }
+  body[data-tab="einstellungen"] .fab, body[data-tab="todos"] .fab { display: none; }
+}
 @media (prefers-reduced-motion: no-preference) { .bar__fill { transition: width 0.3s; } }
 </style>
 
 <header class="top">
   <div class="top__inner">
     <div class="brand"><h1>Aksum Kontor</h1><span>Interne Übersicht</span></div>
-    <div class="status" id="status"><span class="dot" id="status-dot"></span><span id="status-text">Verbinde mit dem Speicher …</span></div>
+    <div class="status" id="status" title=""><span class="dot" id="status-dot"></span><span id="status-text">Verbinde mit dem Speicher …</span></div>
+    <button type="button" class="gear" data-goto-tab="einstellungen" aria-label="Einstellungen" title="Einstellungen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Einstellungen</span></button>
     <nav class="tabs" role="tablist" aria-label="Bereiche">
       <button role="tab" id="t-uebersicht" aria-controls="uebersicht" aria-selected="true" data-tab="uebersicht">Übersicht</button>
       <button role="tab" id="t-bestellungen" aria-controls="bestellungen" aria-selected="false" data-tab="bestellungen">Bestellungen</button>
@@ -324,25 +408,25 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
 <main>
   <!-- ÜBERSICHT -->
   <section role="tabpanel" id="uebersicht" aria-labelledby="t-uebersicht">
+    <div class="panel today-panel">
+      <div class="panel__head"><h2>Heute zu tun</h2><span class="hint" id="today-date"></span></div>
+      <div id="today"></div>
+    </div>
     <div class="row">
       <h2>Wie läuft der Shop?</h2>
       <div class="seg" role="group" aria-label="Zeitraum" id="period">
-        <button data-period="month" aria-pressed="false">Dieser Monat</button>
+        <button data-period="month" aria-pressed="false">Monat</button>
         <button data-period="3m" aria-pressed="false">3 Monate</button>
-        <button data-period="year" aria-pressed="true">Dieses Jahr</button>
+        <button data-period="year" aria-pressed="true">Jahr</button>
         <button data-period="all" aria-pressed="false">Gesamt</button>
       </div>
     </div>
-    <div class="panel today-panel">
-      <div class="panel__head"><h3>Heute zu tun</h3><span class="hint" id="today-date"></span></div>
-      <div id="today"></div>
-    </div>
-    <div id="setup-notes" class="grid2" hidden></div>
-    <div class="kpis" id="kpis"></div>
+    <div class="kpis kpis--3" id="kpis"></div>
+    <div id="setup-notes" class="notes" hidden></div>
     <div class="panel">
       <div class="panel__head">
-        <h3>Umsatz und Profit pro Monat</h3>
-        <div class="legend"><span><i style="background:var(--s1)"></i>Umsatz</span><span><i style="background:var(--s2)"></i>Profit nach Versand</span></div>
+        <h3>Umsatz und Gewinn pro Monat</h3>
+        <div class="legend"><span><i style="background:var(--s1)"></i>Umsatz</span><span><i style="background:var(--s2)"></i>Gewinn</span></div>
       </div>
       <div class="chart" id="chart"></div>
     </div>
@@ -352,7 +436,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
           <h3>Woher kommen die Bestellungen?</h3>
           <div class="seg" role="group" aria-label="Gruppierung" id="geo-mode">
             <button data-geo="city" aria-pressed="true">Städte</button>
-            <button data-geo="zip" aria-pressed="false">PLZ-Gebiet</button>
+            <button data-geo="zip" aria-pressed="false">PLZ</button>
             <button data-geo="country" aria-pressed="false">Länder</button>
           </div>
         </div>
@@ -367,38 +451,8 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
 
   <!-- BESTELLUNGEN -->
   <section role="tabpanel" id="bestellungen" aria-labelledby="t-bestellungen" hidden>
-    <div class="grid2">
-      <div class="panel">
-        <h2>PayPal-Export hochladen</h2>
-        <label class="drop" id="drop">
-          <input type="file" id="csv" accept=".csv,text/csv">
-          <strong>CSV-Datei hierher ziehen oder antippen</strong>
-          <span class="hint">Bestellungen, die schon da sind, werden aktualisiert, nicht doppelt angelegt.</span>
-        </label>
-        <div id="import-result" hidden></div>
-        <details class="howto">
-          <summary>So bekommst du die Datei von PayPal</summary>
-          <ol>
-            <li>Bei PayPal einloggen und auf <b>Aktivitäten</b> gehen.</li>
-            <li>Oben auf <b>Berichte</b> bzw. <b>Kontoauszüge &amp; Berichte → Aktivitätenbericht</b>.</li>
-            <li>Transaktionsart <b>Alle Transaktionen</b>, Zeitraum wählen, Format <b>CSV</b>.</li>
-            <li>Bericht erstellen, herunterladen und die Datei hier hochladen.</li>
-          </ol>
-        </details>
-      </div>
-      <div class="panel">
-        <h2>Deine Kosten pro Paket</h2>
-        <p class="hint">Damit berechne ich den Profit nach Versand. Trage ein, was dich ein Paket wirklich kostet.</p>
-        <form class="inline" id="settings-form">
-          <label class="f">Versand pro Paket (€)<input id="set-shipping" type="number" step="0.01" min="0" inputmode="decimal" placeholder="z. B. 4,79"></label>
-          <label class="f">Verpackung pro Paket (€)<input id="set-packaging" type="number" step="0.01" min="0" inputmode="decimal" placeholder="z. B. 0,80"></label>
-          <button class="btn" type="submit">Speichern</button>
-        </form>
-        <div id="settings-msg" class="hint" hidden></div>
-      </div>
-    </div>
     <div class="panel" id="picklist-panel" hidden>
-      <div class="panel__head"><h2>Packliste</h2><span class="hint">alle Bestellungen mit Status „Neu“ zusammen</span></div>
+      <div class="panel__head"><h2>Packliste</h2><span class="hint">alles aus den neuen Bestellungen</span></div>
       <div id="picklist"></div>
     </div>
     <div class="panel">
@@ -413,122 +467,119 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
       <span class="hint" id="orders-count"></span>
       <div id="orders"></div>
     </div>
+    <details class="panel fold" id="import-panel">
+      <summary><span><b>Bestellungen aus PayPal importieren</b><small>falls eine Bestellung fehlt: PayPal-Export hochladen</small></span></summary>
+      <label class="drop" id="drop">
+        <input type="file" id="csv" accept=".csv,text/csv">
+        <strong>CSV-Datei hierher ziehen oder antippen</strong>
+        <span class="hint">Bestellungen, die schon da sind, werden aktualisiert, nicht doppelt angelegt.</span>
+      </label>
+      <div id="import-result" hidden></div>
+      <details class="howto">
+        <summary>So bekommst du die Datei von PayPal</summary>
+        <ol>
+          <li>Bei PayPal einloggen und auf <b>Aktivitäten</b> gehen.</li>
+          <li>Oben auf <b>Berichte</b> bzw. <b>Kontoauszüge &amp; Berichte → Aktivitätenbericht</b>.</li>
+          <li>Transaktionsart <b>Alle Transaktionen</b>, Zeitraum wählen, Format <b>CSV</b>.</li>
+          <li>Bericht erstellen, herunterladen und die Datei hier hochladen.</li>
+        </ol>
+      </details>
+    </details>
   </section>
 
-  <!-- KOSTEN -->
+  <!-- FINANZEN -->
   <section role="tabpanel" id="kosten" aria-labelledby="t-kosten" hidden>
-    <div class="panel">
-      <div class="panel__head"><h2>Kleinunternehmer-Grenze</h2><span class="hint" id="ku-status"></span></div>
-      <div id="ku"></div>
+    <div class="seg seg--sub" role="group" aria-label="Finanzen" id="fin-sub">
+      <button data-fsub="kosten" aria-pressed="true">Kosten</button>
+      <button data-fsub="fristen" aria-pressed="false">Fristen<span class="badge" id="fin-badge" hidden></span></button>
+      <button data-fsub="steuer" aria-pressed="false">Steuer &amp; Meldungen</button>
     </div>
-    <div class="kpis" id="cost-kpis"></div>
-    <div class="panel">
-      <h2 id="cost-form-title">Neue Kosten eintragen</h2>
-      <form class="inline" id="cost-form">
-        <label class="f">Bezeichnung<input id="c-name" required placeholder="z. B. IONOS Domain + E-Mail"></label>
-        <label class="f">Kategorie
-          <select id="c-cat">
-            <option>Software &amp; Tools</option><option>Domain &amp; Hosting</option><option>Behörden &amp; Recht</option>
-            <option>Marketing</option><option>Versandmaterial</option><option>Gebühren</option><option>Sonstiges</option>
-          </select></label>
-        <label class="f">Betrag (€)<input id="c-amount" type="number" step="0.01" min="0" inputmode="decimal" required></label>
-        <label class="f">Rhythmus
-          <select id="c-interval"><option value="monthly">monatlich</option><option value="yearly">jährlich</option><option value="once">einmalig</option></select></label>
-        <label class="f">Ab / am<input id="c-date" type="date" required></label>
-        <label class="f">Notiz<input id="c-note" placeholder="optional"></label>
-        <button class="btn" type="submit" id="c-submit">Hinzufügen</button>
-        <button class="btn btn--ghost" type="button" id="c-cancel" hidden>Abbrechen</button>
-      </form>
-    </div>
-    <div class="panel">
-      <h2>Alle Kosten</h2>
+
+    <div class="kpis kpis--3" id="cost-kpis" data-fsub="kosten"></div>
+    <div class="panel" data-fsub="kosten">
+      <div class="panel__head"><h2>Deine Kosten</h2><button class="btn btn--sm" type="button" data-open="cost-form-panel">+ Kosten eintragen</button></div>
+      <div class="panel inset" id="cost-form-panel" hidden>
+        <div class="panel__head"><h3 id="cost-form-title">Neue Kosten eintragen</h3><button class="link" type="button" data-close="cost-form-panel">Schließen</button></div>
+        <form class="inline" id="cost-form">
+          <label class="f">Bezeichnung<input id="c-name" required placeholder="z. B. IONOS Domain + E-Mail"></label>
+          <label class="f">Betrag (€)<input id="c-amount" type="number" step="0.01" min="0" inputmode="decimal" required></label>
+          <label class="f">Rhythmus
+            <select id="c-interval"><option value="monthly">monatlich</option><option value="yearly">jährlich</option><option value="once">einmalig</option></select></label>
+          <label class="f">Kategorie
+            <select id="c-cat">
+              <option>Software &amp; Tools</option><option>Domain &amp; Hosting</option><option>Behörden &amp; Recht</option>
+              <option>Marketing</option><option>Versandmaterial</option><option>Gebühren</option><option>Sonstiges</option>
+            </select></label>
+          <label class="f">Ab / am<input id="c-date" type="date" required></label>
+          <label class="f">Notiz<input id="c-note" placeholder="optional"></label>
+          <button class="btn" type="submit" id="c-submit">Hinzufügen</button>
+          <button class="btn btn--ghost" type="button" id="c-cancel" hidden>Abbrechen</button>
+        </form>
+      </div>
       <div id="costs"></div>
     </div>
-    <div class="grid2">
+
+    <div class="grid2" data-fsub="fristen" hidden>
       <div class="panel">
         <div class="panel__head"><h2>Fristen</h2><span class="hint">die nächsten Termine</span></div>
         <div id="deadlines"></div>
-        <form class="inline" id="dl-form">
-          <label class="f" style="grid-column: span 2">Eigener Termin<input id="dl-title" required placeholder="z. B. Termin Steuerberater"></label>
-          <label class="f">Datum<input id="dl-date" type="date" required></label>
-          <button class="btn btn--ghost" type="submit">Hinzufügen</button>
-        </form>
+        <details class="fold-mini">
+          <summary>+ Eigenen Termin eintragen</summary>
+          <form class="inline" id="dl-form">
+            <label class="f" style="grid-column: span 2">Was?<input id="dl-title" required placeholder="z. B. Termin Steuerberater"></label>
+            <label class="f">Datum<input id="dl-date" type="date" required></label>
+            <button class="btn btn--ghost" type="submit">Hinzufügen</button>
+          </form>
+        </details>
       </div>
       <div class="panel">
         <div class="panel__head"><h2>Monatsabschluss</h2><select id="cl-month" aria-label="Monat" style="width:auto"></select></div>
         <div id="closing"></div>
       </div>
     </div>
-    <div class="panel">
+
+    <div class="panel" data-fsub="steuer" hidden>
+      <div class="panel__head"><h2>Kleinunternehmer-Grenze</h2><span class="hint" id="ku-status"></span></div>
+      <div id="ku"></div>
+    </div>
+    <div class="panel" data-fsub="steuer" hidden>
       <div class="panel__head"><h2>Einnahmen-Überschuss-Rechnung (EÜR)</h2>
         <div class="btnrow"><select id="euer-year" aria-label="Jahr" style="width:auto"></select><button class="btn btn--ghost" type="button" id="euer-export">Als Tabelle herunterladen</button></div></div>
       <p class="hint">Alle Einnahmen und Ausgaben des Jahres, brutto, für die Steuererklärung oder den Steuerberater. PayPal-Gebühren sind automatisch als Ausgabe enthalten.</p>
       <div id="euer-msg" hidden></div>
       <div id="euer"></div>
     </div>
-    <div class="grid2">
-      <div class="panel">
-        <div class="panel__head"><h2>Verpackungsmengen</h2><span class="hint">für Duales System &amp; LUCID</span></div>
-        <div id="packaging"></div>
-      </div>
-      <div class="panel">
-        <h2>Deine Firmendaten</h2>
-        <p class="hint">Erscheinen auf deinen Rechnungen. Die Gewichte brauchst du für die Verpackungsmeldung.</p>
-        <form class="inline" id="biz-form">
-          <label class="f" style="grid-column: 1 / -1">Name / Firma<input id="biz-name" placeholder="z. B. Aksum – Vorname Nachname"></label>
-          <label class="f" style="grid-column: 1 / -1">Anschrift<textarea id="biz-address" rows="2" placeholder="Straße Nr.&#10;PLZ Ort"></textarea></label>
-          <label class="f">E-Mail<input id="biz-email" type="email" placeholder="info@aksum-shop.de"></label>
-          <label class="f">Steuernummer<input id="biz-taxno" placeholder="optional"></label>
-          <label class="f">Pappe/Papier pro Paket (g)<input id="biz-paper" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 180"></label>
-          <label class="f">Kunststoff pro Paket (g)<input id="biz-plastic" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 10"></label>
-          <label class="checkline" style="grid-column: 1 / -1"><input type="checkbox" id="biz-ku"> Ich bin Kleinunternehmer nach § 19 UStG (keine Umsatzsteuer auf Rechnungen)</label>
-          <button class="btn" type="submit">Speichern</button>
-        </form>
-        <div id="biz-msg" class="hint" hidden></div>
-      </div>
-    </div>
-    <div class="panel" id="access-panel" hidden>
-      <div class="panel__head"><h2>Zugang zum Kontor</h2><span class="hint">nur diese E-Mail-Adressen sehen deine Daten</span></div>
-      <div id="access-list"></div>
-      <form class="inline" id="access-form">
-        <label class="f" style="grid-column: span 2">E-Mail-Adresse freischalten<input id="access-email" type="email" required placeholder="name@beispiel.de"></label>
-        <button class="btn btn--ghost" type="submit">Freischalten</button>
-      </form>
-      <p class="hint">Die Person registriert sich danach auf der Anmeldeseite mit genau dieser Adresse.</p>
-      <div id="access-msg" hidden></div>
-      <form class="inline" id="pw-form" style="margin-top:14px">
-        <label class="f">Neues Passwort<input id="pw-new" type="password" minlength="8" required autocomplete="new-password" placeholder="mind. 8 Zeichen"></label>
-        <label class="f">Wiederholen<input id="pw-new2" type="password" minlength="8" required autocomplete="new-password"></label>
-        <button class="btn btn--ghost" type="submit">Passwort ändern</button>
-      </form>
-      <div id="pw-msg" hidden></div>
+    <div class="panel" data-fsub="steuer" hidden>
+      <div class="panel__head"><h2>Verpackungsmengen</h2><span class="hint">für Duales System &amp; LUCID</span></div>
+      <div id="packaging"></div>
     </div>
   </section>
 
   <!-- EINKAUF -->
   <section role="tabpanel" id="einkauf" aria-labelledby="t-einkauf" hidden>
     <div class="panel">
-      <h2>Wareneinkauf eintragen</h2>
-      <p class="hint">Trag jeden Einkauf hier ein oder schick ihn mir im Chat, dann trage ich ihn ein. Daraus berechne ich deinen Einkaufspreis pro Stück und den Bestand.</p>
-      <form class="inline" id="buy-form">
-        <label class="f">Datum<input id="b-date" type="date" required></label>
-        <label class="f">Produkt<select id="b-sku" required></select></label>
-        <label class="f">Anzahl (Packungen/Stück)<input id="b-qty" type="number" step="1" min="1" inputmode="numeric" required></label>
-        <label class="f">Gesamtpreis inkl. Lieferung (€)<input id="b-total" type="number" step="0.01" min="0" inputmode="decimal" required></label>
-        <label class="f">Lieferant<input id="b-supplier" placeholder="optional"></label>
-        <label class="f">Charge / Los-Nr.<input id="b-lot" placeholder="bei Lebensmitteln"></label>
-        <label class="f">MHD<input id="b-mhd" type="date"></label>
-        <label class="f">Notiz<input id="b-note" placeholder="optional"></label>
-        <button class="btn" type="submit">Eintragen</button>
-      </form>
-      <div class="hint" id="b-unit"></div>
-    </div>
-    <div class="panel">
-      <div class="panel__head"><h2>Bestand &amp; Marge pro Produkt</h2><span class="hint">Marge = Verkaufspreis − Einkauf pro Stück, ohne Versand und Gebühren</span></div>
+      <div class="panel__head"><h2>Bestand</h2><button class="btn btn--sm" type="button" data-open="buy-form-panel">+ Einkauf eintragen</button></div>
+      <div class="panel inset" id="buy-form-panel" hidden>
+        <div class="panel__head"><h3>Wareneinkauf eintragen</h3><button class="link" type="button" data-close="buy-form-panel">Schließen</button></div>
+        <p class="hint">Daraus berechne ich deinen Einkaufspreis pro Stück und den Bestand. Du kannst mir den Einkauf auch im Chat schicken.</p>
+        <form class="inline" id="buy-form">
+          <label class="f">Produkt<select id="b-sku" required></select></label>
+          <label class="f">Anzahl (Packungen/Stück)<input id="b-qty" type="number" step="1" min="1" inputmode="numeric" required></label>
+          <label class="f">Gesamtpreis inkl. Lieferung (€)<input id="b-total" type="number" step="0.01" min="0" inputmode="decimal" required></label>
+          <label class="f">Datum<input id="b-date" type="date" required></label>
+          <label class="f">Lieferant<input id="b-supplier" placeholder="optional"></label>
+          <label class="f">Charge / Los-Nr.<input id="b-lot" placeholder="bei Lebensmitteln"></label>
+          <label class="f">MHD<input id="b-mhd" type="date"></label>
+          <label class="f">Notiz<input id="b-note" placeholder="optional"></label>
+          <button class="btn" type="submit">Eintragen</button>
+        </form>
+        <div class="hint" id="b-unit"></div>
+      </div>
+      <p class="hint">Marge = Verkaufspreis − Einkaufspreis pro Stück (ohne Versand und Gebühren).</p>
       <div id="stock"></div>
     </div>
     <div class="panel">
-      <h2>Einkaufsprotokoll</h2>
+      <h2>Einkäufe</h2>
       <div id="purchases"></div>
     </div>
   </section>
@@ -537,7 +588,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
   <section role="tabpanel" id="belege" aria-labelledby="t-belege" hidden>
     <div class="panel">
       <div class="panel__head"><h2>Beleg erfassen</h2><span class="hint" id="ai-state"></span></div>
-      <p class="hint">Fotografiere einen Kassenzettel oder eine Rechnung. Ich lese Datum, Händler, Beträge und MwSt aus und ordne den Beleg zu. Du siehst eine Vorschau und bestätigst, erst dann wird gespeichert.</p>
+      <p class="hint">Foto vom Kassenzettel oder der Rechnung machen. Ich lese alles aus, du prüfst kurz und bestätigst.</p>
       <div class="btnrow">
         <label class="btn" for="rc-camera">Foto aufnehmen</label>
         <input type="file" id="rc-camera" accept="image/*" capture="environment" hidden>
@@ -546,18 +597,18 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
       </div>
       <div id="rc-msg" hidden></div>
     </div>
-    <div class="row">
-      <h2>Belegarchiv</h2>
-      <div class="btnrow">
+    <div class="panel">
+      <div class="panel__head">
+        <h2>Belegarchiv</h2>
         <select id="rc-year" aria-label="Jahr" style="width:auto"></select>
-        <button class="btn btn--ghost" id="rc-export" type="button">Jahresarchiv für Finanzamt herunterladen</button>
       </div>
+      <div class="kpis kpis--3" id="rc-kpis"></div>
+      <div id="receipts"></div>
+      <button class="btn btn--ghost" id="rc-export" type="button">Jahresarchiv fürs Finanzamt herunterladen</button>
+      <div id="rc-export-msg" hidden></div>
     </div>
-    <div id="rc-export-msg" hidden></div>
-    <div class="kpis" id="rc-kpis"></div>
-    <div class="panel"><div id="receipts"></div></div>
-    <details class="panel legalbox">
-      <summary><b>Was du fürs Finanzamt wissen solltest</b></summary>
+    <details class="panel legalbox fold">
+      <summary><span><b>Was du fürs Finanzamt wissen solltest</b></span></summary>
       <ul>
         <li>Jeder bestätigte Beleg bekommt eine fortlaufende Nummer (z. B. B-2026-0001). Das Originalfoto wird unverändert gespeichert, zusammen mit einem digitalen Fingerabdruck (SHA-256), der jede spätere Änderung erkennbar macht.</li>
         <li>Bestätigte Belege lassen sich nicht bearbeiten oder löschen, nur mit Begründung stornieren. Der Beleg bleibt dabei im Archiv sichtbar.</li>
@@ -572,21 +623,81 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
 
   <!-- TODOS -->
   <section role="tabpanel" id="todos" aria-labelledby="t-todos" hidden>
-    <div class="row">
-      <h2>Todos aus deinen E-Mails</h2>
-      <span class="hint" id="todo-sync"></span>
-    </div>
     <div class="panel">
-      <form class="inline" id="todo-form">
-        <label class="f" style="grid-column: span 2">Neues Todo<input id="td-title" required placeholder="z. B. Gewerbe beim Amt anmelden"></label>
-        <label class="f">Fällig am<input id="td-due" type="date"></label>
-        <label class="f">Wichtigkeit<select id="td-prio"><option value="normal">normal</option><option value="high">wichtig</option><option value="low">später</option></select></label>
+      <form class="todo-add" id="todo-form">
+        <input id="td-title" required placeholder="Neues Todo, z. B. Kartons bestellen" aria-label="Neues Todo">
         <button class="btn" type="submit">Hinzufügen</button>
+        <details class="fold-mini todo-more">
+          <summary>Datum &amp; Wichtigkeit</summary>
+          <div class="todo-more__row">
+            <label class="f">Fällig am<input id="td-due" type="date"></label>
+            <label class="f">Wichtigkeit<select id="td-prio"><option value="normal">normal</option><option value="high">wichtig</option><option value="low">später</option></select></label>
+          </div>
+        </details>
       </form>
     </div>
-    <div class="grid2">
-      <div class="panel"><div class="panel__head"><h3>Offen</h3><span class="hint" id="todo-open-count"></span></div><div id="todo-open"></div></div>
-      <div class="panel"><div class="panel__head"><h3>Erledigt</h3><span class="hint" id="todo-done-count"></span></div><div id="todo-done"></div></div>
+    <div class="panel">
+      <div class="panel__head"><h2>Offen</h2><span class="hint" id="todo-open-count"></span></div>
+      <div id="todo-open"></div>
+      <span class="hint" id="todo-sync"></span>
+    </div>
+    <details class="panel fold">
+      <summary><span><b>Erledigt</b><small id="todo-done-count"></small></span></summary>
+      <div id="todo-done"></div>
+    </details>
+  </section>
+
+  <!-- EINSTELLUNGEN -->
+  <section role="tabpanel" id="einstellungen" hidden>
+    <div class="row"><h2>Einstellungen</h2><button class="link" type="button" data-goto-tab="uebersicht">← zurück</button></div>
+    <div class="panel">
+      <h3>Deine Kosten pro Paket</h3>
+      <p class="hint">Damit rechne ich den Gewinn pro Bestellung aus. Trag ein, was dich ein Paket wirklich kostet.</p>
+      <form class="inline" id="settings-form">
+        <label class="f">Versand pro Paket (€)<input id="set-shipping" type="number" step="0.01" min="0" inputmode="decimal" placeholder="z. B. 4,79"></label>
+        <label class="f">Verpackung pro Paket (€)<input id="set-packaging" type="number" step="0.01" min="0" inputmode="decimal" placeholder="z. B. 0,80"></label>
+        <button class="btn" type="submit">Speichern</button>
+      </form>
+      <div id="settings-msg" class="hint" hidden></div>
+    </div>
+    <div class="panel">
+      <h3>Deine Firmendaten</h3>
+      <p class="hint">Erscheinen auf deinen Rechnungen. Die Gewichte brauchst du für die Verpackungsmeldung.</p>
+      <form class="inline" id="biz-form">
+        <label class="f" style="grid-column: 1 / -1">Name / Firma<input id="biz-name" placeholder="z. B. Aksum – Vorname Nachname"></label>
+        <label class="f" style="grid-column: 1 / -1">Anschrift<textarea id="biz-address" rows="2" placeholder="Straße Nr.&#10;PLZ Ort"></textarea></label>
+        <label class="f">E-Mail<input id="biz-email" type="email" placeholder="info@aksum-shop.de"></label>
+        <label class="f">Steuernummer<input id="biz-taxno" placeholder="optional"></label>
+        <label class="f">Pappe/Papier pro Paket (g)<input id="biz-paper" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 180"></label>
+        <label class="f">Kunststoff pro Paket (g)<input id="biz-plastic" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 10"></label>
+        <label class="checkline" style="grid-column: 1 / -1"><input type="checkbox" id="biz-ku"> Ich bin Kleinunternehmer nach § 19 UStG (keine Umsatzsteuer auf Rechnungen)</label>
+        <button class="btn" type="submit">Speichern</button>
+      </form>
+      <div id="biz-msg" class="hint" hidden></div>
+    </div>
+    <div class="panel" id="access-panel" hidden>
+      <div class="panel__head"><h3>Wer darf ins Kontor?</h3><span class="hint">nur diese E-Mail-Adressen sehen deine Daten</span></div>
+      <div id="access-list"></div>
+      <details class="fold-mini">
+        <summary>+ Weitere Person freischalten</summary>
+        <form class="inline" id="access-form">
+          <label class="f" style="grid-column: span 2">E-Mail-Adresse<input id="access-email" type="email" required placeholder="name@beispiel.de"></label>
+          <button class="btn btn--ghost" type="submit">Freischalten</button>
+        </form>
+        <p class="hint">Die Person registriert sich danach auf der Anmeldeseite mit genau dieser Adresse.</p>
+      </details>
+      <div id="access-msg" hidden></div>
+    </div>
+    <div class="panel" id="account-panel">
+      <h3>Dein Zugang</h3>
+      <p class="hint" id="account-status"></p>
+      <form class="inline" id="pw-form" hidden>
+        <label class="f">Neues Passwort<input id="pw-new" type="password" minlength="8" required autocomplete="new-password" placeholder="mind. 8 Zeichen"></label>
+        <label class="f">Wiederholen<input id="pw-new2" type="password" minlength="8" required autocomplete="new-password"></label>
+        <button class="btn btn--ghost" type="submit">Passwort ändern</button>
+      </form>
+      <div id="pw-msg" hidden></div>
+      <div class="btnrow" id="account-actions"></div>
     </div>
   </section>
 </main>
@@ -736,13 +847,37 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     document.querySelectorAll("[role=tab]").forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === name)));
     document.querySelectorAll("[role=tabpanel]").forEach((p) => (p.hidden = p.id !== name));
     document.querySelectorAll("[data-nav]").forEach((b) => { if (b.dataset.nav === name) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+    document.querySelectorAll(".gear").forEach((g) => g.toggleAttribute("aria-current", name === "einstellungen"));
+    document.body.dataset.tab = name;
     prefs.set("tab", name);
     if (name === "uebersicht") requestAnimationFrame(() => renderOverview()); // Diagramm an sichtbare Breite anpassen
   }
   document.querySelectorAll("[role=tab]").forEach((t) => t.addEventListener("click", () => showTab(t.dataset.tab)));
   document.querySelectorAll("[data-nav]").forEach((b) => b.addEventListener("click", () => { showTab(b.dataset.nav); window.scrollTo(0, 0); }));
   const startTab = (location.hash || "").slice(1);
-  showTab(["uebersicht", "bestellungen", "kosten", "einkauf", "belege", "todos"].includes(startTab) ? startTab : prefs.get("tab", "uebersicht"));
+  showTab(["uebersicht", "bestellungen", "kosten", "einkauf", "belege", "todos", "einstellungen"].includes(startTab) ? startTab : prefs.get("tab", "uebersicht"));
+
+  // ---------- Finanzen: Unterbereiche ----------
+  let finSub = prefs.get("fsub", "kosten");
+  function showFinSub(name) {
+    finSub = name; prefs.set("fsub", name);
+    document.querySelectorAll("#fin-sub button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.fsub === name)));
+    document.querySelectorAll("#kosten > [data-fsub]").forEach((el) => (el.hidden = el.dataset.fsub !== name));
+  }
+  document.querySelectorAll("#fin-sub button").forEach((b) => b.addEventListener("click", () => showFinSub(b.dataset.fsub)));
+  showFinSub(finSub);
+
+  // ---------- Formulare auf- und zuklappen ----------
+  function openPanel(id) {
+    const p = $(id); if (!p) return;
+    p.hidden = false;
+    const f = p.querySelector("input:not([type=hidden]), select"); if (f) setTimeout(() => f.focus(), 30);
+    p.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+  document.addEventListener("click", (e) => {
+    const o = e.target.closest("[data-open]"); if (o) { const p = $(o.dataset.open); if (p && !p.hidden) p.hidden = true; else openPanel(o.dataset.open); return; }
+    const c = e.target.closest("[data-close]"); if (c) { $(c.dataset.close).hidden = true; if (c.dataset.close === "cost-form-panel") resetCostForm(); }
+  });
 
   // ---------- Zeitraum ----------
   function periodRange() {
@@ -826,16 +961,15 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
 
     $("kpis").innerHTML = [
       kpi("Umsatz", money(revenue), `${valid.length} Bestellung${valid.length === 1 ? "" : "en"} · Ø ${money(avg)}`),
-      kpi("Profit nach Versand", money(profit), `nach Ware, Versand, Verpackung, PayPal (${money(fees)})`, profit > 0 ? "kpi--pos" : profit < 0 ? "kpi--neg" : ""),
-      kpi("Laufende Kosten", money(fixed), `im Zeitraum · aktuell ${money(monthlyFixed)} pro Monat`),
-      kpi("Ergebnis", money(result), result >= 0 ? "Profit minus laufende Kosten" : "noch im Minus – normal in der Startphase", result > 0 ? "kpi--pos" : result < 0 ? "kpi--neg" : ""),
-      kpi("Ware eingekauft", money(goodsBought), "Ausgaben für Wareneinkauf im Zeitraum"),
+      kpi("Gewinn aus Verkäufen", money(profit), `nach Ware, Versand, Verpackung und PayPal`, profit > 0 ? "kpi--pos" : profit < 0 ? "kpi--neg" : ""),
+      kpi("Unterm Strich", money(result), `Gewinn minus laufende Kosten (${money(fixed)})${result < 0 ? " · in der Startphase normal" : ""}`, result > 0 ? "kpi--pos" : result < 0 ? "kpi--neg" : ""),
     ].join("");
+    void goodsBought; void monthlyFixed; void fees;
 
     // Hinweise, was noch fehlt
     const notes = [];
-    if (!state.settings.shippingCost) notes.push(`<div class="notice">Trag unter <b>Bestellungen</b> ein, was dich ein Paket kostet. Ohne diesen Wert ist der Profit zu hoch.</div>`);
-    if (missing) notes.push(`<div class="notice">${missing} Bestellung${missing === 1 ? "" : "en"} enthalten Produkte ohne Einkaufspreis. Trag den Einkauf unter <b>Einkauf &amp; Bestand</b> ein.</div>`);
+    if (!state.settings.shippingCost) notes.push(`<button type="button" class="notice notice--btn" data-goto-tab="einstellungen">Trag ein, was dich ein Paket kostet. Ohne diesen Wert ist der Gewinn zu hoch. <b>Jetzt eintragen ›</b></button>`);
+    if (missing) notes.push(`<button type="button" class="notice notice--btn" data-goto-tab="einkauf">${missing} Bestellung${missing === 1 ? "" : "en"} enthalten Produkte ohne Einkaufspreis. <b>Einkauf eintragen ›</b></button>`);
     $("setup-notes").innerHTML = notes.join("");
     $("setup-notes").hidden = !notes.length;
 
@@ -879,7 +1013,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     const bw = Math.max(4, Math.min(22, slot / 2 - 5));
     const ticks = [bottom, bottom + (top - bottom) / 2, top].filter((v, i, a) => a.indexOf(v) === i);
     if (bottom < 0 && !ticks.includes(0)) ticks.push(0);
-    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Umsatz und Profit pro Monat">`;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Umsatz und Gewinn pro Monat">`;
     ticks.forEach((t) => {
       svg += `<line x1="${L}" x2="${W - R}" y1="${yS(t)}" y2="${yS(t)}" stroke="var(--grid)" stroke-width="1"/>`;
       svg += `<text x="${L - 6}" y="${yS(t) + 4}" text-anchor="end">${Math.round(t).toLocaleString("de-DE")} €</text>`;
@@ -907,7 +1041,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     box.querySelectorAll(".hit").forEach((h) => {
       const show = () => {
         const d = data[Number(h.dataset.i)];
-        tip.innerHTML = `<b>${monthLabel(d.k)}</b> · ${d.n} Best.<br>Umsatz ${money(d.rev)}<br>Profit ${money(d.pr)}`;
+        tip.innerHTML = `<b>${monthLabel(d.k)}</b> · ${d.n} Best.<br>Umsatz ${money(d.rev)}<br>Gewinn ${money(d.pr)}`;
         const br = box.getBoundingClientRect(), hr = h.getBoundingClientRect();
         tip.style.left = Math.min(Math.max(hr.left - br.left + hr.width / 2, 70), br.width - 70) + "px";
         tip.style.top = hr.top - br.top + 30 + "px";
@@ -978,33 +1112,32 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     $("picklist").innerHTML = `<div class="pick">${pk.map(([n, q], i) => `<label><input type="checkbox" id="pk-${i}"> <b>${q}×</b> ${esc(n)}</label>`).join("")}</div>`;
 
     if (!list.length) {
-      $("orders").innerHTML = `<div class="empty">${all.length ? (orderFilter === "open" ? "Keine offenen Bestellungen. Alles versendet!" : "Keine Bestellungen in dieser Ansicht.") : "Noch keine Bestellungen. Lade oben deinen PayPal-Export hoch."}</div>`;
+      $("orders").innerHTML = `<div class="empty">${all.length ? (orderFilter === "open" ? "Keine offenen Bestellungen. Alles versendet!" : "Keine Bestellungen in dieser Ansicht.") : "Noch keine Bestellungen. Sobald jemand im Shop kauft, erscheint die Bestellung hier."}</div>`;
       return;
     }
-    $("orders").innerHTML = `<div class="tablewrap"><table>
-      <thead><tr><th>Datum</th><th>Ort</th><th>Artikel</th><th class="r">Umsatz</th><th class="r">PayPal</th><th class="r">Ware</th><th class="r">Versand + Verp.</th><th class="r">Profit</th><th class="r">Status</th></tr></thead>
-      <tbody>${list.map((o) => {
-        const c = orderCalc(o, uc);
-        const st = ordStatus(o);
-        const items = (o.items || []).map((it) => `${Number(it.qty) || 1}× ${esc(itemName(it))}`).join("<br>") || `<span class="muted">keine Artikel im Export</span>`;
-        const place = [o.zip, o.city].filter(Boolean).join(" ") + (o.country && !/^(deutschland|germany|de)$/i.test(o.country) ? ` (${esc(o.country)})` : "");
-        const chip = st === "erstattet" ? '<span class="chip chip--bad">erstattet</span>' : `<span class="chip ${STATUS[st][1]}">${STATUS[st][0]}</span>`;
-        let act = "";
-        if (st === "neu") act += `<button class="btn btn--sm btn--ghost" data-pack="${esc(o.id)}">Als gepackt markieren</button>`;
-        if (st === "neu" || st === "gepackt") act += `<input placeholder="Sendungsnummer" id="trk-${esc(o.id)}" value="${esc(o.tracking || "")}" aria-label="Sendungsnummer"><button class="btn btn--sm" data-ship="${esc(o.id)}">Versendet</button>`;
-        if (st === "versendet") act += `${o.tracking ? `<span class="muted num">${esc(o.tracking)}</span>` : ""}<button class="btn btn--sm btn--ghost" data-shipmail="${esc(o.id)}">Versandmail kopieren</button>`;
-        if (st !== "erstattet") act += `<button class="btn btn--sm btn--ghost" data-invoice="${esc(o.id)}">${o.invoiceNo ? "Rechnung " + esc(o.invoiceNo) : "Rechnung erstellen"}</button>`;
-        return `<tr>
-          <td class="num">${fmtDate(o.date)}<br><span class="muted">${esc(String(o.id).slice(-8))}</span></td>
-          <td>${o.customer && o.customer.name ? `<b>${esc(o.customer.name)}</b><br>` : ""}${esc(place) || '<span class="muted">–</span>'}</td>
-          <td>${items}${c.missing && !o.refunded ? `<br><span class="chip chip--warn">Einkaufspreis fehlt</span>` : ""}</td>
-          <td class="r">${money(Number(o.gross) || 0)}</td>
-          <td class="r">−${money(Number(o.fee) || 0)}</td>
-          <td class="r">${c.goods && !o.refunded ? "−" + money(c.goods) : "–"}</td>
-          <td class="r">${c.ship + c.pack ? "−" + money(c.ship + c.pack) : "–"}</td>
-          <td class="r ${c.profit >= 0 ? "pos" : "neg"}">${money(c.profit)}</td>
-          <td class="r"><div class="ord-actions">${chip}${act}</div><div class="muted" id="ordmsg-${esc(o.id)}"></div></td></tr>`;
-      }).join("")}</tbody></table></div>`;
+    $("orders").innerHTML = `<div class="olist">${list.map((o) => {
+      const c = orderCalc(o, uc);
+      const st = ordStatus(o);
+      const items = (o.items || []).map((it) => `${Number(it.qty) || 1}× ${esc(itemName(it))}`).join(", ") || `<span class="muted">keine Artikel im Export</span>`;
+      const place = [o.zip, o.city].filter(Boolean).join(" ") + (o.country && !/^(deutschland|germany|de)$/i.test(o.country) ? ` (${o.country})` : "");
+      const chip = st === "erstattet" ? '<span class="chip chip--bad">erstattet</span>' : `<span class="chip ${STATUS[st][1]}">${STATUS[st][0]}</span>`;
+      let act = "";
+      if (st === "neu") act += `<button class="btn btn--sm btn--ghost" data-pack="${esc(o.id)}">Gepackt</button>`;
+      if (st !== "erstattet" && st !== "versendet") act += `<button class="btn btn--sm btn--ghost" data-invoice="${esc(o.id)}">${o.invoiceNo ? "Rechnung " + esc(o.invoiceNo) : "Rechnung"}</button>`;
+      if (st === "neu" || st === "gepackt") act += `<span class="oc__ship"><input placeholder="Sendungsnummer" id="trk-${esc(o.id)}" value="${esc(o.tracking || "")}" aria-label="Sendungsnummer"><button class="btn btn--sm" data-ship="${esc(o.id)}">Versendet</button></span>`;
+      if (st === "versendet") act += `${o.tracking ? `<span class="muted num oc__trk">${esc(o.tracking)}</span>` : ""}<button class="btn btn--sm btn--ghost" data-shipmail="${esc(o.id)}">Versandmail kopieren</button>`;
+      if (st === "versendet") act += `<button class="btn btn--sm btn--ghost" data-invoice="${esc(o.id)}">${o.invoiceNo ? "Rechnung " + esc(o.invoiceNo) : "Rechnung"}</button>`;
+      const who = o.customer && o.customer.name ? esc(o.customer.name) : esc(place) || "Bestellung";
+      return `<article class="oc oc--${st}">
+        <div class="oc__top"><b class="oc__who">${who}</b>${chip}</div>
+        <div class="oc__meta">${fmtDate(o.date)}${o.customer && o.customer.name && place ? " · " + esc(place) : ""} · <span class="num">#${esc(String(o.id).slice(-8))}</span></div>
+        <div class="oc__items">${items}${c.missing && !o.refunded ? ` <span class="chip chip--warn">Einkaufspreis fehlt</span>` : ""}</div>
+        <details class="oc__money"><summary><span>${money(Number(o.gross) || 0)}</span><span class="${c.profit >= 0 ? "pos" : "neg"}">Gewinn ${money(c.profit)}</span></summary>
+          <div class="oc__calc"><span>Umsatz</span><span>${money(Number(o.gross) || 0)}</span><span>PayPal-Gebühr</span><span>−${money(Number(o.fee) || 0)}</span><span>Ware</span><span>${c.goods && !o.refunded ? "−" + money(c.goods) : "–"}</span><span>Versand + Verpackung</span><span>${c.ship + c.pack ? "−" + money(c.ship + c.pack) : "–"}</span><b>Gewinn</b><b class="${c.profit >= 0 ? "pos" : "neg"}">${money(c.profit)}</b></div>
+        </details>
+        <div class="oc__act">${act}</div><div class="muted" id="ordmsg-${esc(o.id)}"></div>
+      </article>`;
+    }).join("")}</div>`;
   }
   document.querySelectorAll("#order-filter button").forEach((b) => b.addEventListener("click", () => { orderFilter = b.dataset.of; prefs.set("of", orderFilter); renderOrders(); }));
   document.addEventListener("click", async (e) => {
@@ -1043,28 +1176,23 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     const thisYear = state.costs.reduce((s, c) => s + costInRange(c, yr), 0);
     const goods = state.purchases.reduce((s, p) => s + (Number(p.total) || 0), 0);
     $("cost-kpis").innerHTML = [
-      kpi("Laufend pro Monat", money(monthly), "monatliche + jährliche ÷ 12"),
-      kpi("Pro Jahr", money(monthly * 12), "bei gleichbleibenden Kosten"),
-      kpi("Einmalige Kosten", money(once), "seit Beginn"),
-      kpi("Kosten dieses Jahr", money(thisYear), "bis heute, ohne Ware"),
-      kpi("Ware gesamt", money(goods), "alle Einkäufe"),
+      kpi("Laufend pro Monat", money(monthly), `das sind ${money(monthly * 12)} im Jahr`),
+      kpi("Kosten dieses Jahr", money(thisYear), `bis heute, ohne Ware · einmalig gesamt ${money(once)}`),
+      kpi("Ware eingekauft", money(goods), "alle Einkäufe bisher"),
     ].join("");
     if (!state.costs.length) {
-      $("costs").innerHTML = `<div class="empty">Noch keine Kosten eingetragen. Leg oben die erste an, z. B. deine Domain.</div>`;
+      $("costs").innerHTML = `<div class="empty">Noch keine Kosten eingetragen. Tipp auf „+ Kosten eintragen“, z. B. für deine Domain.</div>`;
       return;
     }
     const list = [...state.costs].sort((a, b) => (a.interval === "once") - (b.interval === "once") || (a.category || "").localeCompare(b.category || "") || (a.name || "").localeCompare(b.name || ""));
-    $("costs").innerHTML = `<div class="tablewrap"><table>
-      <thead><tr><th>Bezeichnung</th><th>Kategorie</th><th>Rhythmus</th><th>Ab / am</th><th class="r">Betrag</th><th class="r">pro Monat</th><th></th></tr></thead>
-      <tbody>${list.map((c) => `<tr>
-        <td><b>${esc(c.name)}</b>${c.note ? `<br><span class="muted">${esc(c.note)}</span>` : ""}${c.amount === null || c.amount === undefined || c.amount === "" ? ` <span class="chip chip--warn">Betrag fehlt</span>` : ""}</td>
-        <td>${esc(c.category)}</td>
-        <td>${INTERVAL[c.interval] || esc(c.interval)}${c.until ? `<br><span class="muted">bis ${fmtDate(c.until)}</span>` : ""}</td>
-        <td class="num">${fmtDate(c.date)}</td>
-        <td class="r">${money(Number(c.amount) || 0)}</td>
-        <td class="r">${c.interval === "once" ? "–" : money(monthlyEquivalent(c))}</td>
-        <td class="r">${c.receiptId ? `<button class="link" data-goto-receipt="${esc(c.receiptNo || "")}">Beleg ${esc(c.receiptNo || "")}</button>` : `<button class="link" data-edit-cost="${esc(c.id)}">Bearbeiten</button> <button class="link" data-del="costs/${esc(c.id)}">Löschen</button>`}</td></tr>`).join("")}</tbody>
-      <tfoot><tr><td colspan="5">Laufend pro Monat (aktiv)</td><td class="r">${money(monthly)}</td><td></td></tr></tfoot></table></div>`;
+    const missingAmt = (c) => c.amount === null || c.amount === undefined || c.amount === "";
+    $("costs").innerHTML = `<div class="rows">${list.map((c) => `<div class="rw">
+        <div class="rw__main"><b>${esc(c.name)}</b>${missingAmt(c) ? ` <span class="chip chip--warn">Betrag fehlt</span>` : ""}
+          <small>${esc(c.category)}${c.date ? " · " + (c.interval === "once" ? "am " : "seit ") + fmtDate(c.date) : ""}${c.until ? " · bis " + fmtDate(c.until) : ""}${c.note ? " · " + esc(c.note) : ""}</small></div>
+        <div class="rw__num"><b>${missingAmt(c) ? "–" : money(Number(c.amount) || 0)}</b><small>${INTERVAL[c.interval] || esc(c.interval)}</small></div>
+        <div class="rw__act">${c.receiptId ? `<button class="link" data-goto-receipt="${esc(c.receiptNo || "")}">Beleg ${esc(c.receiptNo || "")}</button>` : `<button class="link" data-edit-cost="${esc(c.id)}">Bearbeiten</button><button class="link" data-del="costs/${esc(c.id)}">Löschen</button>`}</div>
+      </div>`).join("")}
+      <div class="rw rw--sum"><div class="rw__main"><b>Laufend pro Monat</b><small>monatliche + jährliche ÷ 12</small></div><div class="rw__num"><b>${money(monthly)}</b></div><div class="rw__act"></div></div></div>`;
   }
 
   // ---------- Darstellung: Einkauf ----------
@@ -1078,35 +1206,33 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     state.orders.filter((o) => !o.refunded).forEach((o) => (o.items || []).forEach((it) => { if (it.sku) sold[it.sku] = (sold[it.sku] || 0) + (Number(it.qty) || 1); }));
     const bought = {};
     state.purchases.forEach((p) => { if (p.sku) bought[p.sku] = (bought[p.sku] || 0) + (Number(p.qty) || 0); });
-    $("stock").innerHTML = `<div class="tablewrap"><table>
-      <thead><tr><th>Produkt</th><th class="r">Eingekauft</th><th class="r">Verkauft</th><th class="r">Bestand</th><th class="r">Nächstes MHD</th><th class="r">Einkauf/Stk.</th><th class="r">Verkaufspreis</th><th class="r">Marge/Stk.</th></tr></thead>
-      <tbody>${PRODUCTS.map((p) => {
-        const lot = lotsFor(p.sku).find((l) => l.left > 0 && l.bestBefore);
-        const mhd = !lot ? '<span class="muted">–</span>' : `<span class="chip ${mhdClass(lot.bestBefore)}">${fmtDate(lot.bestBefore)}</span>`;
-        const b = bought[p.sku] || 0, s = sold[p.sku] || 0, st = b - s, c = uc[p.sku];
-        const m = c === undefined ? null : p.price - c;
-        const stockChip = !b && !s ? '<span class="muted">–</span>' : st <= 0 ? `<span class="chip chip--bad">${st}</span>` : st <= 3 ? `<span class="chip chip--warn">${st}</span>` : `<span class="num">${st}</span>`;
-        return `<tr class="${!b && !s ? "idle" : ""}"><td>${esc(p.name)}</td><td class="r">${b || "–"}</td><td class="r">${s || "–"}</td><td class="r">${stockChip}</td><td class="r">${mhd}</td>
-          <td class="r">${c === undefined ? '<span class="muted">–</span>' : money(c)}</td><td class="r">${money(p.price)}</td>
-          <td class="r ${m === null ? "" : m >= 0 ? "pos" : "neg"}">${m === null ? '<span class="muted">–</span>' : money(m) + ` <span class="muted">(${Math.round((m / p.price) * 100)} %)</span>`}</td></tr>`;
-      }).join("")}</tbody></table></div>`;
+    const rowsStock = PRODUCTS.map((p) => {
+      const lot = lotsFor(p.sku).find((l) => l.left > 0 && l.bestBefore);
+      const b = bought[p.sku] || 0, s = sold[p.sku] || 0, st = b - s, c = uc[p.sku];
+      if (!b && !s) return "";
+      const m = c === undefined ? null : p.price - c;
+      const cls = st <= 0 ? "bad" : st <= 3 ? "warn" : "";
+      return `<div class="sk ${cls}">
+        <div class="sk__main"><b>${esc(p.name)}</b>
+          <small>${b} eingekauft · ${s} verkauft${m === null ? "" : ` · Marge <span class="${m >= 0 ? "pos" : "neg"}">${money(m)} (${Math.round((m / p.price) * 100)} %)</span>`}</small>
+          ${lot ? `<span class="chip ${mhdClass(lot.bestBefore)}">MHD ${fmtDate(lot.bestBefore)}</span>` : ""}</div>
+        <div class="sk__num"><b>${st}</b><small>${st <= 0 ? "ausverkauft" : "auf Lager"}</small></div>
+      </div>`;
+    }).join("");
+    $("stock").innerHTML = rowsStock ? `<div class="rows">${rowsStock}</div>` : `<div class="empty">Noch kein Bestand. Tipp auf „+ Einkauf eintragen“, sobald du Ware gekauft hast.</div>`;
 
     if (!state.purchases.length) {
-      $("purchases").innerHTML = `<div class="empty">Noch keine Einkäufe. Trag oben deinen ersten Wareneinkauf ein oder schick ihn mir im Chat.</div>`;
+      $("purchases").innerHTML = `<div class="empty">Noch keine Einkäufe.</div>`;
       return;
     }
     const list = [...state.purchases].sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-    $("purchases").innerHTML = `<div class="tablewrap"><table>
-      <thead><tr><th>Datum</th><th>Produkt</th><th>Lieferant</th><th>Charge / MHD</th><th class="r">Anzahl</th><th class="r">Gesamt</th><th class="r">pro Stück</th><th></th></tr></thead>
-      <tbody>${list.map((p) => `<tr>
-        <td class="num">${fmtDate(p.date)}</td>
-        <td>${esc((productBySku[p.sku] && productBySku[p.sku].name) || p.product || "Sonstiges")}${p.note ? `<br><span class="muted">${esc(p.note)}</span>` : ""}</td>
-        <td>${esc(p.supplier) || '<span class="muted">–</span>'}</td>
-        <td>${p.sku ? `${p.lot ? esc(p.lot) : ""}${p.lot && p.bestBefore ? "<br>" : ""}${p.bestBefore ? `<span class="chip ${mhdClass(p.bestBefore)}">MHD ${fmtDate(p.bestBefore)}</span>` : ""} <button class="link" data-lot="${esc(p.id)}">${p.lot || p.bestBefore ? "ändern" : "eintragen"}</button>` : '<span class="muted">–</span>'}</td>
-        <td class="r">${Number(p.qty) || 0}</td>
-        <td class="r">${money(Number(p.total) || 0)}</td>
-        <td class="r">${Number(p.qty) ? money((Number(p.total) || 0) / Number(p.qty)) : "–"}</td>
-        <td class="r">${p.receiptId ? `<button class="link" data-goto-receipt="${esc(p.receiptNo || "")}">Beleg ${esc(p.receiptNo || "")}</button>` : `<button class="link" data-del="purchases/${esc(p.id)}">Löschen</button>`}</td></tr>`).join("")}</tbody></table></div>`;
+    $("purchases").innerHTML = `<div class="rows">${list.map((p) => `<div class="rw">
+        <div class="rw__main"><b>${Number(p.qty) || 0}× ${esc((productBySku[p.sku] && productBySku[p.sku].name) || p.product || "Sonstiges")}</b>
+          <small>${fmtDate(p.date)}${p.supplier ? " · " + esc(p.supplier) : ""}${p.note ? " · " + esc(p.note) : ""}</small>
+          ${p.sku ? `<span class="rw__lot">${p.lot ? `<span class="chip chip--plain">Charge ${esc(p.lot)}</span> ` : ""}${p.bestBefore ? `<span class="chip ${mhdClass(p.bestBefore)}">MHD ${fmtDate(p.bestBefore)}</span> ` : ""}</span>` : ""}</div>
+        <div class="rw__num"><b>${money(Number(p.total) || 0)}</b><small>${Number(p.qty) ? money((Number(p.total) || 0) / Number(p.qty)) + " / Stk." : ""}</small></div>
+        <div class="rw__act">${p.sku ? `<button class="link" data-lot="${esc(p.id)}">${p.lot || p.bestBefore ? "Charge/MHD ändern" : "Charge/MHD eintragen"}</button>` : ""}${p.receiptId ? `<button class="link" data-goto-receipt="${esc(p.receiptNo || "")}">Beleg ${esc(p.receiptNo || "")}</button>` : `<button class="link" data-del="purchases/${esc(p.id)}">Löschen</button>`}</div>
+      </div>`).join("")}</div>`;
   }
 
   // ---------- Darstellung: Todos ----------
@@ -1121,7 +1247,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
         <div class="todo__meta">
           ${t.priority === "high" ? '<span class="chip chip--bad">wichtig</span>' : t.priority === "low" ? '<span class="chip chip--plain">später</span>' : ""}
           ${t.due ? `<span class="${overdue ? "chip chip--bad" : ""}">fällig ${fmtDate(t.due)}</span>` : ""}
-          ${t.source === "mail" ? `<span>✉ ${esc(t.from || "")}${t.subject ? " · „" + esc(t.subject) + "“" : ""}${t.mailDate ? " · " + fmtDate(t.mailDate) : ""}</span>` : "<span>selbst eingetragen</span>"}
+          ${t.source === "mail" ? `<span>✉ ${esc(t.from || "")}${t.subject ? " · „" + esc(t.subject) + "“" : ""}${t.mailDate ? " · " + fmtDate(t.mailDate) : ""}</span>` : ""}
         </div>
       </div>
       <button class="link" data-del="todos/${esc(t.id)}">Löschen</button></div>`;
@@ -1129,15 +1255,15 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
   function renderTodos() {
     const open = state.todos.filter((t) => !t.done).sort((a, b) => (PRIO[a.priority] ?? 1) - (PRIO[b.priority] ?? 1) || (a.due || "9").localeCompare(b.due || "9") || (b.createdAt || "").localeCompare(a.createdAt || ""));
     const done = state.todos.filter((t) => t.done).sort((a, b) => (b.doneAt || "").localeCompare(a.doneAt || "")).slice(0, 30);
-    $("todo-open").innerHTML = open.length ? open.map(todoHTML).join("") : `<div class="empty">Nichts offen. Neue Aufgaben aus deinen E-Mails erscheinen hier automatisch.</div>`;
+    $("todo-open").innerHTML = open.length ? open.map(todoHTML).join("") : `<div class="empty">Nichts offen. Schön!</div>`;
     $("todo-done").innerHTML = done.length ? done.map(todoHTML).join("") : `<div class="empty">Noch nichts erledigt.</div>`;
     $("todo-open-count").textContent = open.length ? open.length + " offen" : "";
-    $("todo-done-count").textContent = done.length ? "die letzten " + done.length : "";
+    $("todo-done-count").textContent = done.length ? done.length + (done.length === 1 ? " Aufgabe" : " Aufgaben") : "";
     $("todo-badge").textContent = open.length;
     $("todo-badge").hidden = !open.length;
     const bm = $("todo-badge-m"); if (bm) { bm.textContent = open.length; bm.hidden = !open.length; }
     const sync = state.settings.lastMailCheck;
-    $("todo-sync").textContent = sync ? "E-Mails zuletzt geprüft: " + fmtDate(sync.slice(0, 10)) + " " + sync.slice(11, 16) + " Uhr" : "E-Mail-Abgleich noch nicht eingerichtet";
+    $("todo-sync").textContent = sync ? "E-Mails zuletzt geprüft: " + fmtDate(sync.slice(0, 10)) + " " + sync.slice(11, 16) + " Uhr" : "";
   }
 
   // Tabellen auf dem Handy als Karten: Spaltennamen an jede Zelle hängen
@@ -1161,8 +1287,12 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
 
   // ---------- Schreiben ----------
   function setStatus(kind, text) {
+    setStatus.last = [kind, text];
     $("status-dot").className = "dot " + (kind === "ok" ? "on" : kind === "bad" ? "off" : "");
     $("status-text").textContent = text;
+    $("status").title = text;
+    const me = window.__kontorAccess && window.__kontorAccess.me;
+    $("account-status").textContent = (me ? "Angemeldet als " + me + ". " : "") + text + ".";
   }
   async function write(fn) {
     if (!state.db) { setStatus("bad", "Speicher nicht verfügbar – Änderung nicht gespeichert"); return false; }
@@ -1200,7 +1330,8 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     editCostId = null; $("cost-form").reset(); $("c-date").value = today();
     $("cost-form-title").textContent = "Neue Kosten eintragen"; $("c-submit").textContent = "Hinzufügen"; $("c-cancel").hidden = true;
   }
-  $("c-cancel").addEventListener("click", resetCostForm);
+  const closeCostForm = () => { resetCostForm(); $("cost-form-panel").hidden = true; };
+  $("c-cancel").addEventListener("click", closeCostForm);
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-edit-cost]"); if (!b) return;
     const c = state.costs.find((x) => x.id === b.dataset.editCost); if (!c) return;
@@ -1208,7 +1339,9 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     $("c-name").value = c.name || ""; $("c-cat").value = c.category || "Sonstiges"; $("c-amount").value = c.amount ?? "";
     $("c-interval").value = c.interval || "monthly"; $("c-date").value = c.date || today(); $("c-note").value = c.note || "";
     $("cost-form-title").textContent = "Kosten bearbeiten: " + (c.name || ""); $("c-submit").textContent = "Änderung speichern"; $("c-cancel").hidden = false;
-    $("cost-form").scrollIntoView({ behavior: "smooth", block: "center" }); $("c-amount").focus();
+    if (finSub !== "kosten") showFinSub("kosten");
+    $("cost-form-panel").hidden = false;
+    $("cost-form-panel").scrollIntoView({ behavior: "smooth", block: "center" }); $("c-amount").focus();
   });
   $("cost-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -1219,7 +1352,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     if (!doc.name || !doc.date || !Number.isFinite(doc.amount)) return;
     const id = editCostId;
     const ok = await write((db) => id ? db.doc("costs/" + id).update({ ...doc, updatedAt: new Date().toISOString() }) : db.collection("costs").add({ ...doc, createdAt: new Date().toISOString() }));
-    if (ok) resetCostForm();
+    if (ok) closeCostForm();
   });
 
   function updateUnitHint() {
@@ -1238,7 +1371,7 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
       lot: $("b-lot").value.trim(), bestBefore: $("b-mhd").value || "",
     };
     if (!doc.date || !sku || !(doc.qty > 0)) return;
-    if (await write((db) => db.collection("purchases").add(doc))) { e.target.reset(); $("b-date").value = today(); fillSkuSelect(); updateUnitHint(); }
+    if (await write((db) => db.collection("purchases").add(doc))) { e.target.reset(); $("b-date").value = today(); fillSkuSelect(); updateUnitHint(); $("buy-form-panel").hidden = true; }
   });
 
   $("todo-form").addEventListener("submit", async (e) => {
@@ -1449,6 +1582,8 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
   const prevMonthKey = (key) => { let y = Number(key.slice(0, 4)), m = Number(key.slice(5, 7)) - 1; if (!m) { m = 12; y--; } return y + "-" + String(m).padStart(2, "0"); };
 
   // ---------- Heute ----------
+  let todayAll = false;
+  document.addEventListener("click", (e) => { if (e.target.closest("#today-more")) { todayAll = !todayAll; renderToday(); } });
   function renderToday() {
     const now = new Date();
     $("today-date").textContent = now.toLocaleDateString("de-DE", { weekday: "long", day: "numeric", month: "long" });
@@ -1481,16 +1616,22 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     else if (openTodos.length) items.push({ cls: "", tab: "todos", title: `${openTodos.length} offene${openTodos.length === 1 ? "s" : ""} Todo${openTodos.length === 1 ? "" : "s"}`, sub: openTodos.slice(0, 2).map((t) => t.title).join(" · ") });
     deadlineList().filter((d) => daysUntil(d.date) <= 21).slice(0, 3).forEach((d) => {
       const n = daysUntil(d.date);
-      items.push({ cls: n < 0 ? "bad" : n <= 7 ? "warn" : "", tab: "kosten", title: d.title, sub: n < 0 ? `seit ${-n} Tag${n === -1 ? "" : "en"} fällig` : n === 0 ? "heute fällig" : `fällig am ${fmtDate(d.date)} (in ${n} Tag${n === 1 ? "" : "en"})` });
+      items.push({ cls: n < 0 ? "bad" : n <= 7 ? "warn" : "", tab: "kosten", fsub: "fristen", title: d.title, sub: n < 0 ? `seit ${-n} Tag${n === -1 ? "" : "en"} fällig` : n === 0 ? "heute fällig" : `fällig am ${fmtDate(d.date)} (in ${n} Tag${n === 1 ? "" : "en"})` });
     });
     const y = Number(today().slice(0, 4)), cur = revenueYear(y), prev = revenueYear(y - 1);
-    if (state.settings.smallBusiness && (cur >= 80000 || prev > 25000)) items.push({ cls: "bad", tab: "kosten", title: "Kleinunternehmer-Grenze beachten", sub: `Umsatz ${y}: ${money(cur)} · Vorjahr: ${money(prev)}` });
+    if (state.settings.smallBusiness && (cur >= 80000 || prev > 25000)) items.push({ cls: "bad", tab: "kosten", fsub: "steuer", title: "Kleinunternehmer-Grenze beachten", sub: `Umsatz ${y}: ${money(cur)} · Vorjahr: ${money(prev)}` });
+    const order = { bad: 0, warn: 1, "": 2, good: 3 };
+    items.sort((a, b) => (order[a.cls] ?? 2) - (order[b.cls] ?? 2));
+    const MAX = 4, more = items.length - MAX;
+    const shown = todayAll || more <= 1 ? items : items.slice(0, MAX);
+    if (items.length) $("today-date").textContent = `${items.length} ${items.length === 1 ? "Punkt" : "Punkte"} · ` + $("today-date").textContent;
     $("today").innerHTML = items.length
-      ? `<div class="today">${items.map((i) => `<button type="button" class="today__item ${i.cls}" data-goto-tab="${i.tab}"><span><b>${esc(i.title)}</b>${i.sub ? `<small>${esc(i.sub)}</small>` : ""}</span><span class="today__go" aria-hidden="true">›</span></button>`).join("")}</div>`
+      ? `<div class="today">${shown.map((i) => `<button type="button" class="today__item ${i.cls}" data-goto-tab="${i.tab}"${i.fsub ? ` data-fsub="${i.fsub}"` : ""}><span><b>${esc(i.title)}</b>${i.sub ? `<small>${esc(i.sub)}</small>` : ""}</span><span class="today__go" aria-hidden="true">›</span></button>`).join("")}${more > 1 ? `<button type="button" class="link today__more" id="today-more">${todayAll ? "Weniger anzeigen" : `${more} weitere anzeigen`}</button>` : ""}</div>`
       : `<div class="allgood">Alles erledigt: keine offenen Bestellungen, Warnungen oder Fristen.</div>`;
   }
   document.addEventListener("click", (e) => {
     const b = e.target.closest("[data-goto-tab]"); if (!b) return;
+    if (b.dataset.fsub) showFinSub(b.dataset.fsub);
     showTab(b.dataset.gotoTab); window.scrollTo(0, 0);
   });
 
@@ -1528,6 +1669,8 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
     return list.filter((d) => d.date).sort((a, b) => a.date.localeCompare(b.date));
   }
   function renderDeadlines() {
+    const urgentN = deadlineList().filter((d) => daysUntil(d.date) <= 7).length;
+    $("fin-badge").textContent = urgentN; $("fin-badge").hidden = !urgentN;
     const list = deadlineList().slice(0, 8);
     $("deadlines").innerHTML = list.length ? list.map((d) => {
       const n = daysUntil(d.date);
@@ -1690,9 +1833,11 @@ dialog::backdrop { background: rgba(20, 12, 6, 0.55); }
   async function renderAccess() {
     const acc = window.__kontorAccess; if (!acc) return;
     $("access-panel").hidden = false;
+    if (acc.setPassword) $("pw-form").hidden = false;
+    setStatus.last && setStatus(...setStatus.last);
     try {
       const list = await acc.list();
-      $("access-list").innerHTML = list.map((e) => `<div class="dl"><span></span><span>${esc(e)}</span>${list.length > 1 && e !== acc.me ? `<button class="link" data-revoke="${esc(e)}">Entfernen</button>` : `<span class="muted">${e === acc.me ? "du" : ""}</span>`}</div>`).join("");
+      $("access-list").innerHTML = `<div class="rows">${list.map((e) => `<div class="rw"><div class="rw__main"><b>${esc(e)}</b></div><div class="rw__num">${list.length > 1 && e !== acc.me ? `<button class="link" data-revoke="${esc(e)}">Entfernen</button>` : `<small>${e === acc.me ? "du" : ""}</small>`}</div></div>`).join("")}</div>`;
     } catch (e) { $("access-list").innerHTML = `<div class="notice">Die Liste konnte nicht geladen werden.</div>`; }
   }
   $("access-form").addEventListener("submit", async (e) => {
@@ -2125,13 +2270,11 @@ Regeln:
     const tax = (r, rate) => (r.vat || []).filter((v) => Number(v.rate) === rate).reduce((s, v) => s + (Number(v.tax) || 0), 0);
     $("rc-kpis").innerHTML = [
       kpi("Belege " + rcYear, String(ok.length), list.length - ok.length ? `${list.length - ok.length} storniert` : "gebucht"),
-      kpi("Summe brutto", money(sum(ok, (r) => Number(r.gross) || 0)), "alle gebuchten Belege"),
-      kpi("Davon Ware", money(sum(ok.filter((r) => r.kind === "ware"), (r) => Number(r.gross) || 0)), "Wareneinkauf"),
-      kpi("Davon Kosten", money(sum(ok.filter((r) => r.kind !== "ware"), (r) => Number(r.gross) || 0)), "Betriebskosten"),
+      kpi("Summe brutto", money(sum(ok, (r) => Number(r.gross) || 0)), `Ware ${money(sum(ok.filter((r) => r.kind === "ware"), (r) => Number(r.gross) || 0))} · Kosten ${money(sum(ok.filter((r) => r.kind !== "ware"), (r) => Number(r.gross) || 0))}`),
       kpi("MwSt auf Belegen", money(sum(ok, (r) => tax(r, 19) + tax(r, 7))), `19 %: ${money(sum(ok, (r) => tax(r, 19)))} · 7 %: ${money(sum(ok, (r) => tax(r, 7)))}`),
     ].join("");
     if (!list.length) {
-      $("receipts").innerHTML = `<div class="empty">Noch keine Belege für ${rcYear}. Fotografiere oben deinen ersten Kassenzettel.</div>`;
+      $("receipts").innerHTML = `<div class="empty">Noch keine Belege für ${rcYear}. Tipp oben auf „Foto aufnehmen“.</div>`;
       return;
     }
     $("receipts").innerHTML = `<div class="tablewrap"><table>
